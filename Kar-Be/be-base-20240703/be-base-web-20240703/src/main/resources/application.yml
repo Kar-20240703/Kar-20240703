@@ -32,6 +32,9 @@ management:
 
 spring:
 
+  application:
+    name: be-base-web-20240703
+
   profiles:
     active: dev #按环境进行修改：prod
 

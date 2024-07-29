@@ -15,6 +15,13 @@
 
   <dependencies>
 
+    <!-- be-base-model-20240703 -->
+    <dependency>
+      <groupId>${kar.groupId}</groupId>
+      <artifactId>be-base-model-20240703</artifactId>
+      <version>${kar.version}</version>
+    </dependency>
+
     <!-- spring-boot-web -->
     <dependency>
       <groupId>org.springframework.boot</groupId>

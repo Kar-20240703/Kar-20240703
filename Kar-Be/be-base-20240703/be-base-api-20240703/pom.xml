@@ -11,6 +11,17 @@
   </parent>
 
   <artifactId>be-base-api-20240703</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>2024.7.3</version>
+
+  <dependencies>
+
+    <!-- be-base-model-20240703 -->
+    <dependency>
+      <groupId>${kar.groupId}</groupId>
+      <artifactId>be-base-model-20240703</artifactId>
+      <version>${kar.version}</version>
+    </dependency>
+
+  </dependencies>
 
 </project>
