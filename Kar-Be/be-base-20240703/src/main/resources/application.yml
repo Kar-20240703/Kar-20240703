@@ -21,6 +21,9 @@ springdoc:
   api-docs:
     enabled: true #按环境进行修改：false
 
+server:
+  port: 8001
+
 spring:
 
   profiles:
