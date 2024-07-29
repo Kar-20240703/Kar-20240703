@@ -67,20 +67,6 @@
       <version>3.5.7</version>
     </dependency>
 
-    <!-- 动态数据源 -->
-    <dependency>
-      <groupId>com.baomidou</groupId>
-      <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
-      <version>4.3.1</version>
-    </dependency>
-
-    <!-- xxl-job -->
-    <dependency>
-      <groupId>com.xuxueli</groupId>
-      <artifactId>xxl-job-core</artifactId>
-      <version>2.4.1</version>
-    </dependency>
-
     <!-- 阿里云-短信相关，获取最新版本号：https://next.api.aliyun.com/api/Dysmsapi/2017-05-25/SendSms?lang=JAVAASYNC -->
     <dependency>
       <groupId>com.aliyun</groupId>
@@ -109,13 +95,6 @@
       <version>3.33.0</version>
     </dependency>
 
-    <!-- 离线IP地址定位库 -->
-    <dependency>
-      <groupId>org.lionsoul</groupId>
-      <artifactId>ip2region</artifactId>
-      <version>2.7.0</version>
-    </dependency>
-
     <!-- knife4j -->
     <dependency>
       <groupId>com.github.xiaoymin</groupId>
@@ -134,7 +113,7 @@
     <dependency>
       <groupId>cn.hutool</groupId>
       <artifactId>hutool-all</artifactId>
-      <version>5.8.29</version>
+      <version>5.8.26</version>
     </dependency>
 
     <!-- jetbrains-annotations -->
@@ -184,11 +163,6 @@
               <exclude>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
-              </exclude>
-              <!-- 排除 windows 64位系统 -->
-              <exclude>
-                <groupId>ws.schild</groupId>
-                <artifactId>jave-nativebin-win64</artifactId>
               </exclude>
             </excludes>
           </configuration>

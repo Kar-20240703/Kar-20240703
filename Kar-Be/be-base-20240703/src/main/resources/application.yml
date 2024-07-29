@@ -1,0 +1,79 @@
+be:
+  common:
+    host: 192.168.33.12
+    username: root
+    password: password
+  mysql:
+    connect-param: characterEncoding=utf-8&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+  security:
+    admin-enable: true #按环境进行修改：false
+    admin-nickname: 系统管理员 #admin
+    admin-password: karadmin #明文：karadmin
+
+
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #按环境进行修改：直接注释掉，备注：需要全部注释掉
+
+springdoc:
+  swagger-ui:
+    enabled: true #按环境进行修改：false
+  api-docs:
+    enabled: true #按环境进行修改：false
+
+spring:
+
+  profiles:
+    active: dev #按环境进行修改：prod
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+  redis:
+    host: ${be.common.host}
+    password: ${be.common.password}
+    port: 6001
+
+  shardingsphere:
+    #props:
+    #  sql-show: true #按环境进行修改：直接注释掉
+    mode:
+      type: Standalone
+      repository:
+        type: JDBC
+    datasource:
+      names: be-base-20240703
+      be-base-20240703:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${be.common.host}:3001/be_base_20240703?${be.mysql.connect-param}
+        username: ${be.common.username}
+        password: ${be.common.password}
+    rules:
+      sharding:
+        binding-tables:
+          - base_user,base_user_info
+        sharding-algorithms:
+          base-user-inline:
+            props:
+              algorithm-expression: base_user_$->{id % 2}
+            type: INLINE
+          base-user-info-inline:
+            props:
+              algorithm-expression: base_user_info_$->{id % 2}
+            type: INLINE
+        tables:
+          base_user:
+            actual-data-nodes: be-base-20240703.base_user_$->{0..1}
+            table-strategy:
+              standard:
+                sharding-algorithm-name: base-user-inline
+                sharding-column: id
+          base_user_info:
+            actual-data-nodes: be-base-20240703.base_user_info_$->{0..1}
+            table-strategy:
+              standard:
+                sharding-algorithm-name: base-user-info-inline
+                sharding-column: id
