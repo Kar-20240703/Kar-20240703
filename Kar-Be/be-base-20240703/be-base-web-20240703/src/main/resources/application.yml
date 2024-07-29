@@ -17,9 +17,9 @@ be:
 
 springdoc:
   swagger-ui:
-    enabled: true #按环境进行修改：false
+    enabled: false #按环境进行修改：false
   api-docs:
-    enabled: true #按环境进行修改：false
+    enabled: false #按环境进行修改：false
 
 server:
   port: 8001
