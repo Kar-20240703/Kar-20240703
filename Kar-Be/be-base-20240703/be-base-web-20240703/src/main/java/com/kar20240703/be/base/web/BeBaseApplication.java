@@ -1,4 +1,4 @@
-package com.kar20240703.be.base;
+package com.kar20240703.be.base.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
