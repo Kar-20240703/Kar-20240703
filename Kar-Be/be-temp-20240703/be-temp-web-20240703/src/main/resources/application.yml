@@ -1,0 +1,65 @@
+be:
+  common:
+    host: 192.168.33.12
+    username: root
+    password: password
+  mysql:
+    connect-param: characterEncoding=utf-8&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
+  security:
+    admin-enable: true #按环境进行修改：false
+    admin-nickname: 系统管理员 #admin
+    admin-password: 19b5818d7fe851f4510715cbf2193204df3f5b82808a84faaa02634752886ff2 #明文：karadmin
+
+
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #按环境进行修改：直接注释掉，备注：需要全部注释掉
+
+springdoc:
+  swagger-ui:
+    enabled: false #按环境进行修改：false
+  api-docs:
+    enabled: false #按环境进行修改：false
+
+server:
+  port: 8001
+
+management:
+  server:
+    port: -1 #关闭监控
+  endpoints:
+    enabled-by-default: false #关闭监控
+
+spring:
+
+  application:
+    name: be-temp-web-20240703
+
+  profiles:
+    active: dev #按环境进行修改：prod
+
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+    default-property-inclusion: non_null
+
+  redis:
+    host: ${be.common.host}
+    password: ${be.common.password}
+    port: 6001
+
+  shardingsphere:
+    #props:
+    #  sql-show: true #按环境进行修改：直接注释掉
+    mode:
+      type: Standalone
+      repository:
+        type: JDBC
+    datasource:
+      names: be-temp-20240703
+      be-temp-20240703:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://${be.common.host}:3001/be_temp_20240703?${be.mysql.connect-param}
+        username: ${be.common.username}
+        password: ${be.common.password}

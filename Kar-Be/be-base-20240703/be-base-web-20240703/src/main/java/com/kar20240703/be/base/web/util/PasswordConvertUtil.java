@@ -4,7 +4,7 @@ import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
-import com.kar20240703.be.base.web.model.vo.R;
+import com.kar20240703.be.temp.web.model.vo.R;
 
 /**
  * 密码加密类
