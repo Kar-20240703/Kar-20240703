@@ -78,14 +78,4 @@ public class RequestUtil {
 
     }
 
-    /**
-     * 获取：ip所处区域
-     */
-    @NotNull
-    public static String getRegion() {
-
-        return "";
-
-    }
-
 }
