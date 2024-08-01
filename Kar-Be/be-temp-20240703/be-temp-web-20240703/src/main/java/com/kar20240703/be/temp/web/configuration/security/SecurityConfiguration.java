@@ -124,6 +124,8 @@ public class SecurityConfiguration {
 
         }
 
+        log.info("permitAllSet：{}", permitAllSet);
+
         if (CollUtil.isNotEmpty(permitAllSet) && CollUtil.isEmpty(PERMIT_ALL_ANT_PATH_REQUEST_MATCHER_LIST)) {
 
             for (String item : permitAllSet) {
