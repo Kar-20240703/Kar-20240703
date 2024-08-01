@@ -1,4 +1,4 @@
-package com.kar20240703.be.base.web.configuration;
+package com.kar20240703.be.base.web.configuration.security;
 
 import cn.hutool.json.JSONObject;
 import com.kar20240703.be.base.web.util.BaseJwtUtil;
