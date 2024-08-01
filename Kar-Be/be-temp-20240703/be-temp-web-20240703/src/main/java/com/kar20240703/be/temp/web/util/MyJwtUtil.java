@@ -186,7 +186,7 @@ public class MyJwtUtil {
      * 通过 userId获取到权限的 set
      */
     @Nullable
-    public static Set<SimpleGrantedAuthority> getSimpleGrantedAuthorityListByUserId(Long userId) {
+    public static Set<SimpleGrantedAuthority> getSimpleGrantedAuthoritySetByUserId(Long userId) {
 
         if (userId == null) {
             R.error(TempBizCodeEnum.ILLEGAL_REQUEST); // 直接抛出异常

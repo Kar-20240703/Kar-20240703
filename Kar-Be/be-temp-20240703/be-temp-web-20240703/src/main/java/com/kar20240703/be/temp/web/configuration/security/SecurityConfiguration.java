@@ -100,7 +100,7 @@ public class SecurityConfiguration {
         List<ISecurityPermitConfiguration> iSecurityPermitConfigurationList,
         JwtAuthorizationFilter jwtAuthorizationFilter) {
 
-        boolean prodFlag = BaseConfiguration.prodFlag();
+        boolean prodFlag = TempConfiguration.prodFlag();
 
         Set<String> permitAllSet = new HashSet<>();
 
@@ -124,8 +124,6 @@ public class SecurityConfiguration {
 
         }
 
-        log.info("permitAllSet：{}", permitAllSet);
-
         if (CollUtil.isNotEmpty(permitAllSet) && CollUtil.isEmpty(PERMIT_ALL_ANT_PATH_REQUEST_MATCHER_LIST)) {
 
             for (String item : permitAllSet) {
@@ -147,11 +145,13 @@ public class SecurityConfiguration {
         // 用户没有登录，但是访问需要权限的资源时，而报出的错误
         httpSecurity.exceptionHandling().authenticationEntryPoint(new MyAuthenticationEntryPoint());
 
-        httpSecurity.csrf().disable(); // 关闭CSRF保护
+        httpSecurity.csrf().disable(); // 禁用 CSRF保护
 
         httpSecurity.logout().disable(); // 禁用 logout
 
         httpSecurity.formLogin().disable(); // 禁用 login
+
+        httpSecurity.httpBasic().disable(); // 禁用 http basic认证
 
         return httpSecurity.build();
 

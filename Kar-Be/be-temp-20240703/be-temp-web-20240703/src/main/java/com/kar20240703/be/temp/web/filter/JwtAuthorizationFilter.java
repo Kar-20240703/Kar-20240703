@@ -8,8 +8,13 @@ import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.jwt.JWT;
 import cn.hutool.jwt.JWTValidator;
+import com.kar20240703.be.temp.web.configuration.base.TempConfiguration;
 import com.kar20240703.be.temp.web.configuration.security.SecurityConfiguration;
+import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
+import com.kar20240703.be.temp.web.model.configuration.IJwtConfiguration;
 import com.kar20240703.be.temp.web.model.configuration.IJwtValidatorConfiguration;
+import com.kar20240703.be.temp.web.model.vo.R;
+import com.kar20240703.be.temp.web.model.vo.SignInVO;
 import com.kar20240703.be.temp.web.properties.SecurityProperties;
 import com.kar20240703.be.temp.web.util.MyExceptionUtil;
 import com.kar20240703.be.temp.web.util.MyJwtUtil;
@@ -26,6 +31,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -43,6 +49,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Resource
     List<IJwtValidatorConfiguration> iJwtValidatorConfigurationList;
+
+    @Nullable
+    IJwtConfiguration iJwtConfiguration;
+
+    public JwtAuthorizationFilter(@Autowired(required = false) @Nullable IJwtConfiguration iJwtConfiguration) {
+
+        this.iJwtConfiguration = iJwtConfiguration;
+
+    }
 
     @SneakyThrows
     @Override
@@ -75,7 +90,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return null;
         }
 
-        jwtStr = handleJwtStr(jwtStr); // 处理：jwtStr
+        jwtStr = handleJwtStr(jwtStr, request); // 处理：jwtStr
 
         JWT jwt;
 
@@ -98,12 +113,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return null;
         }
 
-        String jwtHash = MyJwtUtil.generateRedisJwt(jwtStr, userId, RequestUtil.getRequestCategoryEnum(request));
+        String redisJwt = MyJwtUtil.generateRedisJwt(jwtStr, userId, RequestUtil.getRequestCategoryEnum(request));
 
-        String jwtHashRedis = MyCacheUtil.onlyGet(jwtHash);
-
-        // 判断 jwtHash是否存在于 redis中，如果存在，则表示不能使用
-        if (StrUtil.isNotBlank(jwtHashRedis)) {
+        // 判断 jwtHash是否存在于 redis中，如果存在，则表示能使用
+        if (StrUtil.isBlank(redisJwt)) {
             return loginExpired(response, userId, request); // 提示登录过期，请重新登录
         }
 
@@ -114,7 +127,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         // 验证算法
         if (jwt.verify() == false) {
-            return loginExpired(response, userId, request); // 提示登录过期，请重新登录，目的：为了可以随时修改配置的 jwt前缀，或者用户 jwt后缀修改
+            return loginExpired(response, userId, request); // 提示登录过期，请重新登录，目的：为了可以随时修改配置的 jwt前缀
         }
 
         try {
@@ -137,7 +150,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                 if (BooleanUtil.isFalse(validFlag)) {
 
-                    ApiResultVO.error(BaseBizCodeEnum.LOGIN_EXPIRED, userId);
+                    R.error(TempBizCodeEnum.LOGIN_EXPIRED, userId);
 
                 }
 
@@ -145,9 +158,18 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         }
 
-        // 通过 userId 获取用户具有的权限
-        return new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null,
-            MyJwtUtil.getSimpleGrantedAuthorityListByUserId(userId, tenantId));
+        if (iJwtConfiguration == null) {
+
+            // 返回：无权限
+            return new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null);
+
+        } else {
+
+            // 返回：有权限
+            return new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null,
+                iJwtConfiguration.getSimpleGrantedAuthoritySetByUserId(userId));
+
+        }
 
     }
 
@@ -155,20 +177,25 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
      * 处理：jwtStr
      */
     @Nullable
-    private String handleJwtStr(String jwtStr) {
+    private String handleJwtStr(String jwtStr, HttpServletRequest request) {
 
         // 如果不是正式环境：Authorization Bearer 0
-        if (BooleanUtil.isFalse(BaseConfiguration.prodFlag())) {
+        if (BooleanUtil.isFalse(TempConfiguration.prodFlag())) {
 
-            if (NumberUtil.isNumber(jwtStr)) {
+            if (iJwtConfiguration != null) {
 
-                SignInVO signInVO = MyJwtUtil.generateJwt(Convert.toLong(jwtStr), null, null, null, false);
+                if (NumberUtil.isNumber(jwtStr)) {
 
-                String jwtStrTmp = signInVO.getJwt();
+                    SignInVO signInVO = iJwtConfiguration.generateJwt(Convert.toLong(jwtStr), null, false,
+                        RequestUtil.getRequestCategoryEnum(request));
 
-                log.info("jwtStrTmp：{}", jwtStrTmp);
+                    String jwtStrTmp = signInVO.getJwt();
 
-                jwtStr = MyJwtUtil.getJwtStrByHeadAuthorization(jwtStrTmp);
+                    log.info("jwtStrTmp：{}", jwtStrTmp);
+
+                    jwtStr = MyJwtUtil.getJwtStrByHeadAuthorization(jwtStrTmp);
+
+                }
 
             }
 
@@ -183,26 +210,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
      */
     private boolean setJwtKey(JWT jwt, Long userId) {
 
-        String jwtSecretSuf = null;
-
         if (UserUtil.getCurrentUserAdminFlag(userId)) {
 
             if (BooleanUtil.isFalse(securityProperties.getAdminEnable())) {
                 return true;
             }
 
-        } else {
-
-            // 如果不是 admin
-            jwtSecretSuf = MyJwtUtil.getUserJwtSecretSufByUserId(userId); // 通过 userId获取到 私钥后缀
-
-            if (StrUtil.isBlank(jwtSecretSuf)) { // 除了 admin账号，每个账号都肯定有 jwtSecretSuf
-                return true;
-            }
-
         }
 
-        jwt.setKey(MyJwtUtil.getJwtSecret(jwtSecretSuf).getBytes());
+        jwt.setKey(MyJwtUtil.getJwtSecret().getBytes());
 
         return false;
 
@@ -214,11 +230,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     public static UsernamePasswordAuthenticationToken loginExpired(HttpServletResponse response, Long userId,
         HttpServletRequest request) {
 
-        log.info("登录过期，uri：{}", request.getRequestURI());
+        ResponseUtil.out(response, TempBizCodeEnum.LOGIN_EXPIRED);
 
-        ResponseUtil.out(response, BaseBizCodeEnum.LOGIN_EXPIRED);
-
-        ApiResultVO.error(BaseBizCodeEnum.LOGIN_EXPIRED, userId);
+        R.error(TempBizCodeEnum.LOGIN_EXPIRED, userId);
 
         return null;
 

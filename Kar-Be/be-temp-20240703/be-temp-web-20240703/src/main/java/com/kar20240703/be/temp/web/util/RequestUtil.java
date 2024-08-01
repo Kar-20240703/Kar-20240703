@@ -51,7 +51,7 @@ public class RequestUtil {
      * 获取请求类别
      */
     @NotNull
-    public static TempRequestCategoryEnum getRequestCategoryEnum(HttpServletRequest httpServletRequest) {
+    public static TempRequestCategoryEnum getRequestCategoryEnum(@Nullable HttpServletRequest httpServletRequest) {
 
         if (httpServletRequest == null) {
             return TempRequestCategoryEnum.PC_BROWSER_WINDOWS;

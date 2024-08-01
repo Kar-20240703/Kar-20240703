@@ -1,4 +1,4 @@
-package com.kar20240703.be.base.web.model.vo;
+package com.kar20240703.be.temp.web.model.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

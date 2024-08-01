@@ -263,7 +263,7 @@ public class UserUtil {
 
         if (setAuthoritySetFlag) {
 
-            authoritySet = MyJwtUtil.getSimpleGrantedAuthorityListByUserId(userId);
+            authoritySet = MyJwtUtil.getSimpleGrantedAuthoritySetByUserId(userId);
 
         }
 
