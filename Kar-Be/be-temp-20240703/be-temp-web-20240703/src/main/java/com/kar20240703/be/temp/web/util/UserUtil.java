@@ -7,6 +7,7 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
+import com.kar20240703.be.temp.web.model.configuration.IJwtConfiguration;
 import com.kar20240703.be.temp.web.model.constant.TempConstant;
 import com.kar20240703.be.temp.web.model.domain.TempUserDO;
 import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
@@ -16,6 +17,7 @@ import javax.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -30,6 +32,15 @@ public class UserUtil {
     @Resource
     public void setRedissonClient(RedissonClient redissonClient) {
         UserUtil.redissonClient = redissonClient;
+    }
+
+    @Nullable
+    private static IJwtConfiguration iJwtConfiguration;
+
+    public UserUtil(@Autowired(required = false) @Nullable IJwtConfiguration iJwtConfiguration) {
+
+        UserUtil.iJwtConfiguration = iJwtConfiguration;
+
     }
 
     /**
@@ -263,7 +274,11 @@ public class UserUtil {
 
         if (setAuthoritySetFlag) {
 
-            authoritySet = MyJwtUtil.getSimpleGrantedAuthoritySetByUserId(userId);
+            if (UserUtil.iJwtConfiguration != null) {
+
+                authoritySet = UserUtil.iJwtConfiguration.getSimpleGrantedAuthoritySetByUserId(userId);
+
+            }
 
         }
 
