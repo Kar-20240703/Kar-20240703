@@ -195,11 +195,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     SignInVO signInVO = iJwtGenerateConfiguration.generateJwt(Convert.toLong(jwtStr), null, false,
                         RequestUtil.getRequestCategoryEnum(request));
 
-                    String jwtStrTmp = signInVO.getJwt();
+                    if (signInVO != null) {
 
-                    log.info("jwtStrTmp：{}", jwtStrTmp);
+                        String jwtStrTmp = signInVO.getJwt();
 
-                    jwtStr = MyJwtUtil.getJwtStrByHeadAuthorization(jwtStrTmp);
+                        log.info("jwtStrTmp：{}", jwtStrTmp);
+
+                        jwtStr = MyJwtUtil.getJwtStrByHeadAuthorization(jwtStrTmp);
+
+                    }
 
                 }
 

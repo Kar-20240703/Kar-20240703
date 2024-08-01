@@ -11,6 +11,7 @@ public interface IJwtGenerateConfiguration {
     /**
      * 生成 jwt
      */
+    @Nullable
     SignInVO generateJwt(Long userId, @Nullable Consumer<JSONObject> consumer, boolean generateRefreshTokenFlag,
         TempRequestCategoryEnum tempRequestCategoryEnum);
 
