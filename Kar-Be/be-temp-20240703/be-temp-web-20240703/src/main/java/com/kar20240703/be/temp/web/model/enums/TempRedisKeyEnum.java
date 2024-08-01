@@ -6,9 +6,13 @@ package com.kar20240703.be.temp.web.model.enums;
 public enum TempRedisKeyEnum {
 
     // 【PRE_】开头 ↓
-    PRE_JWT_HASH, // jwtHash 前缀，后面跟：userId:requestCategoryEnum，目的：可以退出该用户的所有登录
+    PRE_USER_AUTH, // 用户权限前缀，后面跟：userId
+
+    PRE_JWT_REFRESH_TOKEN, // jwt刷新token 前缀，后面跟：userId:jwtRefreshToken
+    PRE_JWT, // jwt 前缀，后面跟：userId:requestCategoryEnum:jwt
 
     // 【_CACHE】结尾 ↓
+    BASE_USER_DISABLE_CACHE, // 用户是否被冻结，如果存在，则表示，用户被冻结了
 
     // 其他 ↓
     ATOMIC_LONG_ID_GENERATOR, // 获取主键 id，自增值

@@ -1,6 +1,7 @@
 package com.kar20240703.be.temp.web.util;
 
 import cn.hutool.core.convert.NumberWithFormat;
+import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.func.VoidFunc0;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
@@ -8,10 +9,13 @@ import cn.hutool.json.JSONUtil;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.constant.TempConstant;
 import com.kar20240703.be.temp.web.model.domain.TempUserDO;
+import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.vo.R;
 import java.util.Set;
+import javax.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.redisson.api.RedissonClient;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +24,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserUtil {
+
+    private static RedissonClient redissonClient;
+
+    @Resource
+    public void setRedissonClient(RedissonClient redissonClient) {
+        UserUtil.redissonClient = redissonClient;
+    }
 
     /**
      * 获取当前 userId 这里只会返回实际的 userId，如果为 null，则会抛出异常
@@ -182,12 +193,29 @@ public class UserUtil {
     }
 
     /**
-     * 通过用户 id，获取 菜单 set type：1 完整的菜单信息 2 给 security获取权限时使用
+     * 统一的：设置：用户冻结
      */
-    @Nullable
-    public static Set<Long> getMenuSetByUserId(@NotNull Long userId, int type) {
+    public static void setDisable(long userId) {
 
-        return null;
+        redissonClient.getBucket(TempRedisKeyEnum.BASE_USER_DISABLE_CACHE.name() + ":" + userId).set(DateUtil.now());
+
+    }
+
+    /**
+     * 统一的：获取：用户冻结
+     */
+    public static boolean getDisable(long userId) {
+
+        return redissonClient.getBucket(TempRedisKeyEnum.BASE_USER_DISABLE_CACHE.name() + ":" + userId).isExists();
+
+    }
+
+    /**
+     * 统一的：删除：用户冻结
+     */
+    public static void removeDisable(long userId) {
+
+        redissonClient.getBucket(TempRedisKeyEnum.BASE_USER_DISABLE_CACHE.name() + ":" + userId).delete();
 
     }
 
