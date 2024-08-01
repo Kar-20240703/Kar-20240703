@@ -12,7 +12,7 @@ import com.kar20240703.be.temp.web.model.constant.TempConstant;
 import com.kar20240703.be.temp.web.model.domain.TempUserDO;
 import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.vo.R;
-import java.util.Set;
+import java.util.List;
 import javax.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -270,13 +270,13 @@ public class UserUtil {
 
         }
 
-        Set<SimpleGrantedAuthority> authoritySet = null;
+        List<SimpleGrantedAuthority> authoritySet = null;
 
         if (setAuthoritySetFlag) {
 
             if (UserUtil.iJwtConfiguration != null) {
 
-                authoritySet = UserUtil.iJwtConfiguration.getSimpleGrantedAuthoritySetByUserId(userId);
+                authoritySet = UserUtil.iJwtConfiguration.getSimpleGrantedAuthorityListByUserId(userId);
 
             }
 

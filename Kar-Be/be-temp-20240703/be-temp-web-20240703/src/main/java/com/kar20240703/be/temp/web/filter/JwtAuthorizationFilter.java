@@ -167,7 +167,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
             // 返回：有权限
             return new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null,
-                iJwtConfiguration.getSimpleGrantedAuthoritySetByUserId(userId));
+                iJwtConfiguration.getSimpleGrantedAuthorityListByUserId(userId));
 
         }
 

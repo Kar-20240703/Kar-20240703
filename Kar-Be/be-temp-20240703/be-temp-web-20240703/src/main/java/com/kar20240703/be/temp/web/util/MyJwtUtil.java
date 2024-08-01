@@ -14,7 +14,7 @@ import com.kar20240703.be.temp.web.model.enums.TempRequestCategoryEnum;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.properties.SecurityProperties;
 import java.util.Date;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -183,10 +183,10 @@ public class MyJwtUtil {
     }
 
     /**
-     * 通过 userId获取到权限的 set
+     * 通过 userId获取到权限的集合
      */
     @Nullable
-    public static Set<SimpleGrantedAuthority> getSimpleGrantedAuthoritySetByUserId(Long userId) {
+    public static List<SimpleGrantedAuthority> getSimpleGrantedAuthoritySetByUserId(Long userId) {
 
         if (userId == null) {
             R.error(TempBizCodeEnum.ILLEGAL_REQUEST); // 直接抛出异常
@@ -197,8 +197,8 @@ public class MyJwtUtil {
             return null;
         }
 
-        return redissonClient.<String>getSet(TempRedisKeyEnum.PRE_USER_AUTH.name()).readAll().stream()
-            .map(SimpleGrantedAuthority::new).collect(Collectors.toSet());
+        return redissonClient.<String>getList(TempRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId).readAll().stream()
+            .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
     }
 
