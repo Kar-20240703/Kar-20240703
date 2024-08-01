@@ -12,6 +12,7 @@ import com.kar20240703.be.temp.web.configuration.base.TempConfiguration;
 import com.kar20240703.be.temp.web.configuration.security.SecurityConfiguration;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.configuration.IJwtConfiguration;
+import com.kar20240703.be.temp.web.model.configuration.IJwtGenerateConfiguration;
 import com.kar20240703.be.temp.web.model.configuration.IJwtValidatorConfiguration;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.model.vo.SignInVO;
@@ -53,9 +54,14 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Nullable
     IJwtConfiguration iJwtConfiguration;
 
-    public JwtAuthorizationFilter(@Autowired(required = false) @Nullable IJwtConfiguration iJwtConfiguration) {
+    @Nullable
+    IJwtGenerateConfiguration iJwtGenerateConfiguration;
+
+    public JwtAuthorizationFilter(@Autowired(required = false) @Nullable IJwtConfiguration iJwtConfiguration,
+        @Autowired(required = false) @Nullable IJwtGenerateConfiguration iJwtGenerateConfiguration) {
 
         this.iJwtConfiguration = iJwtConfiguration;
+        this.iJwtGenerateConfiguration = iJwtGenerateConfiguration;
 
     }
 
@@ -182,11 +188,11 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         // 如果不是正式环境：Authorization Bearer 0
         if (BooleanUtil.isFalse(TempConfiguration.prodFlag())) {
 
-            if (iJwtConfiguration != null) {
+            if (iJwtGenerateConfiguration != null) {
 
                 if (NumberUtil.isNumber(jwtStr)) {
 
-                    SignInVO signInVO = iJwtConfiguration.generateJwt(Convert.toLong(jwtStr), null, false,
+                    SignInVO signInVO = iJwtGenerateConfiguration.generateJwt(Convert.toLong(jwtStr), null, false,
                         RequestUtil.getRequestCategoryEnum(request));
 
                     String jwtStrTmp = signInVO.getJwt();
