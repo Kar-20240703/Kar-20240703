@@ -10,12 +10,16 @@ public interface ISecurityPermitConfiguration {
     /**
      * 开发环境 不用权限就可以访问的 url
      */
-    Set<String> devPermitAllSet();
+    default Set<String> devPermitAllSet() {
+        return null;
+    }
 
     /**
      * 生产环境 不用权限就可以访问的 url
      */
-    Set<String> prodPermitAllSet();
+    default Set<String> prodPermitAllSet() {
+        return null;
+    }
 
     /**
      * 所有环境 不用权限就可以访问的 url

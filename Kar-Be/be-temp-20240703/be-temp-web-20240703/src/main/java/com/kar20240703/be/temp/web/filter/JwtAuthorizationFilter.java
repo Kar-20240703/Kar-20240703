@@ -3,7 +3,6 @@ package com.kar20240703.be.temp.web.filter;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.exceptions.ValidateException;
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.jwt.JWT;
@@ -21,7 +20,6 @@ import com.kar20240703.be.temp.web.util.MyExceptionUtil;
 import com.kar20240703.be.temp.web.util.MyJwtUtil;
 import com.kar20240703.be.temp.web.util.RequestUtil;
 import com.kar20240703.be.temp.web.util.ResponseUtil;
-import com.kar20240703.be.temp.web.util.UserUtil;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
@@ -126,10 +124,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return loginExpired(response, userId, request); // 提示登录过期，请重新登录
         }
 
-        // 设置：jwt的密钥
-        if (setJwtKey(jwt, userId)) {
-            return null;
-        }
+        jwt.setKey(MyJwtUtil.getJwtSecret().getBytes());
 
         // 验证算法
         if (jwt.verify() == false) {
@@ -154,7 +149,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                 boolean validFlag = item.validator(jwt, request.getRequestURI(), response);
 
-                if (BooleanUtil.isFalse(validFlag)) {
+                if (validFlag == false) {
 
                     R.error(TempBizCodeEnum.LOGIN_EXPIRED, userId);
 
@@ -186,7 +181,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     private String handleJwtStr(String jwtStr, HttpServletRequest request) {
 
         // 如果不是正式环境：Authorization Bearer 0
-        if (BooleanUtil.isFalse(TempConfiguration.prodFlag())) {
+        if (TempConfiguration.prodFlag() == false) {
 
             if (iJwtGenerateConfiguration != null) {
 
@@ -212,25 +207,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         return jwtStr;
-
-    }
-
-    /**
-     * 设置：jwt的密钥
-     */
-    private boolean setJwtKey(JWT jwt, Long userId) {
-
-        if (UserUtil.getCurrentUserAdminFlag(userId)) {
-
-            if (BooleanUtil.isFalse(securityProperties.getAdminEnable())) {
-                return true;
-            }
-
-        }
-
-        jwt.setKey(MyJwtUtil.getJwtSecret().getBytes());
-
-        return false;
 
     }
 

@@ -1,6 +1,5 @@
 package com.kar20240703.be.base.web.util;
 
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.jwt.JWT;
@@ -12,7 +11,6 @@ import com.kar20240703.be.temp.web.model.vo.SignInVO;
 import com.kar20240703.be.temp.web.properties.SecurityProperties;
 import com.kar20240703.be.temp.web.util.MyJwtUtil;
 import com.kar20240703.be.temp.web.util.RedissonUtil;
-import com.kar20240703.be.temp.web.util.UserUtil;
 import java.time.Duration;
 import java.util.Date;
 import java.util.function.Consumer;
@@ -42,13 +40,6 @@ public class BaseJwtUtil {
 
         if (userId == null) {
             return null;
-        }
-
-        if (UserUtil.getCurrentUserAdminFlag(userId) && BooleanUtil.isFalse(
-            BaseJwtUtil.securityProperties.getAdminEnable())) {
-
-            return null;
-
         }
 
         RedissonUtil.batch(batch -> {

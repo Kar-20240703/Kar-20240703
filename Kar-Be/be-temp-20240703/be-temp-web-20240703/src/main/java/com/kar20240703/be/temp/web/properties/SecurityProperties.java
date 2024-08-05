@@ -20,9 +20,6 @@ public class SecurityProperties {
     private String jwtRefreshTokenSecretPre =
         "202e5c4e94c60b8e96cc6c8c2331309c11123a40ef996dd5ab3b180ba9a123cefe99123edeff526e1d3d264f8dde85eaf6ace1ea235d826fda32080d00f64b47ad0111";
 
-    @Schema(description = "是否允许：admin登录")
-    private Boolean adminEnable = true;
-
     @Schema(description = "admin 的昵称")
     private String adminNickname = "系统管理员";
 

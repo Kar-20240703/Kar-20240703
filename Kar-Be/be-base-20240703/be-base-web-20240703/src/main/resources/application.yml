@@ -6,10 +6,8 @@ be:
   mysql:
     connect-param: characterEncoding=utf-8&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
   security:
-    admin-enable: true #按环境进行修改：false
     admin-nickname: 系统管理员 #admin
     admin-password: 19b5818d7fe851f4510715cbf2193204df3f5b82808a84faaa02634752886ff2 #明文：karadmin
-
 
 #mybatis-plus:
 #  configuration:
@@ -22,7 +20,7 @@ springdoc:
     enabled: false #按环境进行修改：false
 
 server:
-  port: 8001
+  port: 8002
 
 management:
   server:

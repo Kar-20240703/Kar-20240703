@@ -16,16 +16,6 @@ public abstract class AbstractSignHelperSecurityPermitConfiguration implements I
     protected abstract String getSignPreUri();
 
     @Override
-    public Set<String> devPermitAllSet() {
-        return null;
-    }
-
-    @Override
-    public Set<String> prodPermitAllSet() {
-        return null;
-    }
-
-    @Override
     public Set<String> anyPermitAllSet() {
 
         if (StrUtil.isBlank(getSignPreUri())) {

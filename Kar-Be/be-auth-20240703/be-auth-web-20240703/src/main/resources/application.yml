@@ -5,9 +5,6 @@ be:
     password: password
   mysql:
     connect-param: characterEncoding=utf-8&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
-  security:
-    admin-nickname: 系统管理员 #admin
-    admin-password: 19b5818d7fe851f4510715cbf2193204df3f5b82808a84faaa02634752886ff2 #明文：karadmin
 
 #mybatis-plus:
 #  configuration:
@@ -20,7 +17,7 @@ springdoc:
     enabled: false #按环境进行修改：false
 
 server:
-  port: 8002
+  port: 8001
 
 management:
   server:
@@ -31,7 +28,7 @@ management:
 spring:
 
   application:
-    name: be-temp-web-20240703
+    name: be-auth-web-20240703
 
   profiles:
     active: dev #按环境进行修改：prod
@@ -54,10 +51,10 @@ spring:
       repository:
         type: JDBC
     datasource:
-      names: be-temp-20240703
-      be-temp-20240703:
+      names: be-base-20240703
+      be-base-20240703:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://${be.common.host}:3001/be_temp_20240703?${be.mysql.connect-param}
+        jdbc-url: jdbc:mysql://${be.common.host}:3001/be_base_20240703?${be.mysql.connect-param}
         username: ${be.common.username}
         password: ${be.common.password}

@@ -19,7 +19,7 @@ public class BaseJwtConfiguration implements IJwtConfiguration, IJwtGenerateConf
     @Override
     public List<SimpleGrantedAuthority> getSimpleGrantedAuthorityListByUserId(Long userId) {
 
-        return MyJwtUtil.getSimpleGrantedAuthoritySetByUserId(userId);
+        return MyJwtUtil.getSimpleGrantedAuthorityListByUserId(userId);
 
     }
 

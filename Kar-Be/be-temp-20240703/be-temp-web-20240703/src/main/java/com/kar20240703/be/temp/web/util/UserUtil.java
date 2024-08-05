@@ -208,7 +208,7 @@ public class UserUtil {
      */
     public static void setDisable(long userId) {
 
-        redissonClient.getBucket(TempRedisKeyEnum.BASE_USER_DISABLE_CACHE.name() + ":" + userId).set(DateUtil.now());
+        redissonClient.getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + userId).set(DateUtil.now());
 
     }
 
@@ -217,7 +217,7 @@ public class UserUtil {
      */
     public static boolean getDisable(long userId) {
 
-        return redissonClient.getBucket(TempRedisKeyEnum.BASE_USER_DISABLE_CACHE.name() + ":" + userId).isExists();
+        return redissonClient.getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + userId).isExists();
 
     }
 
@@ -226,7 +226,7 @@ public class UserUtil {
      */
     public static void removeDisable(long userId) {
 
-        redissonClient.getBucket(TempRedisKeyEnum.BASE_USER_DISABLE_CACHE.name() + ":" + userId).delete();
+        redissonClient.getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + userId).delete();
 
     }
 

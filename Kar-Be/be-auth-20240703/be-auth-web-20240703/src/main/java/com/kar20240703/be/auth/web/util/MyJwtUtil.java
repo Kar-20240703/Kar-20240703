@@ -1,23 +1,22 @@
-package com.kar20240703.be.temp.web.util;
+package com.kar20240703.be.auth.web.util;
 
 import cn.hutool.core.convert.NumberWithFormat;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
-import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
-import com.kar20240703.be.temp.web.model.constant.SecurityConstant;
-import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
-import com.kar20240703.be.temp.web.model.enums.TempRequestCategoryEnum;
-import com.kar20240703.be.temp.web.model.vo.R;
-import com.kar20240703.be.temp.web.properties.SecurityProperties;
+import com.kar20240703.be.auth.web.exception.AuthBizCodeEnum;
+import com.kar20240703.be.auth.web.model.AuthConstant;
+import com.kar20240703.be.auth.web.model.constant.SecurityConstant;
+import com.kar20240703.be.auth.web.model.enums.AuthRedisKeyEnum;
+import com.kar20240703.be.auth.web.model.enums.AuthRequestCategoryEnum;
+import com.kar20240703.be.auth.web.model.vo.R;
+import com.kar20240703.be.auth.web.properties.SecurityProperties;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.redisson.api.RedissonClient;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -101,27 +100,12 @@ public class MyJwtUtil {
      * 生成 redis中，jwt存储使用的 key
      */
     @NotNull
-    public static String generateRedisJwt(String jwtStr, Long userId, TempRequestCategoryEnum tempRequestCategoryEnum) {
+    public static String generateRedisJwt(String jwtStr, Long userId, AuthRequestCategoryEnum authRequestCategoryEnum) {
 
         StrBuilder strBuilder = StrBuilder.create();
 
-        strBuilder.append(TempRedisKeyEnum.PRE_JWT.name()).append(":").append(userId).append(":")
-            .append(tempRequestCategoryEnum.getCode()).append(":").append(jwtStr);
-
-        return strBuilder.toString();
-
-    }
-
-    /**
-     * 生成 redis中，jwt刷新token存储使用的 key
-     */
-    @NotNull
-    public static String generateRedisJwtRefreshToken(String jwtRefreshStr, Long userId) {
-
-        StrBuilder strBuilder = StrBuilder.create();
-
-        strBuilder.append(TempRedisKeyEnum.PRE_JWT_REFRESH_TOKEN.name()).append(":").append(userId).append(":")
-            .append(jwtRefreshStr);
+        strBuilder.append(AuthRedisKeyEnum.PRE_JWT.name()).append(":").append(userId).append(":")
+            .append(authRequestCategoryEnum.getCode()).append(":").append(jwtStr);
 
         return strBuilder.toString();
 
@@ -134,16 +118,6 @@ public class MyJwtUtil {
     public static String getJwtSecret() {
 
         return MyJwtUtil.securityProperties.getJwtSecretPre() + MyJwtUtil.JWT_SECRET_SYS;
-
-    }
-
-    /**
-     * 获取 jwt刷新token密钥：配置的私钥前缀 + JWT_SECRET_SYS
-     */
-    @NotNull
-    public static String getJwtRefreshTokenSecret() {
-
-        return MyJwtUtil.securityProperties.getJwtRefreshTokenSecretPre() + MyJwtUtil.JWT_REFRESH_TOKEN_SECRET_SYS;
 
     }
 
@@ -182,19 +156,18 @@ public class MyJwtUtil {
      * 通过 userId获取到权限的集合
      */
     @Nullable
-    public static List<SimpleGrantedAuthority> getSimpleGrantedAuthorityListByUserId(Long userId) {
+    public static List<String> getAuthListByUserId(Long userId) {
 
         if (userId == null) {
-            R.error(TempBizCodeEnum.ILLEGAL_REQUEST); // 直接抛出异常
+            R.error(AuthBizCodeEnum.ILLEGAL_REQUEST); // 直接抛出异常
         }
 
         // admin账号，自带所有权限
-        if (UserUtil.getCurrentUserAdminFlag(userId)) {
+        if (AuthConstant.ADMIN_ID.equals(userId)) {
             return null;
         }
 
-        return redissonClient.<String>getList(TempRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId).readAll().stream()
-            .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+        return redissonClient.<String>getList(AuthRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId).readAll();
 
     }
 

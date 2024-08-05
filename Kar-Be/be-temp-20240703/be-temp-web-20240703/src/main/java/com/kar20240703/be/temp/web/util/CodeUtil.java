@@ -1,6 +1,5 @@
 package com.kar20240703.be.temp.web.util;
 
-import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.kar20240703.be.temp.web.model.vo.R;
@@ -40,7 +39,7 @@ public class CodeUtil {
         }
 
         // 如果验证码不匹配
-        if (BooleanUtil.isFalse(targetCode.equalsIgnoreCase(sourceCode))) {
+        if (targetCode.equalsIgnoreCase(sourceCode) == false) {
             R.errorMsg(notEqualsError);
         }
 
