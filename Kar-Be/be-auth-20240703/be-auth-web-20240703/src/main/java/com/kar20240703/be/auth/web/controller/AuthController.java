@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/auth")
-@Tag(name = "权限")
+@Tag(name = "权限-管理")
 public class AuthController {
 
     @Resource

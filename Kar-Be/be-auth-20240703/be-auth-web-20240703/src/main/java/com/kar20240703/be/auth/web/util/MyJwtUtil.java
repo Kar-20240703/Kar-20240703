@@ -5,7 +5,6 @@ import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.kar20240703.be.auth.web.exception.AuthBizCodeEnum;
-import com.kar20240703.be.auth.web.model.AuthConstant;
 import com.kar20240703.be.auth.web.model.constant.SecurityConstant;
 import com.kar20240703.be.auth.web.model.enums.AuthRedisKeyEnum;
 import com.kar20240703.be.auth.web.model.enums.AuthRequestCategoryEnum;
@@ -163,7 +162,7 @@ public class MyJwtUtil {
         }
 
         // admin账号，自带所有权限
-        if (AuthConstant.ADMIN_ID.equals(userId)) {
+        if (UserUtil.getCurrentUserAdminFlag(userId)) {
             return null;
         }
 
