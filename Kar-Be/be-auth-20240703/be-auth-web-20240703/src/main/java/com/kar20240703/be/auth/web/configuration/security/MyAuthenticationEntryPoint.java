@@ -20,7 +20,7 @@ public class MyAuthenticationEntryPoint implements AuthenticationEntryPoint {
         // 尚未登录，请先登录
         ResponseUtil.out(response, AuthBizCodeEnum.NOT_LOGGED_IN_YET);
 
-        ExceptionAdvice.handleRequest(request, null, AuthBizCodeEnum.NOT_LOGGED_IN_YET.getMsg(), "");
+        ExceptionAdvice.handleRequest(request, AuthBizCodeEnum.NOT_LOGGED_IN_YET.getMsg(), "");
 
     }
 

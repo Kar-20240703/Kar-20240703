@@ -1,7 +1,6 @@
 package com.kar20240703.be.auth.web.model.enums;
 
 import com.fasterxml.jackson.annotation.JsonValue;
-import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -9,9 +8,11 @@ import lombok.Getter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * 请求类别
+ */
 @AllArgsConstructor
 @Getter
-@Schema(description = "请求类别")
 public enum AuthRequestCategoryEnum {
 
     PC_BROWSER_WINDOWS(101, "windows-浏览器"), //

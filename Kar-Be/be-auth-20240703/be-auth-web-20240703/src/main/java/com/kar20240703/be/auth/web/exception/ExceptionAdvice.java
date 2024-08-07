@@ -5,13 +5,11 @@ import cn.hutool.json.JSONUtil;
 import com.kar20240703.be.auth.web.model.vo.R;
 import com.kar20240703.be.auth.web.util.MyEntityUtil;
 import com.kar20240703.be.auth.web.util.MyExceptionUtil;
-import io.swagger.v3.oas.annotations.Operation;
 import java.lang.reflect.Method;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.jetbrains.annotations.Nullable;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.BindingResult;
@@ -51,8 +49,7 @@ public class ExceptionAdvice {
         if (method != null) {
 
             // 处理：请求
-            handleRequest(httpServletRequest, method.getAnnotation(Operation.class),
-                MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), //
+            handleRequest(httpServletRequest, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), //
                 MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(e.getBindingResult().getTarget())));
 
         }
@@ -64,8 +61,7 @@ public class ExceptionAdvice {
     /**
      * 处理：请求
      */
-    public static void handleRequest(HttpServletRequest httpServletRequest, @Nullable Operation operation,
-        String errorMsg, String requestParam) {
+    public static void handleRequest(HttpServletRequest httpServletRequest, String errorMsg, String requestParam) {
 
     }
 
@@ -92,9 +88,9 @@ public class ExceptionAdvice {
         R<String> r = R.errorOrigin(AuthBizCodeEnum.PARAMETER_CHECK_ERROR, e.getMessage());
 
         // 处理：请求
-        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), "");
+        handleRequest(httpServletRequest, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), "");
 
-        return r; // 这里不会执行，只是为了通过语法检查
+        return r;
 
     }
 
@@ -119,9 +115,9 @@ public class ExceptionAdvice {
         R<String> r = R.errorOrigin(AuthBizCodeEnum.INSUFFICIENT_PERMISSIONS);
 
         // 处理：请求
-        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), "");
+        handleRequest(httpServletRequest, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), "");
 
-        return r; // 这里不会执行，只是为了通过语法检查
+        return r;
 
     }
 
@@ -136,9 +132,9 @@ public class ExceptionAdvice {
         R<String> r = R.errorOrigin(AuthBizCodeEnum.RESULT_SYS_ERROR);
 
         // 处理：请求
-        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(e.getMessage()), "");
+        handleRequest(httpServletRequest, MyEntityUtil.getNotNullStr(e.getMessage()), "");
 
-        return r; // 这里不会执行，只是为了通过语法检查
+        return r;
 
     }
 

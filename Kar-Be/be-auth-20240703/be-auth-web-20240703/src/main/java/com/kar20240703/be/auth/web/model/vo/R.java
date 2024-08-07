@@ -5,28 +5,39 @@ import com.kar20240703.be.auth.web.configuration.base.AuthConfiguration;
 import com.kar20240703.be.auth.web.exception.AuthBizCodeEnum;
 import com.kar20240703.be.auth.web.exception.AuthException;
 import com.kar20240703.be.auth.web.model.interfaces.IBizCode;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * 统一响应实体类
+ */
 @Data
-@Schema(description = "统一响应实体类")
 public class R<T> {
 
-    @Schema(description = "响应代码，成功返回：200")
+    /**
+     * 响应代码，成功返回：200
+     */
     private Integer code;
 
-    @Schema(description = "响应描述")
+    /**
+     * 响应描述
+     */
     private String msg;
 
-    @Schema(description = "服务器是否收到请求，只会返回 true")
-    private Boolean successFlag;
+    /**
+     * 服务器是否收到请求，只会返回 true
+     */
+    private Boolean receive;
 
-    @Schema(description = "数据")
+    /**
+     * 数据
+     */
     private T data;
 
-    @Schema(description = "服务名")
+    /**
+     * 服务名
+     */
     private String service = AuthConfiguration.applicationName;
 
     private R(Integer code, String msg, @Nullable T data) {
@@ -34,11 +45,11 @@ public class R<T> {
         this.msg = msg;
         this.code = code;
         this.data = data;
-        this.successFlag = true;
+        this.receive = true;
 
     }
 
-    private void setSuccessFlag(boolean successFlag) {
+    private void setReceive(boolean receive) {
         // 不允许修改 success的值
     }
 
