@@ -4,12 +4,6 @@ be:
     username: root
     password: password
 
-springdoc:
-  swagger-ui:
-    enabled: false #按环境进行修改：false
-  api-docs:
-    enabled: false #按环境进行修改：false
-
 server:
   port: 8001
 

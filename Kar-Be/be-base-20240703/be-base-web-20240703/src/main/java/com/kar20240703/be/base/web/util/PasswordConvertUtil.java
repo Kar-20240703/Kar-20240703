@@ -52,7 +52,7 @@ public class PasswordConvertUtil {
      */
     private static String cycle(String password) {
 
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 2; i++) {
             password = shaEncode(password);
         }
 

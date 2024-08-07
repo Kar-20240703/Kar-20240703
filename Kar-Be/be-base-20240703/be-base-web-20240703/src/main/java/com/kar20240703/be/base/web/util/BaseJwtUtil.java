@@ -8,13 +8,11 @@ import com.kar20240703.be.temp.web.model.constant.SecurityConstant;
 import com.kar20240703.be.temp.web.model.constant.TempConstant;
 import com.kar20240703.be.temp.web.model.enums.TempRequestCategoryEnum;
 import com.kar20240703.be.temp.web.model.vo.SignInVO;
-import com.kar20240703.be.temp.web.properties.SecurityProperties;
 import com.kar20240703.be.temp.web.util.MyJwtUtil;
 import com.kar20240703.be.temp.web.util.RedissonUtil;
 import java.time.Duration;
 import java.util.Date;
 import java.util.function.Consumer;
-import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,13 +21,6 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class BaseJwtUtil {
-
-    private static SecurityProperties securityProperties;
-
-    @Resource
-    public void setSecurityProperties(SecurityProperties securityProperties) {
-        BaseJwtUtil.securityProperties = securityProperties;
-    }
 
     /**
      * 统一生成 jwt

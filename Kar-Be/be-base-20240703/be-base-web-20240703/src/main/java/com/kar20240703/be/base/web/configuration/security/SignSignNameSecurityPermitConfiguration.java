@@ -7,7 +7,7 @@ public class SignSignNameSecurityPermitConfiguration extends AbstractSignHelperS
 
     @Override
     protected String getSignPreUri() {
-        return "signInName";
+        return "signName";
     }
 
 }
