@@ -7,7 +7,9 @@ import com.kar20240703.be.base.web.model.dto.SignSignNameUpdatePasswordDTO;
 import com.kar20240703.be.base.web.model.dto.SignSignNameUpdateSignNameDTO;
 import com.kar20240703.be.base.web.service.SignSignNameService;
 import com.kar20240703.be.temp.web.model.vo.SignInVO;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SignSignNameServiceImpl implements SignSignNameService {
 
     /**

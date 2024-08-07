@@ -1,5 +1,6 @@
 package com.kar20240703.be.auth.web.configuration.security;
 
+import com.kar20240703.be.auth.web.filter.JwtAuthorizationFilter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -7,6 +8,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Slf4j
@@ -14,9 +16,11 @@ public class SecurityConfiguration {
 
     @SneakyThrows
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, JwtAuthorizationFilter jwtAuthorizationFilter) {
 
         httpSecurity.authorizeRequests().anyRequest().authenticated(); // 拦截所有请求
+
+        httpSecurity.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 不需要session
 
