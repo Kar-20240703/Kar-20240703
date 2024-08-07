@@ -108,7 +108,7 @@ public class MyEntityUtil {
      */
     @NotNull
     public static Long getNotNullLong(Long aLong) {
-        return getNotNullLong(aLong, TempConstant.NEGATIVE_ONE_LONG);
+        return getNotNullLong(aLong, -1L);
     }
 
     /**

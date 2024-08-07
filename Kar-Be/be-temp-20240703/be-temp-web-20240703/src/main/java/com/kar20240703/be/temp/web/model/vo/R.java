@@ -21,7 +21,7 @@ public class R<T> {
     private String msg;
 
     @Schema(description = "服务器是否收到请求，只会返回 true")
-    private Boolean successFlag;
+    private Boolean receive;
 
     @Schema(description = "数据")
     private T data;
@@ -34,11 +34,11 @@ public class R<T> {
         this.msg = msg;
         this.code = code;
         this.data = data;
-        this.successFlag = true;
+        this.receive = true;
 
     }
 
-    private void setSuccessFlag(boolean successFlag) {
+    private void setReceive(boolean receive) {
         // 不允许修改 success的值
     }
 

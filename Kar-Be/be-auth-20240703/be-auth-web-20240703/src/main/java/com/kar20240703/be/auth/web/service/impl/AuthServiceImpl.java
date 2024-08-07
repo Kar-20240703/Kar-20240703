@@ -24,7 +24,7 @@ public class AuthServiceImpl implements AuthService {
      * <p>
      * 备注：会检查 jwt的合法性，以及用户的状态
      *
-     * @return null 所有权限 空集合 无权限
+     * @return null || 空集合 无权限
      */
     @Override
     public List<String> getAuthList() {

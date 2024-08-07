@@ -27,6 +27,12 @@ public class SecurityProperties {
         description = "admin 的密码，默认为 karadmin，下面是 karadmin经过 sha加密之后的字符串，加密次数和方法和前端需进行统一，输入 karadmin即可登录，也可以使用本类的 generateAdminPassword方法，快速生成新的 admin密码")
     private String adminPassword = "19b5818d7fe851f4510715cbf2193204df3f5b82808a84faaa02634752886ff2";
 
+    @Schema(description = "通过jwt获取权限集合的url")
+    private String jwtGetAuthListUrl = "http://localhost:8001/auth/getAuthList";
+
+    @Schema(description = "通过jwt获取用户id的url")
+    private String jwtGetUserIdUrl = "http://localhost:8001/auth/getUserId";
+
     public static void main(String[] args) {
 
         generateAdminPassword();

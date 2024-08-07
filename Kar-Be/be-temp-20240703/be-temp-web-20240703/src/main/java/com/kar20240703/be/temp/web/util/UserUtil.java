@@ -4,20 +4,22 @@ import cn.hutool.core.convert.NumberWithFormat;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.lang.func.VoidFunc0;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
-import com.kar20240703.be.temp.web.model.configuration.IJwtConfiguration;
+import com.kar20240703.be.temp.web.model.constant.SecurityConstant;
 import com.kar20240703.be.temp.web.model.constant.TempConstant;
 import com.kar20240703.be.temp.web.model.domain.TempUserDO;
 import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.vo.R;
+import com.kar20240703.be.temp.web.properties.SecurityProperties;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.redisson.api.RedissonClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,13 +36,11 @@ public class UserUtil {
         UserUtil.redissonClient = redissonClient;
     }
 
-    @Nullable
-    private static IJwtConfiguration iJwtConfiguration;
+    private static SecurityProperties securityProperties;
 
-    public UserUtil(@Autowired(required = false) @Nullable IJwtConfiguration iJwtConfiguration) {
-
-        UserUtil.iJwtConfiguration = iJwtConfiguration;
-
+    @Resource
+    public void setSecurityProperties(SecurityProperties securityProperties) {
+        UserUtil.securityProperties = securityProperties;
     }
 
     /**
@@ -234,11 +234,11 @@ public class UserUtil {
      * 给 security设置用户信息，并执行方法
      */
     public static void securityContextHolderSetAuthenticationAndExecFun(VoidFunc0 voidFunc0, TempUserDO tempUserDO,
-        boolean setAuthoritySetFlag) {
+        boolean setAuthoritySetFlag, String jwt) {
 
         // 执行
         securityContextHolderSetAuthenticationAndExecFun(voidFunc0, tempUserDO.getId(), tempUserDO.getWxAppId(),
-            tempUserDO.getWxOpenId(), setAuthoritySetFlag);
+            tempUserDO.getWxOpenId(), setAuthoritySetFlag, jwt);
 
     }
 
@@ -246,9 +246,10 @@ public class UserUtil {
      * 给 security设置用户信息，并执行方法
      *
      * @param setAuthoritySetFlag 是否设置：权限
+     * @param jwt
      */
     public static void securityContextHolderSetAuthenticationAndExecFun(VoidFunc0 voidFunc0, @Nullable Long userId,
-        @Nullable String wxAppId, @Nullable String wxOpenId, boolean setAuthoritySetFlag) {
+        @Nullable String wxAppId, @Nullable String wxOpenId, boolean setAuthoritySetFlag, String jwt) {
 
         JSONObject principalJson = JSONUtil.createObj();
 
@@ -270,13 +271,34 @@ public class UserUtil {
 
         }
 
-        List<SimpleGrantedAuthority> authoritySet = null;
+        List<SimpleGrantedAuthority> authorityList = null;
 
         if (setAuthoritySetFlag) {
 
-            if (UserUtil.iJwtConfiguration != null) {
+            String jwtGetAuthListUrl = securityProperties.getJwtGetAuthListUrl();
 
-                authoritySet = UserUtil.iJwtConfiguration.getSimpleGrantedAuthorityListByUserId(userId);
+            if (StrUtil.isNotBlank(jwtGetAuthListUrl)) {
+
+                try {
+
+                    String body = HttpRequest.post(jwtGetAuthListUrl)
+                        .header(SecurityConstant.AUTHORIZATION, SecurityConstant.JWT_PREFIX + jwt).execute().body();
+
+                    R<List<String>> r = JSONUtil.toBean(body, R.class);
+
+                    if (TempBizCodeEnum.RESULT_OK.getCode() == r.getCode()) {
+
+                        List<String> authList = r.getData();
+
+                        authorityList = authList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
+                    }
+
+                } catch (Exception e) {
+
+                    MyExceptionUtil.printError(e);
+
+                }
 
             }
 
@@ -284,7 +306,7 @@ public class UserUtil {
 
         // 把 principalJson 设置到：security的上下文里面
         SecurityContextHolder.getContext()
-            .setAuthentication(new UsernamePasswordAuthenticationToken(principalJson, null, authoritySet));
+            .setAuthentication(new UsernamePasswordAuthenticationToken(principalJson, null, authorityList));
 
         MyTryUtil.tryCatchFinally(() -> {
 

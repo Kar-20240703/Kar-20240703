@@ -2,7 +2,7 @@ package com.kar20240703.be.auth.web.util;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONUtil;
-import com.kar20240703.be.auth.web.exception.AuthBizCodeEnum;
+import com.kar20240703.be.auth.web.model.interfaces.IBizCode;
 import com.kar20240703.be.auth.web.model.vo.R;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,13 +14,15 @@ import lombok.SneakyThrows;
 public class ResponseUtil {
 
     @SneakyThrows
-    public static void out(HttpServletResponse response, AuthBizCodeEnum authBizCodeEnum) {
+    public static void out(HttpServletResponse response, IBizCode iBizCode) {
 
         response.setContentType("application/json;charset=utf-8");
 
+        response.setStatus(HttpServletResponse.SC_OK);
+
         ServletOutputStream servletOutputStream = response.getOutputStream();
 
-        R<?> r = R.errorOrigin(authBizCodeEnum);
+        R<?> r = R.errorOrigin(iBizCode);
 
         servletOutputStream.write(JSONUtil.toJsonStr(r).getBytes()); // json字符串，输出给前端
         servletOutputStream.flush();

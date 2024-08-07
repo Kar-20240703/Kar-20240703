@@ -44,36 +44,19 @@ public class ExceptionAdvice {
             map.put(item.getField(), item.getDefaultMessage());
         }
 
-        try {
+        R<Map<String, String>> r = R.errorOrigin(TempBizCodeEnum.PARAMETER_CHECK_ERROR, map);
 
-            R.error(TempBizCodeEnum.PARAMETER_CHECK_ERROR, map); // 这里肯定会抛出 TempException异常
+        Method method = e.getParameter().getMethod();
 
-        } catch (TempException tempException) {
+        if (method != null) {
 
-            Method method = e.getParameter().getMethod();
-
-            if (method != null) {
-
-                // 处理：请求
-                handleRequest(httpServletRequest, method.getAnnotation(Operation.class),
-                    MyEntityUtil.getNotNullStr(tempException.getMessage()), //
-                    MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(e.getBindingResult().getTarget())));
-
-            }
-
-            return getTempExceptionApiResult(tempException);
+            // 处理：请求
+            handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), //
+                MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(e.getBindingResult().getTarget())));
 
         }
 
-        return null; // 这里不会执行，只是为了通过语法检查
-
-    }
-
-    /**
-     * 处理：请求
-     */
-    public static void handleRequest(HttpServletRequest httpServletRequest, @Nullable Operation operation,
-        String errorMsg, String requestParam) {
+        return r;
 
     }
 
@@ -85,17 +68,7 @@ public class ExceptionAdvice {
 
         MyExceptionUtil.printError(e);
 
-        try {
-
-            R.errorMsg(e.getMessage()); // 这里肯定会抛出 BaseException异常
-
-        } catch (TempException tempException) {
-
-            return getTempExceptionApiResult(tempException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
+        return R.errorMsgOrigin(e.getMessage());
 
     }
 
@@ -107,20 +80,12 @@ public class ExceptionAdvice {
 
         MyExceptionUtil.printError(e);
 
-        try {
+        R<String> r = R.errorOrigin(TempBizCodeEnum.PARAMETER_CHECK_ERROR, e.getMessage());
 
-            R.error(TempBizCodeEnum.PARAMETER_CHECK_ERROR, e.getMessage()); // 这里肯定会抛出 BaseException异常
+        // 处理：请求
+        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), "");
 
-        } catch (TempException tempException) {
-
-            // 处理：请求
-            handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(tempException.getMessage()), "");
-
-            return getTempExceptionApiResult(tempException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
+        return r;
 
     }
 
@@ -132,7 +97,7 @@ public class ExceptionAdvice {
 
         MyExceptionUtil.printError(e);
 
-        return getTempExceptionApiResult(e);
+        return e.getR();
 
     }
 
@@ -142,20 +107,12 @@ public class ExceptionAdvice {
     @ExceptionHandler(value = AccessDeniedException.class)
     public R<?> handleAccessDeniedException(AccessDeniedException e) {
 
-        try {
+        R<String> r = R.errorOrigin(TempBizCodeEnum.INSUFFICIENT_PERMISSIONS);
 
-            R.error(TempBizCodeEnum.INSUFFICIENT_PERMISSIONS); // 这里肯定会抛出 BaseException异常
+        // 处理：请求
+        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), "");
 
-        } catch (TempException tempException) {
-
-            // 处理：请求
-            handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(tempException.getMessage()), "");
-
-            return getTempExceptionApiResult(tempException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
+        return r;
 
     }
 
@@ -165,17 +122,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(value = NoLogException.class)
     public R<?> handleNoLogException(NoLogException e) {
 
-        try {
-
-            R.sysError(); // 这里肯定会抛出 BaseException异常
-
-        } catch (TempException tempException) {
-
-            return getTempExceptionApiResult(tempException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
+        return R.errorOrigin(TempBizCodeEnum.RESULT_SYS_ERROR);
 
     }
 
@@ -187,26 +134,20 @@ public class ExceptionAdvice {
 
         MyExceptionUtil.printError(e);
 
-        try {
+        R<String> r = R.errorOrigin(TempBizCodeEnum.RESULT_SYS_ERROR);
 
-            R.sysError(); // 这里肯定会抛出 BaseException异常
+        // 处理：请求
+        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(e.getMessage()), "");
 
-        } catch (TempException tempException) {
-
-            // 处理：请求
-            handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(e.getMessage()), "");
-
-            return getTempExceptionApiResult(tempException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
+        return r;
 
     }
 
-    private R<?> getTempExceptionApiResult(TempException e) {
-
-        return e.getR();
+    /**
+     * 处理：请求
+     */
+    public static void handleRequest(HttpServletRequest httpServletRequest, @Nullable Operation operation,
+        String errorMsg, String requestParam) {
 
     }
 

@@ -1,8 +1,8 @@
 package com.kar20240703.be.temp.web.util;
 
 import cn.hutool.core.io.IoUtil;
-import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
-import com.kar20240703.be.temp.web.exception.TempException;
+import cn.hutool.json.JSONUtil;
+import com.kar20240703.be.temp.web.model.interfaces.IBizCode;
 import com.kar20240703.be.temp.web.model.vo.R;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -14,23 +14,19 @@ import lombok.SneakyThrows;
 public class ResponseUtil {
 
     @SneakyThrows
-    public static void out(HttpServletResponse response, TempBizCodeEnum tempBizCodeEnum) {
+    public static void out(HttpServletResponse response, IBizCode iBizCode) {
 
         response.setContentType("application/json;charset=utf-8");
 
+        response.setStatus(HttpServletResponse.SC_OK);
+
         ServletOutputStream servletOutputStream = response.getOutputStream();
 
-        try {
+        R<?> r = R.errorOrigin(iBizCode);
 
-            R.error(tempBizCodeEnum); // 这里肯定会抛出 BaseException异常
-
-        } catch (TempException e) {
-
-            servletOutputStream.write(e.getMessage().getBytes()); // json字符串，输出给前端
-            servletOutputStream.flush();
-            servletOutputStream.close();
-
-        }
+        servletOutputStream.write(JSONUtil.toJsonStr(r).getBytes()); // json字符串，输出给前端
+        servletOutputStream.flush();
+        servletOutputStream.close();
 
     }
 
@@ -57,15 +53,9 @@ public class ResponseUtil {
 
         if (convertFlag) {
 
-            try {
+            R<?> r = R.errorMsgOrigin(msg);
 
-                R.errorMsg(msg); // 这里肯定会抛出 BaseException异常
-
-            } catch (TempException e) {
-
-                writeMsg = e.getMessage();
-
-            }
+            writeMsg = JSONUtil.toJsonStr(r);
 
         }
 

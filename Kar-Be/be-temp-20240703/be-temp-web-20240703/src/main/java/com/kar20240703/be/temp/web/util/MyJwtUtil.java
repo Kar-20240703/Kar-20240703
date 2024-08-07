@@ -4,20 +4,14 @@ import cn.hutool.core.convert.NumberWithFormat;
 import cn.hutool.core.text.StrBuilder;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
-import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.constant.SecurityConstant;
 import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.enums.TempRequestCategoryEnum;
-import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.properties.SecurityProperties;
-import java.util.List;
-import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.redisson.api.RedissonClient;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -40,12 +34,9 @@ public class MyJwtUtil {
 
     private static SecurityProperties securityProperties;
 
-    private static RedissonClient redissonClient;
-
-    public MyJwtUtil(SecurityProperties securityProperties, RedissonClient redissonClient) {
+    public MyJwtUtil(SecurityProperties securityProperties) {
 
         MyJwtUtil.securityProperties = securityProperties;
-        MyJwtUtil.redissonClient = redissonClient;
 
     }
 
@@ -175,26 +166,6 @@ public class MyJwtUtil {
     public static String getJwtStrByHeadAuthorization(String authorization) {
 
         return authorization.replace(SecurityConstant.JWT_PREFIX, "");
-
-    }
-
-    /**
-     * 通过 userId获取到权限的集合
-     */
-    @Nullable
-    public static List<SimpleGrantedAuthority> getSimpleGrantedAuthorityListByUserId(Long userId) {
-
-        if (userId == null) {
-            R.error(TempBizCodeEnum.ILLEGAL_REQUEST); // 直接抛出异常
-        }
-
-        // admin账号，自带所有权限
-        if (UserUtil.getCurrentUserAdminFlag(userId)) {
-            return null;
-        }
-
-        return redissonClient.<String>getList(TempRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId).readAll().stream()
-            .map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
     }
 
