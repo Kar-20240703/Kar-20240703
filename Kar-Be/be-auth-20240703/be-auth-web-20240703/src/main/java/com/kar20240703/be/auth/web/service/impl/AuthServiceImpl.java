@@ -10,6 +10,16 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
 
     /**
+     * 获取用户id
+     * <p>
+     * 备注：会检查 jwt的合法性，以及用户的状态
+     */
+    @Override
+    public Long getUserId() {
+        return UserUtil.getCurrentUserId();
+    }
+
+    /**
      * 获取权限集合
      * <p>
      * 备注：会检查 jwt的合法性，以及用户的状态

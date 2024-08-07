@@ -44,28 +44,20 @@ public class ExceptionAdvice {
             map.put(item.getField(), item.getDefaultMessage());
         }
 
-        try {
+        R<Map<String, String>> r = R.errorOrigin(AuthBizCodeEnum.PARAMETER_CHECK_ERROR, map);
 
-            R.error(AuthBizCodeEnum.PARAMETER_CHECK_ERROR, map); // 这里肯定会抛出 TempException异常
+        Method method = e.getParameter().getMethod();
 
-        } catch (AuthException authException) {
+        if (method != null) {
 
-            Method method = e.getParameter().getMethod();
-
-            if (method != null) {
-
-                // 处理：请求
-                handleRequest(httpServletRequest, method.getAnnotation(Operation.class),
-                    MyEntityUtil.getNotNullStr(authException.getMessage()), //
-                    MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(e.getBindingResult().getTarget())));
-
-            }
-
-            return getAuthExceptionApiResult(authException);
+            // 处理：请求
+            handleRequest(httpServletRequest, method.getAnnotation(Operation.class),
+                MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), //
+                MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(e.getBindingResult().getTarget())));
 
         }
 
-        return null; // 这里不会执行，只是为了通过语法检查
+        return r;
 
     }
 
@@ -85,17 +77,7 @@ public class ExceptionAdvice {
 
         MyExceptionUtil.printError(e);
 
-        try {
-
-            R.errorMsg(e.getMessage()); // 这里肯定会抛出 BaseException异常
-
-        } catch (AuthException authException) {
-
-            return getAuthExceptionApiResult(authException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
+        return R.errorMsgOrigin(e.getMessage());
 
     }
 
@@ -107,20 +89,12 @@ public class ExceptionAdvice {
 
         MyExceptionUtil.printError(e);
 
-        try {
+        R<String> r = R.errorOrigin(AuthBizCodeEnum.PARAMETER_CHECK_ERROR, e.getMessage());
 
-            R.error(AuthBizCodeEnum.PARAMETER_CHECK_ERROR, e.getMessage()); // 这里肯定会抛出 BaseException异常
+        // 处理：请求
+        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), "");
 
-        } catch (AuthException authException) {
-
-            // 处理：请求
-            handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(authException.getMessage()), "");
-
-            return getAuthExceptionApiResult(authException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
+        return r; // 这里不会执行，只是为了通过语法检查
 
     }
 
@@ -132,7 +106,7 @@ public class ExceptionAdvice {
 
         MyExceptionUtil.printError(e);
 
-        return getAuthExceptionApiResult(e);
+        return e.getR();
 
     }
 
@@ -142,40 +116,12 @@ public class ExceptionAdvice {
     @ExceptionHandler(value = AccessDeniedException.class)
     public R<?> handleAccessDeniedException(AccessDeniedException e) {
 
-        try {
+        R<String> r = R.errorOrigin(AuthBizCodeEnum.INSUFFICIENT_PERMISSIONS);
 
-            R.error(AuthBizCodeEnum.INSUFFICIENT_PERMISSIONS); // 这里肯定会抛出 BaseException异常
+        // 处理：请求
+        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(JSONUtil.toJsonStr(r)), "");
 
-        } catch (AuthException authException) {
-
-            // 处理：请求
-            handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(authException.getMessage()), "");
-
-            return getAuthExceptionApiResult(authException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
-
-    }
-
-    /**
-     * 不记录日志的异常
-     */
-    @ExceptionHandler(value = NoLogException.class)
-    public R<?> handleNoLogException(NoLogException e) {
-
-        try {
-
-            R.sysError(); // 这里肯定会抛出 BaseException异常
-
-        } catch (AuthException authException) {
-
-            return getAuthExceptionApiResult(authException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
+        return r; // 这里不会执行，只是为了通过语法检查
 
     }
 
@@ -187,26 +133,12 @@ public class ExceptionAdvice {
 
         MyExceptionUtil.printError(e);
 
-        try {
+        R<String> r = R.errorOrigin(AuthBizCodeEnum.RESULT_SYS_ERROR);
 
-            R.sysError(); // 这里肯定会抛出 BaseException异常
+        // 处理：请求
+        handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(e.getMessage()), "");
 
-        } catch (AuthException authException) {
-
-            // 处理：请求
-            handleRequest(httpServletRequest, null, MyEntityUtil.getNotNullStr(e.getMessage()), "");
-
-            return getAuthExceptionApiResult(authException);
-
-        }
-
-        return null; // 这里不会执行，只是为了通过语法检查
-
-    }
-
-    private R<?> getAuthExceptionApiResult(AuthException e) {
-
-        return e.getR();
+        return r; // 这里不会执行，只是为了通过语法检查
 
     }
 

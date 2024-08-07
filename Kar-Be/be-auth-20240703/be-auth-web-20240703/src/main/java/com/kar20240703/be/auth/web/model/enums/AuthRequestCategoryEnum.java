@@ -1,6 +1,5 @@
 package com.kar20240703.be.auth.web.model.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.HashMap;
@@ -44,7 +43,6 @@ public enum AuthRequestCategoryEnum {
 
     ;
 
-    @EnumValue
     @JsonValue
     private final int code;
     private final String name;

@@ -26,10 +26,6 @@ public class MyJwtUtil {
     private static final String JWT_SECRET_SYS =
         "4382dde8cb54c0c68082ada1b1d1ce048195cd309jqk0e07d2ed3e1231b462a8b75fee46467b96f33dea66a11863f1ea4867aed76243dfe7e1efb89638d3da6570d1";
 
-    // 系统里的 jwt刷新token密钥
-    private static final String JWT_REFRESH_TOKEN_SECRET_SYS =
-        "4382dde8cb54c0casd82ada1b1d1ce048195cd309jqk0e07d2ed3e1871b462a8b75ghj46467b96f33dea66a11863f1ea4867aed76243dfe7e1efb89638d3da6570d1";
-
     public static final String PAYLOAD_MAP_USER_ID_KEY = "userId";
 
     public static final String PAYLOAD_MAP_WX_APP_ID_KEY = "wxAppId";

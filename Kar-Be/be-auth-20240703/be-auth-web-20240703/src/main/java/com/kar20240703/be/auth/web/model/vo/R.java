@@ -7,6 +7,7 @@ import com.kar20240703.be.auth.web.exception.AuthException;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 @Data
 @Schema(description = "统一响应实体类")
@@ -27,7 +28,7 @@ public class R<T> {
     @Schema(description = "服务名")
     private String service = AuthConfiguration.applicationName;
 
-    private R(Integer code, String msg, T data) {
+    private R(Integer code, String msg, @Nullable T data) {
 
         this.msg = msg;
         this.code = code;
@@ -67,35 +68,47 @@ public class R<T> {
         return new R<T>(authBizCodeEnum.getCode(), authBizCodeEnum.getMsg(), null).error();
     }
 
-    @Contract("_,_ -> fail")
-    public static <T> R<T> error(AuthBizCodeEnum authBizCodeEnum, T data) {
-        return new R<>(authBizCodeEnum.getCode(), authBizCodeEnum.getMsg(), data).error();
+    public static <T> R<T> errorOrigin(AuthBizCodeEnum authBizCodeEnum) {
+        return new R<>(authBizCodeEnum.getCode(), authBizCodeEnum.getMsg(), null);
     }
 
     @Contract("_,_ -> fail")
-    public static <T> R<T> error(String msg, T data) {
+    public static <T> R<T> error(AuthBizCodeEnum authBizCodeEnum, @Nullable T data) {
+        return errorOrigin(authBizCodeEnum, data).error();
+    }
+
+    public static <T> R<T> errorOrigin(AuthBizCodeEnum authBizCodeEnum, @Nullable T data) {
+        return new R<>(authBizCodeEnum.getCode(), authBizCodeEnum.getMsg(), data);
+    }
+
+    @Contract("_,_ -> fail")
+    public static <T> R<T> error(String msg, @Nullable T data) {
         return new R<>(AuthBizCodeEnum.RESULT_SYS_ERROR.getCode(), msg, data).error();
     }
 
     @Contract("_ -> fail")
-    public static <T> R<T> errorData(T data) {
+    public static <T> R<T> errorData(@Nullable T data) {
         return new R<>(AuthBizCodeEnum.RESULT_SYS_ERROR.getCode(), AuthBizCodeEnum.RESULT_SYS_ERROR.getMsg(),
             data).error();
     }
 
     @Contract("_,_ -> fail")
     public static <T> R<T> errorMsg(String msgTemp, Object... paramArr) {
-        return new R<T>(AuthBizCodeEnum.RESULT_SYS_ERROR.getCode(), StrUtil.format(msgTemp, paramArr), null).error();
+        return (R<T>)errorMsgOrigin(msgTemp, paramArr).error();
+    }
+
+    public static <T> R<T> errorMsgOrigin(String msgTemp, Object... paramArr) {
+        return new R<>(AuthBizCodeEnum.RESULT_SYS_ERROR.getCode(), StrUtil.format(msgTemp, paramArr), null);
     }
 
     /**
      * 操作成功
      */
-    public static <T> R<T> ok(String msg, T data) {
+    public static <T> R<T> ok(String msg, @Nullable T data) {
         return new R<>(AuthBizCodeEnum.RESULT_OK.getCode(), msg, data);
     }
 
-    public static <T> R<T> okData(T data) {
+    public static <T> R<T> okData(@Nullable T data) {
         return new R<>(AuthBizCodeEnum.RESULT_OK.getCode(), AuthBizCodeEnum.RESULT_OK.getMsg(), data);
     }
 

@@ -2,7 +2,7 @@ package com.kar20240703.be.auth.web.util;
 
 import cn.hutool.json.JSONObject;
 import com.kar20240703.be.auth.web.exception.AuthBizCodeEnum;
-import com.kar20240703.be.auth.web.model.AuthConstant;
+import com.kar20240703.be.auth.web.model.constant.AuthConstant;
 import com.kar20240703.be.auth.web.model.vo.R;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

@@ -1,4 +1,4 @@
-package com.kar20240703.be.auth.web.model;
+package com.kar20240703.be.auth.web.model.constant;
 
 /**
  * 通用的常量类

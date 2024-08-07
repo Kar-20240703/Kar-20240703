@@ -18,12 +18,16 @@ public class AuthController {
     @Resource
     AuthService baseService;
 
+    @PostMapping(value = "/getUserId")
+    @Operation(summary = "获取用户id")
+    public R<Long> getUserId() {
+        return R.okData(baseService.getUserId());
+    }
+
     @PostMapping(value = "/getAuthList")
-    @Operation(summary = "获取：权限集合")
+    @Operation(summary = "获取权限集合")
     public R<List<String>> getAuthList() {
-
         return R.okData(baseService.getAuthList());
-
     }
 
 }

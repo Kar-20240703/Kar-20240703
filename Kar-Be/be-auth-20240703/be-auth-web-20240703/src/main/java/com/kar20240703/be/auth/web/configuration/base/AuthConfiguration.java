@@ -2,7 +2,6 @@ package com.kar20240703.be.auth.web.configuration.base;
 
 import cn.hutool.http.HttpGlobalConfig;
 import java.util.concurrent.ThreadPoolExecutor;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +18,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 @Configuration
 @ComponentScan(basePackages = "com.kar20240703.be")
-@MapperScan(basePackages = "com.kar20240703.be.**.mapper")
 @EnableAsync
 @EnableScheduling
 @AutoConfigureOrder(value = Integer.MIN_VALUE) // 如果配置在；spring.factories 文件里，则可以通过该注解指定加载顺序

@@ -1,12 +1,5 @@
 package com.kar20240703.be.auth.web.configuration.security;
 
-import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ArrayUtil;
-import com.kar20240703.be.auth.web.configuration.base.AuthConfiguration;
-import com.kar20240703.be.auth.web.model.configuration.ISecurityPermitConfiguration;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -19,43 +12,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @Slf4j
 public class SecurityConfiguration {
 
-    /**
-     * @param authConfiguration 不要删除，目的：让 springboot实例化该对象
-     */
     @SneakyThrows
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity, AuthConfiguration authConfiguration,
-        List<ISecurityPermitConfiguration> iSecurityPermitConfigurationList) {
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) {
 
-        boolean prodFlag = AuthConfiguration.prodFlag();
-
-        Set<String> permitAllSet = new HashSet<>();
-
-        if (CollUtil.isNotEmpty(iSecurityPermitConfigurationList)) {
-
-            for (ISecurityPermitConfiguration item : iSecurityPermitConfigurationList) {
-
-                if (prodFlag) {
-
-                    CollUtil.addAll(permitAllSet, item.prodPermitAllSet());
-
-                } else {
-
-                    CollUtil.addAll(permitAllSet, item.devPermitAllSet());
-
-                }
-
-                CollUtil.addAll(permitAllSet, item.anyPermitAllSet());
-
-            }
-
-        }
-
-        log.info("permitAllSet：{}", permitAllSet);
-
-        httpSecurity.authorizeRequests().antMatchers(ArrayUtil.toArray(permitAllSet, String.class))
-            .permitAll() // 可以匿名访问的请求
-            .anyRequest().authenticated(); // 拦截所有请求
+        httpSecurity.authorizeRequests().anyRequest().authenticated(); // 拦截所有请求
 
         httpSecurity.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); // 不需要session
 

@@ -1,8 +1,8 @@
 package com.kar20240703.be.auth.web.util;
 
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.json.JSONUtil;
 import com.kar20240703.be.auth.web.exception.AuthBizCodeEnum;
-import com.kar20240703.be.auth.web.exception.AuthException;
 import com.kar20240703.be.auth.web.model.vo.R;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -20,17 +20,11 @@ public class ResponseUtil {
 
         ServletOutputStream servletOutputStream = response.getOutputStream();
 
-        try {
+        R<?> r = R.errorOrigin(authBizCodeEnum);
 
-            R.error(authBizCodeEnum); // 这里肯定会抛出 BaseException异常
-
-        } catch (AuthException e) {
-
-            servletOutputStream.write(e.getMessage().getBytes()); // json字符串，输出给前端
-            servletOutputStream.flush();
-            servletOutputStream.close();
-
-        }
+        servletOutputStream.write(JSONUtil.toJsonStr(r).getBytes()); // json字符串，输出给前端
+        servletOutputStream.flush();
+        servletOutputStream.close();
 
     }
 
@@ -57,15 +51,9 @@ public class ResponseUtil {
 
         if (convertFlag) {
 
-            try {
+            R<?> r = R.errorMsgOrigin(msg);
 
-                R.errorMsg(msg); // 这里肯定会抛出 BaseException异常
-
-            } catch (AuthException e) {
-
-                writeMsg = e.getMessage();
-
-            }
+            writeMsg = JSONUtil.toJsonStr(r);
 
         }
 
