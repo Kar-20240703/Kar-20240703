@@ -1,5 +1,6 @@
 package com.kar20240703.be.auth.web.exception;
 
+import com.kar20240703.be.auth.web.model.interfaces.IBizCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum AuthBizCodeEnum {
+public enum AuthBizCodeEnum implements IBizCode {
 
     RESULT_OK(200, AuthBizCodeEnum.OK), //
     RESULT_SEND_OK(200, AuthBizCodeEnum.SEND_OK), //

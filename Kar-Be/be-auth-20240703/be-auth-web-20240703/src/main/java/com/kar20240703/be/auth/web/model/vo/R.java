@@ -4,6 +4,7 @@ import cn.hutool.core.util.StrUtil;
 import com.kar20240703.be.auth.web.configuration.base.AuthConfiguration;
 import com.kar20240703.be.auth.web.exception.AuthBizCodeEnum;
 import com.kar20240703.be.auth.web.exception.AuthException;
+import com.kar20240703.be.auth.web.model.interfaces.IBizCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
@@ -64,21 +65,21 @@ public class R<T> {
      * 操作失败
      */
     @Contract("_ -> fail")
-    public static <T> R<T> error(AuthBizCodeEnum authBizCodeEnum) {
-        return new R<T>(authBizCodeEnum.getCode(), authBizCodeEnum.getMsg(), null).error();
+    public static <T> R<T> error(IBizCode iBizCode) {
+        return new R<T>(iBizCode.getCode(), iBizCode.getMsg(), null).error();
     }
 
-    public static <T> R<T> errorOrigin(AuthBizCodeEnum authBizCodeEnum) {
-        return new R<>(authBizCodeEnum.getCode(), authBizCodeEnum.getMsg(), null);
+    public static <T> R<T> errorOrigin(IBizCode iBizCode) {
+        return new R<>(iBizCode.getCode(), iBizCode.getMsg(), null);
     }
 
     @Contract("_,_ -> fail")
-    public static <T> R<T> error(AuthBizCodeEnum authBizCodeEnum, @Nullable T data) {
-        return errorOrigin(authBizCodeEnum, data).error();
+    public static <T> R<T> error(IBizCode iBizCode, @Nullable T data) {
+        return errorOrigin(iBizCode, data).error();
     }
 
-    public static <T> R<T> errorOrigin(AuthBizCodeEnum authBizCodeEnum, @Nullable T data) {
-        return new R<>(authBizCodeEnum.getCode(), authBizCodeEnum.getMsg(), data);
+    public static <T> R<T> errorOrigin(IBizCode iBizCode, @Nullable T data) {
+        return new R<>(iBizCode.getCode(), iBizCode.getMsg(), data);
     }
 
     @Contract("_,_ -> fail")

@@ -1,5 +1,6 @@
 package com.kar20240703.be.temp.web.exception;
 
+import com.kar20240703.be.temp.web.model.interfaces.IBizCode;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +11,7 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 @Getter
-public enum TempBizCodeEnum {
+public enum TempBizCodeEnum implements IBizCode {
 
     RESULT_OK(200, TempBizCodeEnum.OK), //
     RESULT_SEND_OK(200, TempBizCodeEnum.SEND_OK), //

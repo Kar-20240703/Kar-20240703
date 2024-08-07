@@ -4,9 +4,11 @@ import cn.hutool.core.util.StrUtil;
 import com.kar20240703.be.temp.web.configuration.base.TempConfiguration;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.exception.TempException;
+import com.kar20240703.be.temp.web.model.interfaces.IBizCode;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.Nullable;
 
 @Data
 @Schema(description = "统一响应实体类")
@@ -63,29 +65,41 @@ public class R<T> {
      * 操作失败
      */
     @Contract("_ -> fail")
-    public static <T> R<T> error(TempBizCodeEnum tempBizCodeEnum) {
-        return new R<T>(tempBizCodeEnum.getCode(), tempBizCodeEnum.getMsg(), null).error();
+    public static <T> R<T> error(IBizCode iBizCode) {
+        return new R<T>(iBizCode.getCode(), iBizCode.getMsg(), null).error();
+    }
+
+    public static <T> R<T> errorOrigin(IBizCode iBizCode) {
+        return new R<>(iBizCode.getCode(), iBizCode.getMsg(), null);
     }
 
     @Contract("_,_ -> fail")
-    public static <T> R<T> error(TempBizCodeEnum tempBizCodeEnum, T data) {
-        return new R<>(tempBizCodeEnum.getCode(), tempBizCodeEnum.getMsg(), data).error();
+    public static <T> R<T> error(IBizCode iBizCode, @Nullable T data) {
+        return errorOrigin(iBizCode, data).error();
+    }
+
+    public static <T> R<T> errorOrigin(IBizCode iBizCode, @Nullable T data) {
+        return new R<>(iBizCode.getCode(), iBizCode.getMsg(), data);
     }
 
     @Contract("_,_ -> fail")
-    public static <T> R<T> error(String msg, T data) {
+    public static <T> R<T> error(String msg, @Nullable T data) {
         return new R<>(TempBizCodeEnum.RESULT_SYS_ERROR.getCode(), msg, data).error();
     }
 
     @Contract("_ -> fail")
-    public static <T> R<T> errorData(T data) {
+    public static <T> R<T> errorData(@Nullable T data) {
         return new R<>(TempBizCodeEnum.RESULT_SYS_ERROR.getCode(), TempBizCodeEnum.RESULT_SYS_ERROR.getMsg(),
             data).error();
     }
 
     @Contract("_,_ -> fail")
     public static <T> R<T> errorMsg(String msgTemp, Object... paramArr) {
-        return new R<T>(TempBizCodeEnum.RESULT_SYS_ERROR.getCode(), StrUtil.format(msgTemp, paramArr), null).error();
+        return (R<T>)errorMsgOrigin(msgTemp, paramArr).error();
+    }
+
+    public static <T> R<T> errorMsgOrigin(String msgTemp, Object... paramArr) {
+        return new R<>(TempBizCodeEnum.RESULT_SYS_ERROR.getCode(), StrUtil.format(msgTemp, paramArr), null);
     }
 
     /**
