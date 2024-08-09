@@ -109,7 +109,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
 
         SecurityContextHolder.getContext()
-            .setAuthentication(new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null));
+            .setAuthentication(new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null, null));
 
         filterChain.doFilter(request, response);
 
