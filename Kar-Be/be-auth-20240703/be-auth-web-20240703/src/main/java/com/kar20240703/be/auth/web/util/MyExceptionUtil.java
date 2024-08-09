@@ -10,7 +10,7 @@ public class MyExceptionUtil {
      */
     public static void printError(Throwable e) {
 
-        log.error("异常日志打印，userId：{}", -1, e);
+        log.error("异常日志打印，userId：{}", UserUtil.getCurrentUserIdDefault(), e);
 
     }
 
