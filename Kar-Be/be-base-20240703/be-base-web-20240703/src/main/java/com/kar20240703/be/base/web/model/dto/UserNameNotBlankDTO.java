@@ -8,16 +8,12 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class SignSignNameUpdateSignNameDTO {
+public class UserNameNotBlankDTO {
 
     @Size(max = 20)
     @NotBlank
-    @Pattern(regexp = TempRegexConstant.SIGN_NAME_REGEXP)
-    @Schema(description = "新登录名")
-    private String newSignInName;
-
-    @NotBlank
-    @Schema(description = "前端加密之后的密码")
-    private String currentPassword;
+    @Pattern(regexp = TempRegexConstant.USER_NAME_REGEXP)
+    @Schema(description = "用户名")
+    private String username;
 
 }

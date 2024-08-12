@@ -59,7 +59,7 @@ public interface TempConstant {
     // id 相关 ↓
 
     Long ADMIN_ID = ZERO; // 管理员 id
-    String ADMIN_ACCOUNT = "admin"; // 管理员 登录名，如果修改，请注意【登录名】注册，是否会有影响
+    String ADMIN_ACCOUNT = "admin"; // 管理员 用户名，如果修改，请注意【用户名】注册，是否会有影响
     Long SYS_ID = NEGATIVE_ONE; // 系统/缺省 id，或者表示不存在
 
     Long TOP_TENANT_ID = ZERO; // 默认租户 id

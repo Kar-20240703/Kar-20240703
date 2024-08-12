@@ -7,14 +7,10 @@ import lombok.EqualsAndHashCode;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class SignSignNameSignUpDTO extends SignNameNotBlankDTO {
+public class SignUserNameSignInPasswordDTO extends UserNameNotBlankDTO {
 
     @NotBlank
     @Schema(description = "前端加密之后的密码")
     private String password;
-
-    @NotBlank
-    @Schema(description = "前端加密之后的原始密码")
-    private String originPassword;
 
 }

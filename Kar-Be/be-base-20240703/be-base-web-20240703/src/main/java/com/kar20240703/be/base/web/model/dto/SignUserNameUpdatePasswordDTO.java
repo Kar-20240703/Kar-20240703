@@ -5,7 +5,7 @@ import javax.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class SignSignNameUpdatePasswordDTO {
+public class SignUserNameUpdatePasswordDTO {
 
     @NotBlank
     @Schema(description = "前端加密之后的旧密码")

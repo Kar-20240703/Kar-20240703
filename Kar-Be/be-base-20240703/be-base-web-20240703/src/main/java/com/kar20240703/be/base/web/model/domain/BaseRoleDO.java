@@ -18,6 +18,9 @@ public class BaseRoleDO extends TempEntity {
     @Schema(description = "角色名（不能重复）")
     private String name;
 
+    @Schema(description = "角色值（不能重复）")
+    private String value;
+
     @Schema(description = "是否是默认角色，备注：只会有一个默认角色")
     private Integer defaultFlag;
 

@@ -20,8 +20,8 @@ public class TempUserDO extends TempEntity {
     @Schema(description = "邮箱，可以为空")
     private String email;
 
-    @Schema(description = "登录名，可以为空")
-    private String signInName;
+    @Schema(description = "用户名，可以为空")
+    private String username;
 
     @Schema(description = "手机号，可以为空")
     private String phone;
