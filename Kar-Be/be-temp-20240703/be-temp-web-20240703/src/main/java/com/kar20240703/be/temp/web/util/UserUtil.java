@@ -246,7 +246,6 @@ public class UserUtil {
      * 给 security设置用户信息，并执行方法
      *
      * @param setAuthoritySetFlag 是否设置：权限
-     * @param jwt
      */
     public static void securityContextHolderSetAuthenticationAndExecFun(VoidFunc0 voidFunc0, @Nullable Long userId,
         @Nullable String wxAppId, @Nullable String wxOpenId, boolean setAuthoritySetFlag, String jwt) {

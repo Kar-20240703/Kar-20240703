@@ -16,7 +16,7 @@ public class BaseUserConfigurationDO {
     private Long id;
 
     @Schema(description = "是否启用：用户名注册功能，默认启用")
-    private Boolean usernameSignUpEnable;
+    private Boolean userNameSignUpEnable;
 
     @Schema(description = "是否启用：邮箱注册功能，默认启用")
     private Boolean emailSignUpEnable;
