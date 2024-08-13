@@ -53,6 +53,7 @@ public class BaseJwtUtil {
     private static SignInVO sign(Long userId, @Nullable Consumer<JSONObject> consumer, boolean generateRefreshTokenFlag,
         TempRequestCategoryEnum tempRequestCategoryEnum) {
 
+        // 备注：jwtRefreshToken请求，需要同步进行修改
         JSONObject payloadMap = JSONUtil.createObj();
 
         payloadMap.set(MyJwtUtil.PAYLOAD_MAP_USER_ID_KEY, userId);
@@ -83,7 +84,7 @@ public class BaseJwtUtil {
 
         } else {
 
-            jwtRefreshToken = "";
+            jwtRefreshToken = null;
 
         }
 

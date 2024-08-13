@@ -1,5 +1,6 @@
 package com.kar20240703.be.base.web.service;
 
+import com.kar20240703.be.base.web.model.dto.SignUserNameJwtRefreshTokenDTO;
 import com.kar20240703.be.base.web.model.dto.SignUserNameSignDeleteDTO;
 import com.kar20240703.be.base.web.model.dto.SignUserNameSignInPasswordDTO;
 import com.kar20240703.be.base.web.model.dto.SignUserNameSignUpDTO;
@@ -18,5 +19,7 @@ public interface SignUserNameService {
     String updateUserName(SignUserNameUpdateUserNameDTO dto);
 
     String signDelete(SignUserNameSignDeleteDTO dto);
+
+    SignInVO jwtRefreshToken(SignUserNameJwtRefreshTokenDTO dto);
 
 }

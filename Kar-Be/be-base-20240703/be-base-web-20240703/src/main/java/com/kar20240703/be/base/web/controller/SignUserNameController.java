@@ -1,5 +1,6 @@
 package com.kar20240703.be.base.web.controller;
 
+import com.kar20240703.be.base.web.model.dto.SignUserNameJwtRefreshTokenDTO;
 import com.kar20240703.be.base.web.model.dto.SignUserNameSignDeleteDTO;
 import com.kar20240703.be.base.web.model.dto.SignUserNameSignInPasswordDTO;
 import com.kar20240703.be.base.web.model.dto.SignUserNameSignUpDTO;
@@ -54,6 +55,12 @@ public class SignUserNameController {
     @Operation(summary = "账号注销")
     public R<String> signDelete(@RequestBody @Valid SignUserNameSignDeleteDTO dto) {
         return R.okMsg(baseService.signDelete(dto));
+    }
+
+    @PostMapping(value = "/jwtRefreshToken")
+    @Operation(summary = "刷新token")
+    public R<SignInVO> jwtRefreshToken(@RequestBody @Valid SignUserNameJwtRefreshTokenDTO dto) {
+        return R.okData(baseService.jwtRefreshToken(dto));
     }
 
 }
