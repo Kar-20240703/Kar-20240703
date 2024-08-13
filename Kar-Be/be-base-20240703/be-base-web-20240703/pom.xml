@@ -29,6 +29,13 @@
       <version>${kar.version}</version>
     </dependency>
 
+    <!-- 离线IP地址定位库 -->
+    <dependency>
+      <groupId>org.lionsoul</groupId>
+      <artifactId>ip2region</artifactId>
+      <version>2.7.0</version>
+    </dependency>
+
     <!-- 二维码工具类 -->
     <dependency>
       <groupId>com.google.zxing</groupId>

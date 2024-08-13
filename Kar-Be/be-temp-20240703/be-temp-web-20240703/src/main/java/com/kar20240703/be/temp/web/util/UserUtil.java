@@ -13,7 +13,7 @@ import com.kar20240703.be.temp.web.model.constant.TempConstant;
 import com.kar20240703.be.temp.web.model.domain.TempUserDO;
 import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.vo.R;
-import com.kar20240703.be.temp.web.properties.SecurityProperties;
+import com.kar20240703.be.temp.web.properties.MySecurityProperties;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -36,11 +36,11 @@ public class UserUtil {
         UserUtil.redissonClient = redissonClient;
     }
 
-    private static SecurityProperties securityProperties;
+    private static MySecurityProperties mySecurityProperties;
 
     @Resource
-    public void setSecurityProperties(SecurityProperties securityProperties) {
-        UserUtil.securityProperties = securityProperties;
+    public void setSecurityProperties(MySecurityProperties mySecurityProperties) {
+        UserUtil.mySecurityProperties = mySecurityProperties;
     }
 
     /**
@@ -206,7 +206,7 @@ public class UserUtil {
     /**
      * 统一的：设置：用户冻结
      */
-    public static void setDisable(long userId) {
+    public static void setDisable(Long userId) {
 
         redissonClient.getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + userId).set(DateUtil.now());
 
@@ -215,7 +215,7 @@ public class UserUtil {
     /**
      * 统一的：获取：用户冻结
      */
-    public static boolean getDisable(long userId) {
+    public static boolean getDisable(Long userId) {
 
         return redissonClient.getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + userId).isExists();
 
@@ -224,7 +224,7 @@ public class UserUtil {
     /**
      * 统一的：删除：用户冻结
      */
-    public static void removeDisable(long userId) {
+    public static void removeDisable(Long userId) {
 
         redissonClient.getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + userId).delete();
 
@@ -274,7 +274,7 @@ public class UserUtil {
 
         if (setAuthoritySetFlag) {
 
-            String jwtGetAuthListUrl = securityProperties.getJwtGetAuthListUrl();
+            String jwtGetAuthListUrl = mySecurityProperties.getJwtGetAuthListUrl();
 
             if (StrUtil.isNotBlank(jwtGetAuthListUrl)) {
 
