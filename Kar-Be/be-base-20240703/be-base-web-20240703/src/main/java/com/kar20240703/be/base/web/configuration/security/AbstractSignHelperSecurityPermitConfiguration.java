@@ -11,7 +11,7 @@ public abstract class AbstractSignHelperSecurityPermitConfiguration implements I
     private static final String BASE_PRE_URI = "/sign/";
 
     private static final Set<String> URI_TEMP_SET =
-        CollUtil.newHashSet("/signUp/**", "/signIn/**", "/forgetPassword/**");
+        CollUtil.newHashSet("/signUp/**", "/signIn/**", "/forgetPassword/**", "/jwtRefreshToken/**");
 
     protected abstract String getSignPreUri();
 
