@@ -1,6 +1,5 @@
 package com.kar20240703.be.base.web.util;
 
-import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.CryptoException;
 import cn.hutool.crypto.asymmetric.KeyType;
@@ -68,28 +67,7 @@ public class MyRsaUtil {
             R.error(TempBizCodeEnum.ILLEGAL_REQUEST);
         }
 
-        String[] split = decryptStr.split(SEPARATOR);
-        if (split.length != 2) {
-            R.error(TempBizCodeEnum.ILLEGAL_REQUEST);
-        }
-
-        // 获取：客户端传过来的时间戳
-        Long userTs = Convert.toLong(split[1]);
-
-        if (userTs == null) {
-            R.error(TempBizCodeEnum.ILLEGAL_REQUEST);
-        }
-
-        long currentTimeMillis = System.currentTimeMillis();
-
-        long checkTs = Math.abs(userTs - currentTimeMillis);
-
-        // 不能和服务器时间相差过大
-        if (checkTs > EXPIRE_TIME) {
-            R.errorMsg("操作失败：您的时间：{}，与当前时间：{}，相差过大，请调整时间后再试", userTs, currentTimeMillis);
-        }
-
-        return split[0]; // 返回解密之后的 字符串
+        return decryptStr; // 返回解密之后的 字符串
 
     }
 
