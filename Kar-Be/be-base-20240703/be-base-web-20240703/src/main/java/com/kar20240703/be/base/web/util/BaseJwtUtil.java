@@ -27,7 +27,8 @@ public class BaseJwtUtil {
      */
     @Nullable
     public static SignInVO generateJwt(Long userId, @Nullable Consumer<JSONObject> consumer,
-        boolean generateRefreshTokenFlag, TempRequestCategoryEnum tempRequestCategoryEnum) {
+        boolean generateRefreshTokenFlag, TempRequestCategoryEnum tempRequestCategoryEnum,
+        @Nullable String jwtRefreshToken) {
 
         if (userId == null) {
             return null;
@@ -42,7 +43,7 @@ public class BaseJwtUtil {
         });
 
         // 生成 jwt
-        return sign(userId, consumer, generateRefreshTokenFlag, tempRequestCategoryEnum);
+        return sign(userId, consumer, generateRefreshTokenFlag, tempRequestCategoryEnum, jwtRefreshToken);
 
     }
 
@@ -51,7 +52,7 @@ public class BaseJwtUtil {
      */
     @NotNull
     private static SignInVO sign(Long userId, @Nullable Consumer<JSONObject> consumer, boolean generateRefreshTokenFlag,
-        TempRequestCategoryEnum tempRequestCategoryEnum) {
+        TempRequestCategoryEnum tempRequestCategoryEnum, @Nullable String jwtRefreshTokenTemp) {
 
         // 备注：jwtRefreshToken请求，需要同步进行修改
         JSONObject payloadMap = JSONUtil.createObj();
@@ -84,7 +85,7 @@ public class BaseJwtUtil {
 
         } else {
 
-            jwtRefreshToken = null;
+            jwtRefreshToken = jwtRefreshTokenTemp;
 
         }
 

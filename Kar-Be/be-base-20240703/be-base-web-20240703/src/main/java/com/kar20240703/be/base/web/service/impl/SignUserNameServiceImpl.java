@@ -115,7 +115,8 @@ public class SignUserNameServiceImpl implements SignUserNameService {
             R.error(TempBizCodeEnum.LOGIN_EXPIRED);
         }
 
-        return BaseJwtUtil.generateJwt(userId, null, false, RequestUtil.getRequestCategoryEnum());
+        return BaseJwtUtil.generateJwt(userId, null, false, RequestUtil.getRequestCategoryEnum(),
+            dto.getJwtRefreshToken());
 
     }
 

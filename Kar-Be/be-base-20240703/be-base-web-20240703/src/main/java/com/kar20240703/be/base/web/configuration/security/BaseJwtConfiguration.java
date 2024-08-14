@@ -16,7 +16,7 @@ public class BaseJwtConfiguration implements IJwtGenerateConfiguration {
     public SignInVO generateJwt(Long userId, @Nullable Consumer<JSONObject> consumer, boolean generateRefreshTokenFlag,
         TempRequestCategoryEnum tempRequestCategoryEnum) {
 
-        return BaseJwtUtil.generateJwt(userId, consumer, generateRefreshTokenFlag, tempRequestCategoryEnum);
+        return BaseJwtUtil.generateJwt(userId, consumer, generateRefreshTokenFlag, tempRequestCategoryEnum, null);
 
     }
 
