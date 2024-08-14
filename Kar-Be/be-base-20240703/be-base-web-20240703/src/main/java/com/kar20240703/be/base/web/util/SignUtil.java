@@ -304,7 +304,7 @@ public class SignUtil {
         if (TempConstant.ADMIN_ACCOUNT.equals(account)) {
 
             if (signInPasswordForAdmin(password)) {
-                return BaseJwtUtil.generateJwt(TempConstant.ADMIN_ID, null, true, null);
+                return BaseJwtUtil.generateJwt(TempConstant.ADMIN_ID, null, true, tempRequestCategoryEnum);
             }
 
         }
