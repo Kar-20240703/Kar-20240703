@@ -58,7 +58,7 @@ public class GenerateApiUtil {
 
     private String apiImportBaseConfig = "import type { PureHttpRequestConfig } from \"@/utils/http/types\";\n";
 
-    private String apiImportBaseMyOrderDTO = "import MyOrderDTO from \"@/model/dto/MyOrderDTO\";\n";
+    private String apiImportBaseMyOrderDTO = "import type MyOrderDTO from \"@/model/dto/MyOrderDTO\";\n";
 
     private String undefined = "undefined";
 
