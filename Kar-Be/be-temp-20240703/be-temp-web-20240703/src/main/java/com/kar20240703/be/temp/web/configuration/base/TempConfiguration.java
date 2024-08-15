@@ -2,6 +2,7 @@ package com.kar20240703.be.temp.web.configuration.base;
 
 import cn.hutool.http.HttpGlobalConfig;
 import java.util.concurrent.ThreadPoolExecutor;
+import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.AutoConfigureOrder;
@@ -23,6 +24,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @EnableAsync
 @EnableScheduling
 @AutoConfigureOrder(value = Integer.MIN_VALUE) // 如果配置在；spring.factories 文件里，则可以通过该注解指定加载顺序
+@Slf4j
 public class TempConfiguration {
 
     public static String applicationName; // 服务名
@@ -38,6 +40,8 @@ public class TempConfiguration {
 
         // 设置：http超时时间，默认：30分钟
         HttpGlobalConfig.setTimeout(30 * 60 * 1000);
+
+        log.info("Starting：{}", this.getClass().getSimpleName());
 
     }
 
