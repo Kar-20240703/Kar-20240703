@@ -1,13 +1,11 @@
 package com.kar20240703.be.temp.web.filter;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.core.exceptions.ValidateException;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONUtil;
 import cn.hutool.jwt.JWT;
-import cn.hutool.jwt.JWTValidator;
 import com.kar20240703.be.temp.web.configuration.base.TempConfiguration;
 import com.kar20240703.be.temp.web.configuration.security.SecurityConfiguration;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
@@ -20,7 +18,6 @@ import com.kar20240703.be.temp.web.util.MyExceptionUtil;
 import com.kar20240703.be.temp.web.util.MyJwtUtil;
 import com.kar20240703.be.temp.web.util.RequestUtil;
 import com.kar20240703.be.temp.web.util.ResponseUtil;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.FilterChain;
@@ -92,28 +89,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         } catch (Exception e) {
 
             MyExceptionUtil.printError(e);
-            ResponseUtil.out(response, TempBizCodeEnum.LOGIN_EXPIRED);
-            return;
-
-        }
-
-        jwt.setKey(MyJwtUtil.getJwtSecret().getBytes());
-
-        // 验证算法
-        if (jwt.verify() == false) {
-
-            ResponseUtil.out(response, TempBizCodeEnum.LOGIN_EXPIRED);
-            return;
-
-        }
-
-        try {
-
-            // 校验时间字段：如果过期了，这里会抛出 ValidateException异常
-            JWTValidator.of(jwt).validateDate(new Date());
-
-        } catch (ValidateException e) {
-
             ResponseUtil.out(response, TempBizCodeEnum.LOGIN_EXPIRED);
             return;
 
