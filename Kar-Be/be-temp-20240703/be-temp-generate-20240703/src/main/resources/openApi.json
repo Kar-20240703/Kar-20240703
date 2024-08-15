@@ -1,0 +1,1047 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8002",
+      "description": "Generated server url"
+    }
+  ],
+  "paths": {
+    "/sign/userName/updateUserName": {
+      "post": {
+        "tags": [
+          "基础-登录注册-用户名"
+        ],
+        "summary": "修改用户名",
+        "operationId": "updateUserName",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUserNameUpdateUserNameDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sign/userName/updatePassword": {
+      "post": {
+        "tags": [
+          "基础-登录注册-用户名"
+        ],
+        "summary": "修改密码",
+        "operationId": "updatePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUserNameUpdatePasswordDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sign/userName/signUp": {
+      "post": {
+        "tags": [
+          "基础-登录注册-用户名"
+        ],
+        "summary": "注册",
+        "operationId": "signUp",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUserNameSignUpDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sign/userName/signIn/password": {
+      "post": {
+        "tags": [
+          "基础-登录注册-用户名"
+        ],
+        "summary": "账号密码登录",
+        "description": "SIGN_IN",
+        "operationId": "signInPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUserNameSignInPasswordDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RSignInVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sign/userName/signDelete": {
+      "post": {
+        "tags": [
+          "基础-登录注册-用户名"
+        ],
+        "summary": "账号注销",
+        "operationId": "signDelete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUserNameSignDeleteDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/sign/userName/jwtRefreshToken": {
+      "post": {
+        "tags": [
+          "基础-登录注册-用户名"
+        ],
+        "summary": "刷新token",
+        "operationId": "jwtRefreshToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUserNameJwtRefreshTokenDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RSignInVO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base/menu/userSelfMenuList": {
+      "post": {
+        "tags": [
+          "基础-菜单-管理"
+        ],
+        "summary": "获取：当前用户绑定的菜单",
+        "operationId": "userSelfMenuList",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RListBaseMenuDO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base/menu/tree": {
+      "post": {
+        "tags": [
+          "基础-菜单-管理"
+        ],
+        "summary": "查询：树结构",
+        "operationId": "tree",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BaseMenuPageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RListBaseMenuDO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base/menu/page": {
+      "post": {
+        "tags": [
+          "基础-菜单-管理"
+        ],
+        "summary": "分页排序查询",
+        "operationId": "myPage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BaseMenuPageDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RPageBaseMenuDO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base/menu/insertOrUpdate": {
+      "post": {
+        "tags": [
+          "基础-菜单-管理"
+        ],
+        "summary": "新增/修改",
+        "operationId": "insertOrUpdate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BaseMenuInsertOrUpdateDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base/menu/infoById": {
+      "post": {
+        "tags": [
+          "基础-菜单-管理"
+        ],
+        "summary": "通过主键id，查看详情",
+        "operationId": "infoById",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotNullId"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RBaseMenuDO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base/menu/deleteByIdSet": {
+      "post": {
+        "tags": [
+          "基础-菜单-管理"
+        ],
+        "summary": "批量删除",
+        "operationId": "deleteByIdSet",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NotEmptyIdSet"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RString"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/base/menu/addOrderNo": {
+      "post": {
+        "tags": [
+          "基础-菜单-管理"
+        ],
+        "summary": "通过主键 idSet，加减排序号",
+        "operationId": "addOrderNo",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeNumberDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RString"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SignUserNameUpdateUserNameDTO": {
+        "required": [
+          "currentPassword",
+          "newUserName"
+        ],
+        "type": "object",
+        "properties": {
+          "newUserName": {
+            "maxLength": 20,
+            "minLength": 0,
+            "pattern": "^[\\u4E00-\\u9FA5A-Za-z0-9_-]{2,20}$",
+            "type": "string",
+            "description": "新用户名"
+          },
+          "currentPassword": {
+            "type": "string",
+            "description": "前端加密之后的密码"
+          }
+        }
+      },
+      "RString": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应代码，成功返回：200",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应描述"
+          },
+          "receive": {
+            "type": "boolean",
+            "description": "服务器是否收到请求，只会返回 true"
+          },
+          "data": {
+            "type": "string",
+            "description": "数据"
+          },
+          "service": {
+            "type": "string",
+            "description": "服务名"
+          }
+        },
+        "description": "统一响应实体类"
+      },
+      "SignUserNameUpdatePasswordDTO": {
+        "required": [
+          "newPassword",
+          "oldPassword",
+          "originNewPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "oldPassword": {
+            "type": "string",
+            "description": "前端加密之后的旧密码"
+          },
+          "newPassword": {
+            "type": "string",
+            "description": "前端加密之后的新密码"
+          },
+          "originNewPassword": {
+            "type": "string",
+            "description": "前端加密之后的原始新密码"
+          }
+        }
+      },
+      "SignUserNameSignUpDTO": {
+        "required": [
+          "originPassword",
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "maxLength": 20,
+            "minLength": 0,
+            "pattern": "^[\\u4E00-\\u9FA5A-Za-z0-9_-]{2,20}$",
+            "type": "string",
+            "description": "用户名"
+          },
+          "password": {
+            "type": "string",
+            "description": "前端加密之后的密码"
+          },
+          "originPassword": {
+            "type": "string",
+            "description": "前端加密之后的原始密码"
+          }
+        }
+      },
+      "SignUserNameSignInPasswordDTO": {
+        "required": [
+          "password",
+          "username"
+        ],
+        "type": "object",
+        "properties": {
+          "username": {
+            "maxLength": 20,
+            "minLength": 0,
+            "pattern": "^[\\u4E00-\\u9FA5A-Za-z0-9_-]{2,20}$",
+            "type": "string",
+            "description": "用户名"
+          },
+          "password": {
+            "type": "string",
+            "description": "前端加密之后的密码"
+          }
+        }
+      },
+      "RSignInVO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应代码，成功返回：200",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应描述"
+          },
+          "receive": {
+            "type": "boolean",
+            "description": "服务器是否收到请求，只会返回 true"
+          },
+          "data": {
+            "$ref": "#/components/schemas/SignInVO"
+          },
+          "service": {
+            "type": "string",
+            "description": "服务名"
+          }
+        },
+        "description": "统一响应实体类"
+      },
+      "SignInVO": {
+        "type": "object",
+        "properties": {
+          "jwt": {
+            "type": "string",
+            "description": "jwt"
+          },
+          "jwtExpireTs": {
+            "type": "integer",
+            "description": "jwt过期时间戳",
+            "format": "int64"
+          },
+          "jwtRefreshToken": {
+            "type": "string",
+            "description": "jwtRefreshToken"
+          }
+        },
+        "description": "数据"
+      },
+      "SignUserNameSignDeleteDTO": {
+        "required": [
+          "currentPassword"
+        ],
+        "type": "object",
+        "properties": {
+          "currentPassword": {
+            "type": "string",
+            "description": "前端加密之后的密码"
+          }
+        }
+      },
+      "SignUserNameJwtRefreshTokenDTO": {
+        "required": [
+          "jwtRefreshToken"
+        ],
+        "type": "object",
+        "properties": {
+          "jwtRefreshToken": {
+            "type": "string",
+            "description": "jwtRefreshToken"
+          }
+        }
+      },
+      "BaseMenuDO": {
+        "type": "object",
+        "properties": {
+          "createId": {
+            "type": "integer",
+            "description": "创建人id",
+            "format": "int64"
+          },
+          "createTime": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time"
+          },
+          "updateId": {
+            "type": "integer",
+            "description": "修改人id",
+            "format": "int64"
+          },
+          "updateTime": {
+            "type": "string",
+            "description": "修改时间",
+            "format": "date-time"
+          },
+          "enableFlag": {
+            "type": "boolean",
+            "description": "是否启用"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注"
+          },
+          "id": {
+            "type": "integer",
+            "description": "主键 id",
+            "format": "int64"
+          },
+          "orderNo": {
+            "type": "integer",
+            "description": "排序号（值越大越前面，默认为 0）",
+            "format": "int32"
+          },
+          "pid": {
+            "type": "integer",
+            "description": "父节点id（顶级则为0）",
+            "format": "int64"
+          },
+          "children": {
+            "type": "array",
+            "description": "子节点",
+            "items": {
+              "$ref": "#/components/schemas/BaseMenuDO"
+            }
+          },
+          "name": {
+            "type": "string",
+            "description": "菜单名"
+          },
+          "path": {
+            "type": "string",
+            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+          },
+          "icon": {
+            "type": "string",
+            "description": "图标"
+          },
+          "showFlag": {
+            "type": "integer",
+            "description": "是否显示在 左侧的菜单栏里面，如果为 false，也可以通过 $router.push()访问到",
+            "format": "int32"
+          },
+          "linkFlag": {
+            "type": "integer",
+            "description": "是否外链，即，打开页面会在一个新的窗口打开，可以配合 router",
+            "format": "int32"
+          },
+          "router": {
+            "type": "string",
+            "description": "路由"
+          },
+          "redirect": {
+            "type": "string",
+            "description": "重定向，优先级最高"
+          },
+          "firstFlag": {
+            "type": "integer",
+            "description": "是否是起始页面，备注：只能存在一个 firstFlag === true 的菜单",
+            "format": "int32"
+          },
+          "uuid": {
+            "type": "string",
+            "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不允许修改"
+          },
+          "hiddenPageContainerFlag": {
+            "type": "boolean",
+            "description": "是否隐藏：PageContainer"
+          }
+        },
+        "description": "主表：菜单表"
+      },
+      "RListBaseMenuDO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应代码，成功返回：200",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应描述"
+          },
+          "receive": {
+            "type": "boolean",
+            "description": "服务器是否收到请求，只会返回 true"
+          },
+          "data": {
+            "type": "array",
+            "description": "数据",
+            "items": {
+              "$ref": "#/components/schemas/BaseMenuDO"
+            }
+          },
+          "service": {
+            "type": "string",
+            "description": "服务名"
+          }
+        },
+        "description": "统一响应实体类"
+      },
+      "BaseMenuPageDTO": {
+        "type": "object",
+        "properties": {
+          "current": {
+            "type": "integer",
+            "description": "第几页",
+            "format": "int64"
+          },
+          "pageSize": {
+            "type": "integer",
+            "description": "每页显示条数",
+            "format": "int64"
+          },
+          "order": {
+            "$ref": "#/components/schemas/MyOrderDTO"
+          },
+          "name": {
+            "type": "string",
+            "description": "菜单名"
+          },
+          "path": {
+            "type": "string",
+            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+          },
+          "parentId": {
+            "type": "integer",
+            "description": "父节点id（顶级则为0）",
+            "format": "int64"
+          },
+          "auths": {
+            "type": "string",
+            "description": "权限，多个可用逗号拼接，例如：menu:insertOrUpdate,menu:page,menu:deleteByIdSet,menu:infoById"
+          },
+          "showFlag": {
+            "type": "boolean",
+            "description": "是否显示在 左侧的菜单栏里面，如果为 false，也可以通过 $router.push()访问到"
+          },
+          "enableFlag": {
+            "type": "boolean",
+            "description": "是否启用"
+          },
+          "linkFlag": {
+            "type": "boolean",
+            "description": "是否外链，即，打开页面会在一个新的窗口打开"
+          },
+          "router": {
+            "type": "string",
+            "description": "路由"
+          },
+          "redirect": {
+            "type": "string",
+            "description": "重定向，优先级最高"
+          },
+          "firstFlag": {
+            "type": "boolean",
+            "description": "是否是起始页面，备注：只能存在一个 firstFlag === true 的菜单"
+          },
+          "authFlag": {
+            "type": "boolean",
+            "description": "是否是权限菜单，权限菜单：不显示，只代表菜单权限"
+          }
+        }
+      },
+      "MyOrderDTO": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "排序的字段名"
+          },
+          "value": {
+            "type": "string",
+            "description": "ascend（升序，默认） descend（降序）"
+          }
+        },
+        "description": "排序字段"
+      },
+      "OrderItem": {
+        "type": "object",
+        "properties": {
+          "column": {
+            "type": "string"
+          },
+          "asc": {
+            "type": "boolean"
+          }
+        }
+      },
+      "PageBaseMenuDO": {
+        "type": "object",
+        "properties": {
+          "records": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BaseMenuDO"
+            }
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "orders": {
+            "type": "array",
+            "writeOnly": true,
+            "items": {
+              "$ref": "#/components/schemas/OrderItem"
+            }
+          },
+          "optimizeCountSql": {
+            "$ref": "#/components/schemas/PageBaseMenuDO"
+          },
+          "searchCount": {
+            "$ref": "#/components/schemas/PageBaseMenuDO"
+          },
+          "optimizeJoinOfCountSql": {
+            "type": "boolean",
+            "writeOnly": true
+          },
+          "maxLimit": {
+            "type": "integer",
+            "format": "int64",
+            "writeOnly": true
+          },
+          "countId": {
+            "type": "string",
+            "writeOnly": true
+          },
+          "pages": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "description": "数据"
+      },
+      "RPageBaseMenuDO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应代码，成功返回：200",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应描述"
+          },
+          "receive": {
+            "type": "boolean",
+            "description": "服务器是否收到请求，只会返回 true"
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageBaseMenuDO"
+          },
+          "service": {
+            "type": "string",
+            "description": "服务名"
+          }
+        },
+        "description": "统一响应实体类"
+      },
+      "BaseMenuInsertOrUpdateDTO": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "主键 id",
+            "format": "int64"
+          },
+          "pid": {
+            "type": "integer",
+            "description": "父节点id（顶级则为0）",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string",
+            "description": "菜单名"
+          },
+          "path": {
+            "type": "string",
+            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+          },
+          "router": {
+            "type": "string",
+            "description": "路由"
+          },
+          "icon": {
+            "type": "string",
+            "description": "图标"
+          },
+          "auths": {
+            "type": "string",
+            "description": "权限，多个可用逗号拼接，例如：menu:insertOrUpdate,menu:page,menu:deleteByIdSet,menu:infoById"
+          },
+          "enableFlag": {
+            "type": "boolean",
+            "description": "是否启用"
+          },
+          "firstFlag": {
+            "type": "boolean",
+            "description": "是否是起始页面，备注：只能存在一个 firstFlag === true 的菜单"
+          },
+          "orderNo": {
+            "type": "integer",
+            "description": "排序号（值越大越前面，默认为 0）",
+            "format": "int32"
+          },
+          "showFlag": {
+            "type": "boolean",
+            "description": "是否显示在 左侧的菜单栏里面，如果为 false，也可以通过 $router.push()访问到"
+          },
+          "linkFlag": {
+            "type": "boolean",
+            "description": "是否外链，即，打开页面会在一个新的窗口打开"
+          },
+          "redirect": {
+            "type": "string",
+            "description": "重定向，优先级最高"
+          },
+          "remark": {
+            "type": "string",
+            "description": "备注"
+          },
+          "hiddenPageContainerFlag": {
+            "type": "boolean",
+            "description": "是否隐藏：PageContainer"
+          }
+        }
+      },
+      "NotNullId": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "minimum": 1,
+            "type": "integer",
+            "description": "主键 id",
+            "format": "int64"
+          }
+        }
+      },
+      "RBaseMenuDO": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "integer",
+            "description": "响应代码，成功返回：200",
+            "format": "int32"
+          },
+          "msg": {
+            "type": "string",
+            "description": "响应描述"
+          },
+          "receive": {
+            "type": "boolean",
+            "description": "服务器是否收到请求，只会返回 true"
+          },
+          "data": {
+            "$ref": "#/components/schemas/BaseMenuDO"
+          },
+          "service": {
+            "type": "string",
+            "description": "服务名"
+          }
+        },
+        "description": "统一响应实体类"
+      },
+      "NotEmptyIdSet": {
+        "required": [
+          "idSet"
+        ],
+        "type": "object",
+        "properties": {
+          "idSet": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "主键 idSet",
+            "items": {
+              "type": "integer",
+              "description": "主键 idSet",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "ChangeNumberDTO": {
+        "required": [
+          "idSet",
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "idSet": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "主键 idSet",
+            "items": {
+              "type": "integer",
+              "description": "主键 idSet",
+              "format": "int64"
+            }
+          },
+          "number": {
+            "type": "integer",
+            "description": "需要改变的数值",
+            "format": "int64"
+          }
+        }
+      }
+    }
+  }
+}

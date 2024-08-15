@@ -26,6 +26,7 @@
   </properties>
 
   <modules>
+    <module>be-temp-generate-20240703</module>
     <module>be-temp-api-20240703</module>
     <module>be-temp-model-20240703</module>
     <module>be-temp-web-20240703</module>

@@ -21,9 +21,6 @@ public class BaseMenuDO extends TempEntityTree<BaseMenuDO> {
     @Schema(description = "图标")
     private String icon;
 
-    @Schema(description = "父节点id（顶级则为0）")
-    private Long pid;
-
     @Schema(description = "是否显示在 左侧的菜单栏里面，如果为 false，也可以通过 $router.push()访问到")
     private Integer showFlag;
 
@@ -36,13 +33,13 @@ public class BaseMenuDO extends TempEntityTree<BaseMenuDO> {
     @Schema(description = "重定向，优先级最高")
     private String redirect;
 
-    @Schema(description = "排序号（值越大越前面，默认为 0）")
-    private Integer orderNo;
-
     @Schema(description = "是否是起始页面，备注：只能存在一个 firstFlag === true 的菜单")
     private Integer firstFlag;
 
     @Schema(description = "该菜单的 uuid，用于：同步租户菜单等操作，备注：不允许修改")
     private String uuid;
+
+    @Schema(description = "是否隐藏：PageContainer")
+    private Boolean hiddenPageContainerFlag;
 
 }

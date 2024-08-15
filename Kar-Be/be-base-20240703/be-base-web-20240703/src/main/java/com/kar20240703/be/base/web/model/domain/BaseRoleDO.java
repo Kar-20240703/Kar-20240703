@@ -12,9 +12,6 @@ import lombok.EqualsAndHashCode;
 @Schema(description = "主表：角色表")
 public class BaseRoleDO extends TempEntity {
 
-    @Schema(description = "备注")
-    private String remark;
-
     @Schema(description = "角色名（不能重复）")
     private String name;
 

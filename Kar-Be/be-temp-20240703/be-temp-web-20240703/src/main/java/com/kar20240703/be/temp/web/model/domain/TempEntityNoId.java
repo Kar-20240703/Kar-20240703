@@ -12,4 +12,7 @@ public class TempEntityNoId extends TempEntityNoIdSuper {
     @Schema(description = "是否启用")
     private Boolean enableFlag;
 
+    @Schema(description = "备注")
+    private String remark;
+
 }

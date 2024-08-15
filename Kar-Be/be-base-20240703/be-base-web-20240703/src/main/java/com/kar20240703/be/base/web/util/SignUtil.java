@@ -241,6 +241,7 @@ public class SignUtil {
         tempUserDO.setWxOpenId("");
         tempUserDO.setWxAppId("");
         tempUserDO.setWxUnionId("");
+        tempUserDO.setRemark("");
 
         for (Map.Entry<Enum<? extends IRedisKey>, String> item : accountMap.entrySet()) {
 
