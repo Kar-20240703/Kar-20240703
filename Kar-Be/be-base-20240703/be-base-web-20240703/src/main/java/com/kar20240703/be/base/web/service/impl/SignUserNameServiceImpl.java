@@ -31,6 +31,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SignUserNameServiceImpl implements SignUserNameService {
 
+    private static final BaseRedisKeyEnum PRE_REDIS_KEY_ENUM = BaseRedisKeyEnum.PRE_USER_NAME;
+
     @Resource
     BaseUserConfigurationService baseUserConfigurationService;
 
@@ -53,8 +55,7 @@ public class SignUserNameServiceImpl implements SignUserNameService {
             R.errorMsg("操作失败：不允许用户名注册，请联系管理员");
         }
 
-        return SignUtil.signUp(dto.getPassword(), dto.getOriginPassword(), null, BaseRedisKeyEnum.PRE_USER_NAME,
-            dto.getUsername());
+        return SignUtil.signUp(dto.getPassword(), dto.getOriginPassword(), null, PRE_REDIS_KEY_ENUM, dto.getUsername());
 
     }
 
@@ -75,7 +76,12 @@ public class SignUserNameServiceImpl implements SignUserNameService {
      */
     @Override
     public String updatePassword(SignUserNameUpdatePasswordDTO dto) {
-        return "";
+
+        SignUtil.checkWillError(PRE_REDIS_KEY_ENUM, null, null); // 检查：是否可以进行操作
+
+        return SignUtil.updatePassword(dto.getNewPassword(), dto.getOriginNewPassword(), PRE_REDIS_KEY_ENUM, null,
+            dto.getOldPassword());
+
     }
 
     /**
@@ -83,7 +89,12 @@ public class SignUserNameServiceImpl implements SignUserNameService {
      */
     @Override
     public String updateUserName(SignUserNameUpdateUserNameDTO dto) {
-        return "";
+
+        SignUtil.checkWillError(PRE_REDIS_KEY_ENUM, null, null); // 检查：是否可以进行操作
+
+        return SignUtil.updateAccount(null, null, PRE_REDIS_KEY_ENUM, PRE_REDIS_KEY_ENUM, dto.getNewUserName(),
+            dto.getCurrentPassword(), null);
+
     }
 
     /**
@@ -91,7 +102,11 @@ public class SignUserNameServiceImpl implements SignUserNameService {
      */
     @Override
     public String signDelete(SignUserNameSignDeleteDTO dto) {
-        return "";
+
+        SignUtil.checkWillError(PRE_REDIS_KEY_ENUM, null, null); // 检查：是否可以进行操作
+
+        return SignUtil.signDelete(null, PRE_REDIS_KEY_ENUM, dto.getCurrentPassword(), null);
+
     }
 
     /**
