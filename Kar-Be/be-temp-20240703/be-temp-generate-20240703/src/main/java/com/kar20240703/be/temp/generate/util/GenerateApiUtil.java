@@ -47,13 +47,14 @@ public class GenerateApiUtil {
     private String apiInterfaceFieldTemp = "    {}{}: {}{} // {}";
 
     private String apiRequestTemp = "\n" + "// {}\n" + "export function {}({}config?: PureHttpRequestConfig) {\n"
-        + "    return http.{}<{}>('{}', '{}', {}, config)\n" + "}\n";
+        + "    return http.{}<{}>('{}', baseApi('{}'), {}, config)\n" + "}\n";
 
     private String apiRequestFormName = "form";
 
     private String apiRequestFormTemp = apiRequestFormName + ": {}, ";
 
-    private String apiImportBase = "import { http } from \"@/utils/http\";\n";
+    private String apiImportBase =
+        "import { http } from \"@/utils/http\";\nimport { baseApi } from \"@/api/http/utils\";\n";
 
     private String apiImportBaseConfig = "import type { PureHttpRequestConfig } from \"@/utils/http/types\";\n";
 
