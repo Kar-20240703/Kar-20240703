@@ -26,7 +26,7 @@ CREATE TABLE `base_user_info`
 (
     `id`               bigint                                                        NOT NULL COMMENT '用户主键 id',
     `create_time`      datetime                                                      NOT NULL COMMENT '冗余字段：创建时间',
-    `uuid`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '该用户的 uuid，本系统使用 id，不使用此字段（uuid），备注：不允许修改',
+    `uuid` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '该用户的 uuid，本系统使用 id，不使用此字段（uuid）',
     `nickname`         varchar(50)                                                   NOT NULL COMMENT '昵称',
     `bio`              varchar(100)                                                  NOT NULL COMMENT '个人简介',
     `avatar_file_id`   bigint                                                        NOT NULL COMMENT '头像 fileId（文件主键 id）',

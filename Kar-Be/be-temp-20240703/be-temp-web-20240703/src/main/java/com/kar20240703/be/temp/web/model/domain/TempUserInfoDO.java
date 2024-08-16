@@ -20,7 +20,7 @@ public class TempUserInfoDO {
     private Long id;
 
     @TableField(fill = FieldFill.INSERT)
-    @Schema(description = "该用户的 uuid，本系统使用 id，不使用此字段（uuid），备注：不允许修改")
+    @Schema(description = "该用户的 uuid，本系统使用 id，不使用此字段（uuid）")
     private String uuid;
 
     @Schema(description = "昵称")

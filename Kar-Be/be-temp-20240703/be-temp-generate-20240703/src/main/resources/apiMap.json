@@ -281,7 +281,7 @@
                               "uuid": {
                                 "name": "uuid",
                                 "type": "string",
-                                "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不允许修改"
+                                "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不能重复"
                               },
                               "showFlag": {
                                 "name": "showFlag",
@@ -561,7 +561,7 @@
                       "uuid": {
                         "name": "uuid",
                         "type": "string",
-                        "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不允许修改"
+                        "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不能重复"
                       },
                       "showFlag": {
                         "name": "showFlag",
@@ -744,7 +744,7 @@
                       "uuid": {
                         "name": "uuid",
                         "type": "string",
-                        "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不允许修改"
+                        "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不能重复"
                       },
                       "showFlag": {
                         "name": "showFlag",
@@ -1007,7 +1007,7 @@
                       "uuid": {
                         "name": "uuid",
                         "type": "string",
-                        "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不允许修改"
+                        "description": "该菜单的 uuid，用于：同步租户菜单等操作，备注：不能重复"
                       },
                       "showFlag": {
                         "name": "showFlag",

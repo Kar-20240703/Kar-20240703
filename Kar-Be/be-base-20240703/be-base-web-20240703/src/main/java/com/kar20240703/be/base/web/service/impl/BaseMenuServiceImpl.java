@@ -7,9 +7,13 @@ import com.kar20240703.be.base.web.model.domain.BaseMenuDO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuPageDTO;
 import com.kar20240703.be.base.web.service.BaseMenuService;
+import com.kar20240703.be.temp.web.model.domain.TempEntity;
+import com.kar20240703.be.temp.web.model.domain.TempEntityNoId;
+import com.kar20240703.be.temp.web.model.domain.TempEntityTree;
 import com.kar20240703.be.temp.web.model.dto.ChangeNumberDTO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
+import com.kar20240703.be.temp.web.util.UserUtil;
 import java.util.Collections;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -62,7 +66,20 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
      */
     @Override
     public List<BaseMenuDO> userSelfMenuList() {
-        return Collections.emptyList();
+
+        if (UserUtil.getCurrentUserAdminFlag()) {
+
+            return lambdaQuery().eq(TempEntityNoId::getEnableFlag, true)
+                .select(TempEntity::getId, TempEntityTree::getPid, BaseMenuDO::getPath, BaseMenuDO::getUuid,
+                    BaseMenuDO::getRedirect, BaseMenuDO::getRouter, BaseMenuDO::getName, BaseMenuDO::getShowFlag,
+                    BaseMenuDO::getIcon).orderByDesc(TempEntityTree::getOrderNo).list();
+
+        } else {
+
+            return Collections.emptyList();
+
+        }
+
     }
 
     /**

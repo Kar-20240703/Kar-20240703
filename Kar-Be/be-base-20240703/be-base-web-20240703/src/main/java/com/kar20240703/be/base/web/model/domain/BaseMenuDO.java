@@ -1,5 +1,7 @@
 package com.kar20240703.be.base.web.model.domain;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.kar20240703.be.temp.web.model.domain.TempEntityTree;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,7 +38,8 @@ public class BaseMenuDO extends TempEntityTree<BaseMenuDO> {
     @Schema(description = "是否是起始页面，备注：只能存在一个 firstFlag === true 的菜单")
     private Integer firstFlag;
 
-    @Schema(description = "该菜单的 uuid，用于：同步租户菜单等操作，备注：不允许修改")
+    @TableField(fill = FieldFill.INSERT)
+    @Schema(description = "该菜单的 uuid，用于：同步租户菜单等操作，备注：不能重复")
     private String uuid;
 
     @Schema(description = "是否隐藏：PageContainer")

@@ -41,7 +41,7 @@ CREATE TABLE `base_menu`
     `redirect`                   varchar(100)                                                  NOT NULL COMMENT '重定向，优先级最高',
     `order_no`                   int                                                           NOT NULL COMMENT '排序号（值越大越前面，默认为 0）',
     `first_flag`                 tinyint(1)                                                    NOT NULL COMMENT '是否是起始页面，备注：只能存在一个 firstFlag === true 的菜单',
-    `uuid`                       varchar(32)                                                   NOT NULL COMMENT '该菜单的 uuid，用于：同步租户菜单等操作，备注：不允许修改',
+    `uuid` varchar(32) NOT NULL COMMENT '该菜单的 uuid，用于：同步租户菜单等操作，备注：不能重复',
     `hidden_page_container_flag` tinyint(1)                                                    NOT NULL COMMENT '是否隐藏：PageContainer',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
