@@ -230,7 +230,11 @@ public class GenerateApiUtil {
 
         List<String> splitTrimList = StrUtil.splitTrim(path, CharPool.SLASH);
 
-        return splitTrimList.stream().reduce((x, y) -> StrUtil.upperFirst(x) + StrUtil.upperFirst(y)).orElse("");
+        String str = splitTrimList.stream().reduce((x, y) -> StrUtil.upperFirst(x) + StrUtil.upperFirst(y)).orElse("");
+
+        str = StrUtil.lowerFirst(str);
+
+        return str;
 
     }
 
