@@ -10,6 +10,7 @@ import com.kar20240703.be.temp.web.configuration.base.TempConfiguration;
 import com.kar20240703.be.temp.web.configuration.security.SecurityConfiguration;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.configuration.IJwtGenerateConfiguration;
+import com.kar20240703.be.temp.web.model.configuration.IJwtGetAuthListConfiguration;
 import com.kar20240703.be.temp.web.model.constant.SecurityConstant;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.model.vo.SignInVO;
@@ -47,12 +48,17 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     MySecurityProperties mySecurityProperties;
 
+    @Nullable
+    IJwtGetAuthListConfiguration iJwtGetAuthListConfiguration;
+
     public JwtAuthorizationFilter(
         @Autowired(required = false) @Nullable IJwtGenerateConfiguration iJwtGenerateConfiguration,
-        MySecurityProperties mySecurityProperties) {
+        MySecurityProperties mySecurityProperties,
+        @Autowired(required = false) @Nullable IJwtGetAuthListConfiguration iJwtGetAuthListConfiguration) {
 
         this.iJwtGenerateConfiguration = iJwtGenerateConfiguration;
         this.mySecurityProperties = mySecurityProperties;
+        this.iJwtGetAuthListConfiguration = iJwtGetAuthListConfiguration;
 
     }
 
@@ -113,35 +119,45 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         }
 
-        try {
+        List<String> authList;
 
-            String body = HttpRequest.post(jwtGetAuthListUrl)
-                .header(SecurityConstant.AUTHORIZATION, SecurityConstant.JWT_PREFIX + jwtStr).execute().body();
+        if (iJwtGetAuthListConfiguration == null) {
 
-            R<List<String>> r = JSONUtil.toBean(body, R.class);
+            try {
 
-            if (TempBizCodeEnum.RESULT_OK.getCode() != r.getCode()) {
+                String body = HttpRequest.post(jwtGetAuthListUrl)
+                    .header(SecurityConstant.AUTHORIZATION, SecurityConstant.JWT_PREFIX + jwtStr).execute().body();
 
-                ResponseUtil.out(response, body, false);
+                R<List<String>> r = JSONUtil.toBean(body, R.class);
+
+                if (TempBizCodeEnum.RESULT_OK.getCode() != r.getCode()) {
+
+                    ResponseUtil.out(response, body, false);
+                    return;
+
+                }
+
+                authList = r.getData();
+
+            } catch (Exception e) {
+
+                MyExceptionUtil.printError(e);
+                ResponseUtil.out(response, TempBizCodeEnum.LOGIN_EXPIRED);
                 return;
 
             }
 
-            List<String> authList = r.getData();
+        } else {
 
-            List<GrantedAuthority> authoritieList =
-                authList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
-
-            SecurityContextHolder.getContext().setAuthentication(
-                new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null, authoritieList));
-
-        } catch (Exception e) {
-
-            MyExceptionUtil.printError(e);
-            ResponseUtil.out(response, TempBizCodeEnum.LOGIN_EXPIRED);
-            return;
+            authList = iJwtGetAuthListConfiguration.getAuthList(jwtStr, jwt, response);
 
         }
+
+        List<GrantedAuthority> authoritieList =
+            authList.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+
+        SecurityContextHolder.getContext().setAuthentication(
+            new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null, authoritieList));
 
         filterChain.doFilter(request, response);
 
