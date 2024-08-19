@@ -650,7 +650,7 @@
           },
           "path": {
             "type": "string",
-            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+            "description": "页面的 path，备注：不能重复"
           },
           "icon": {
             "type": "string",
@@ -742,7 +742,7 @@
           },
           "path": {
             "type": "string",
-            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+            "description": "页面的 path，备注：不能重复"
           },
           "parentId": {
             "type": "integer",
@@ -911,7 +911,7 @@
           },
           "path": {
             "type": "string",
-            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+            "description": "页面的 path，备注：不能重复"
           },
           "router": {
             "type": "string",

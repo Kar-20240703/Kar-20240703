@@ -30,6 +30,10 @@ public enum BaseBizCodeEnum implements IBizCode {
     THERE_IS_NO_BOUND_MOBILE_PHONE_NUMBER_SO_THIS_OPERATION_CANNOT_BE_PERFORMED(300131,
         "操作失败：您还没有绑定手机号码，无法进行该操作"), //
 
+    MENU_PATH_IS_EXIST(300141, "操作失败：路径重复"), //
+
+    MENU_UUID_IS_EXIST(300151, "操作失败：uuid重复"), //
+
     ;
 
     private final int code;

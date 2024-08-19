@@ -12,7 +12,7 @@ public class BaseMenuPageDTO extends MyPageDTO {
     @Schema(description = "菜单名")
     private String name;
 
-    @Schema(description = "页面的 path，备注：相同父菜单下，子菜单 path不能重复")
+    @Schema(description = "页面的 path，备注：不能重复")
     private String path;
 
     @Schema(description = "父节点id（顶级则为0）")
@@ -35,9 +35,6 @@ public class BaseMenuPageDTO extends MyPageDTO {
 
     @Schema(description = "重定向，优先级最高")
     private String redirect;
-
-    @Schema(description = "是否是起始页面，备注：只能存在一个 firstFlag === true 的菜单")
-    private Boolean firstFlag;
 
     @Schema(description = "是否是权限菜单，权限菜单：不显示，只代表菜单权限")
     private Boolean authFlag;

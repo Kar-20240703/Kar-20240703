@@ -32,7 +32,7 @@ CREATE TABLE `base_menu`
     `enable_flag`                tinyint(1)                                                    NOT NULL COMMENT '是否启用',
     `remark`                     varchar(300)                                                  NOT NULL,
     `name`                       varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '菜单名',
-    `path`                       varchar(100)                                                  NOT NULL COMMENT '页面的 path，备注：相同父菜单下，子菜单 path不能重复',
+    `path` varchar(100) NOT NULL COMMENT '页面的 path，备注：不能重复',
     `icon`                       varchar(100)                                                  NOT NULL COMMENT '图标',
     `pid`                        bigint                                                        NOT NULL COMMENT '父节点id（顶级则为0）',
     `show_flag`                  tinyint(1)                                                    NOT NULL COMMENT '是否显示在 左侧的菜单栏里面，如果为 false，也可以通过 $router.push()访问到',

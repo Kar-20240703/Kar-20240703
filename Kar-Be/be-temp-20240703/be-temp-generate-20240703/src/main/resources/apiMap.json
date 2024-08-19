@@ -115,7 +115,7 @@
           "path": {
             "name": "path",
             "type": "string",
-            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+            "description": "页面的 path，备注：不能重复"
           },
           "current": {
             "name": "current",
@@ -298,7 +298,7 @@
                               "path": {
                                 "name": "path",
                                 "type": "string",
-                                "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+                                "description": "页面的 path，备注：不能重复"
                               },
                               "router": {
                                 "name": "router",
@@ -578,7 +578,7 @@
                       "path": {
                         "name": "path",
                         "type": "string",
-                        "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+                        "description": "页面的 path，备注：不能重复"
                       },
                       "router": {
                         "name": "router",
@@ -761,7 +761,7 @@
                       "path": {
                         "name": "path",
                         "type": "string",
-                        "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+                        "description": "页面的 path，备注：不能重复"
                       },
                       "router": {
                         "name": "router",
@@ -873,7 +873,7 @@
           "path": {
             "name": "path",
             "type": "string",
-            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+            "description": "页面的 path，备注：不能重复"
           },
           "current": {
             "name": "current",
@@ -1024,7 +1024,7 @@
                       "path": {
                         "name": "path",
                         "type": "string",
-                        "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+                        "description": "页面的 path，备注：不能重复"
                       },
                       "router": {
                         "name": "router",
@@ -1148,7 +1148,7 @@
           "path": {
             "name": "path",
             "type": "string",
-            "description": "页面的 path，备注：相同父菜单下，子菜单 path不能重复"
+            "description": "页面的 path，备注：不能重复"
           },
           "router": {
             "name": "router",
