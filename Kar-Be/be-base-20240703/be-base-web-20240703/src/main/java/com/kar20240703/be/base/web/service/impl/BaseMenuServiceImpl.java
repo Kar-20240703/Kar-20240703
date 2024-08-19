@@ -1,6 +1,8 @@
 package com.kar20240703.be.base.web.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -13,25 +15,33 @@ import com.kar20240703.be.base.web.model.domain.BaseRoleRefMenuDO;
 import com.kar20240703.be.base.web.model.domain.BaseRoleRefUserDO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuPageDTO;
+import com.kar20240703.be.base.web.model.vo.BaseMenuInfoByIdVO;
 import com.kar20240703.be.base.web.service.BaseMenuRefUserService;
 import com.kar20240703.be.base.web.service.BaseMenuService;
 import com.kar20240703.be.base.web.service.BaseRoleRefMenuService;
 import com.kar20240703.be.base.web.service.BaseRoleRefUserService;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
+import com.kar20240703.be.temp.web.model.annotation.MyTransactional;
 import com.kar20240703.be.temp.web.model.domain.TempEntity;
+import com.kar20240703.be.temp.web.model.domain.TempEntityNoId;
+import com.kar20240703.be.temp.web.model.domain.TempEntityTree;
 import com.kar20240703.be.temp.web.model.dto.ChangeNumberDTO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
 import com.kar20240703.be.temp.web.model.vo.R;
+import com.kar20240703.be.temp.web.util.CallBack;
 import com.kar20240703.be.temp.web.util.MyEntityUtil;
+import com.kar20240703.be.temp.web.util.MyThreadUtil;
+import com.kar20240703.be.temp.web.util.MyTreeUtil;
 import com.kar20240703.be.temp.web.util.UserUtil;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO> implements BaseMenuService {
@@ -49,7 +59,7 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
      * 新增/修改
      */
     @Override
-    @Transactional
+    @MyTransactional
     public String insertOrUpdate(BaseMenuInsertOrUpdateDTO dto) {
 
         if (dto.getId() != null && dto.getId().equals(dto.getPid())) {
@@ -84,11 +94,11 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
             deleteByIdSetSub(CollUtil.newHashSet(dto.getId())); // 先删除：子表数据
         }
 
-        BaseMenuDO sysMenuDO = getDoByDto(dto);
+        BaseMenuDO baseMenuDO = getDoByDto(dto);
 
-        saveOrUpdate(sysMenuDO);
+        saveOrUpdate(baseMenuDO);
 
-        insertOrUpdateSub(sysMenuDO, dto); // 新增 子表数据
+        insertOrUpdateSub(baseMenuDO, dto); // 新增 子表数据
 
         return TempBizCodeEnum.OK;
 
@@ -177,31 +187,113 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
      */
     @Override
     public Page<BaseMenuDO> myPage(BaseMenuPageDTO dto) {
-        return null;
+
+        return lambdaQuery().like(StrUtil.isNotBlank(dto.getName()), BaseMenuDO::getName, dto.getName())
+            .like(StrUtil.isNotBlank(dto.getPath()), BaseMenuDO::getPath, dto.getPath())
+            .like(StrUtil.isNotBlank(dto.getRedirect()), BaseMenuDO::getRedirect, dto.getRedirect())
+            .eq(StrUtil.isNotBlank(dto.getRouter()), BaseMenuDO::getRouter, dto.getRouter())
+            .eq(dto.getPid() != null, BaseMenuDO::getPid, dto.getPid())
+            .eq(dto.getEnableFlag() != null, TempEntity::getEnableFlag, dto.getEnableFlag())
+            .eq(dto.getLinkFlag() != null, BaseMenuDO::getLinkFlag, dto.getLinkFlag())
+            .eq(dto.getShowFlag() != null, BaseMenuDO::getShowFlag, dto.getShowFlag())
+            .select(TempEntity::getId, TempEntityTree::getPid, BaseMenuDO::getName, BaseMenuDO::getPath,
+                BaseMenuDO::getShowFlag, TempEntityNoId::getEnableFlag, BaseMenuDO::getRedirect,
+                TempEntityTree::getOrderNo).orderByDesc(TempEntityTree::getOrderNo).orderByAsc(TempEntity::getId)
+            .page(dto.pageOrder());
+
     }
 
     /**
      * 查询：树结构
      */
+    @SneakyThrows
     @Override
     public List<BaseMenuDO> tree(BaseMenuPageDTO dto) {
-        return Collections.emptyList();
+
+        CountDownLatch countDownLatch = ThreadUtil.newCountDownLatch(1);
+
+        CallBack<List<BaseMenuDO>> allListCallBack = new CallBack<>();
+
+        MyThreadUtil.execute(() -> {
+
+            allListCallBack.setValue(baseMapper.getMenuListByUserId(null));
+
+        }, countDownLatch);
+
+        // 根据条件进行筛选，得到符合条件的数据，然后再逆向生成整棵树，并返回这个树结构
+        dto.setPageSize(-1); // 不分页
+        List<BaseMenuDO> baseMenuDoList = myPage(dto).getRecords();
+
+        countDownLatch.await();
+
+        if (baseMenuDoList.size() == 0) {
+            return new ArrayList<>();
+        }
+
+        if (allListCallBack.getValue().size() == 0) {
+            return new ArrayList<>();
+        }
+
+        return MyTreeUtil.getFullTreeByDeepNode(baseMenuDoList, allListCallBack.getValue());
+
     }
 
     /**
      * 通过主键id，查看详情
      */
     @Override
-    public BaseMenuDO infoById(NotNullId notNullId) {
-        return null;
+    public BaseMenuInfoByIdVO infoById(NotNullId notNullId) {
+
+        BaseMenuDO baseMenuDO = lambdaQuery().eq(TempEntity::getId, notNullId.getId()).one();
+
+        if (baseMenuDO == null) {
+            return null;
+        }
+
+        BaseMenuInfoByIdVO baseMenuInfoByIdVO = BeanUtil.copyProperties(baseMenuDO, BaseMenuInfoByIdVO.class);
+
+        // 设置：角色 idSet
+        List<BaseRoleRefMenuDO> sysRoleRefMenuDOList =
+            baseRoleRefMenuService.lambdaQuery().eq(BaseRoleRefMenuDO::getMenuId, notNullId.getId())
+                .select(BaseRoleRefMenuDO::getRoleId).list();
+
+        baseMenuInfoByIdVO.setRoleIdSet(
+            sysRoleRefMenuDOList.stream().map(BaseRoleRefMenuDO::getRoleId).collect(Collectors.toSet()));
+
+        // 处理：父级 id
+        MyEntityUtil.handleParentId(baseMenuInfoByIdVO);
+
+        return baseMenuInfoByIdVO;
+
     }
 
     /**
      * 批量删除
      */
     @Override
-    public String deleteByIdSet(NotEmptyIdSet notEmptyIdSet, boolean checkChildrenFlag, boolean checkDeleteFlag) {
-        return "";
+    @MyTransactional
+    public String deleteByIdSet(NotEmptyIdSet notEmptyIdSet) {
+
+        Set<Long> idSet = notEmptyIdSet.getIdSet();
+
+        if (CollUtil.isEmpty(idSet)) {
+            return TempBizCodeEnum.OK;
+        }
+
+        // 如果存在下级，则无法删除
+        boolean exists = lambdaQuery().in(BaseMenuDO::getPid, idSet).exists();
+
+        if (exists) {
+            R.error(TempBizCodeEnum.PLEASE_DELETE_THE_CHILD_NODE_FIRST);
+        }
+
+        // 删除子表数据
+        deleteByIdSetSub(idSet);
+
+        removeByIds(idSet);
+
+        return TempBizCodeEnum.OK;
+
     }
 
     /**
@@ -226,8 +318,25 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
      * 通过主键 idSet，加减排序号
      */
     @Override
+    @MyTransactional
     public String addOrderNo(ChangeNumberDTO dto) {
-        return "";
+
+        if (dto.getNumber() == 0) {
+            return TempBizCodeEnum.OK;
+        }
+
+        List<BaseMenuDO> baseMenuDoList =
+            lambdaQuery().in(TempEntity::getId, dto.getIdSet()).select(TempEntity::getId, TempEntityTree::getOrderNo)
+                .list();
+
+        for (BaseMenuDO item : baseMenuDoList) {
+            item.setOrderNo((int)(item.getOrderNo() + dto.getNumber()));
+        }
+
+        updateBatchById(baseMenuDoList);
+
+        return TempBizCodeEnum.OK;
+
     }
 
 }

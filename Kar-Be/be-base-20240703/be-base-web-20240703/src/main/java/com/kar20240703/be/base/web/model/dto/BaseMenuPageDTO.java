@@ -16,10 +16,7 @@ public class BaseMenuPageDTO extends MyPageDTO {
     private String path;
 
     @Schema(description = "父节点id（顶级则为0）")
-    private Long parentId;
-
-    @Schema(description = "权限，多个可用逗号拼接，例如：menu:insertOrUpdate,menu:page,menu:deleteByIdSet,menu:infoById")
-    private String auths;
+    private Long pid;
 
     @Schema(description = "是否显示在 左侧的菜单栏里面，如果为 false，也可以通过 $router.push()访问到")
     private Boolean showFlag;
@@ -35,8 +32,5 @@ public class BaseMenuPageDTO extends MyPageDTO {
 
     @Schema(description = "重定向，优先级最高")
     private String redirect;
-
-    @Schema(description = "是否是权限菜单，权限菜单：不显示，只代表菜单权限")
-    private Boolean authFlag;
 
 }

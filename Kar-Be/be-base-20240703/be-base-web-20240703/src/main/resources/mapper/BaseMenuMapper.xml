@@ -21,7 +21,7 @@
       FROM `base_menu_ref_user` subA
       WHERE subA.user_id = #{userId})
     </if>
-    ORDER BY a.order_no DESC,a.id
+    ORDER BY a.order_no DESC, a.id
   </select>
 
 </mapper>

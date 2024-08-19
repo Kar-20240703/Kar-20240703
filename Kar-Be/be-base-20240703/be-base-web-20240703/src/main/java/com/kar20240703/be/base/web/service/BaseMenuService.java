@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.kar20240703.be.base.web.model.domain.BaseMenuDO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuPageDTO;
+import com.kar20240703.be.base.web.model.vo.BaseMenuInfoByIdVO;
 import com.kar20240703.be.temp.web.model.dto.ChangeNumberDTO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
@@ -18,9 +19,9 @@ public interface BaseMenuService extends IService<BaseMenuDO> {
 
     List<BaseMenuDO> tree(BaseMenuPageDTO dto);
 
-    BaseMenuDO infoById(NotNullId notNullId);
+    BaseMenuInfoByIdVO infoById(NotNullId notNullId);
 
-    String deleteByIdSet(NotEmptyIdSet notEmptyIdSet, boolean checkChildrenFlag, boolean checkDeleteFlag);
+    String deleteByIdSet(NotEmptyIdSet notEmptyIdSet);
 
     List<BaseMenuDO> userSelfMenuList();
 
