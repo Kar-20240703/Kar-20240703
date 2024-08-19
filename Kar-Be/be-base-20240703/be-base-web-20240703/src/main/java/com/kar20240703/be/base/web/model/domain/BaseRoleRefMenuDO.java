@@ -6,16 +6,16 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-@TableName(value = "base_role_user")
+@TableName(value = "base_role_ref_menu")
 @Data
-@Schema(description = "关联表：角色表，用户表")
-public class BaseRoleUserDO {
+@Schema(description = "关联表：角色表，菜单表")
+public class BaseRoleRefMenuDO {
 
     @TableId(type = IdType.INPUT)
     @Schema(description = "角色主键id")
     private Long roleId;
 
-    @Schema(description = "用户主键id")
-    private Long userId;
+    @Schema(description = "菜单主键id")
+    private Long menuId;
 
 }

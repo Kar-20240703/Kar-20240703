@@ -6,27 +6,39 @@ import com.kar20240703.be.base.web.mapper.BaseMenuMapper;
 import com.kar20240703.be.base.web.model.domain.BaseMenuDO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuPageDTO;
+import com.kar20240703.be.base.web.service.BaseMenuRefUserService;
 import com.kar20240703.be.base.web.service.BaseMenuService;
-import com.kar20240703.be.temp.web.model.domain.TempEntity;
-import com.kar20240703.be.temp.web.model.domain.TempEntityNoId;
-import com.kar20240703.be.temp.web.model.domain.TempEntityTree;
+import com.kar20240703.be.base.web.service.BaseRoleRefMenuService;
+import com.kar20240703.be.base.web.service.BaseRoleRefUserService;
 import com.kar20240703.be.temp.web.model.dto.ChangeNumberDTO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
 import com.kar20240703.be.temp.web.util.UserUtil;
 import java.util.Collections;
 import java.util.List;
+import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO> implements BaseMenuService {
+
+    @Resource
+    BaseRoleRefMenuService baseRoleRefMenuService;
+
+    @Resource
+    BaseRoleRefUserService baseRoleRefUserService;
+
+    @Resource
+    BaseMenuRefUserService baseMenuRefUserService;
 
     /**
      * 新增/修改
      */
     @Override
     public String insertOrUpdate(BaseMenuInsertOrUpdateDTO dto) {
+
         return "";
+
     }
 
     /**
@@ -67,18 +79,15 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
     @Override
     public List<BaseMenuDO> userSelfMenuList() {
 
-        if (UserUtil.getCurrentUserAdminFlag()) {
+        Long userId = UserUtil.getCurrentUserId();
 
-            return lambdaQuery().eq(TempEntityNoId::getEnableFlag, true)
-                .select(TempEntity::getId, TempEntityTree::getPid, BaseMenuDO::getPath, BaseMenuDO::getUuid,
-                    BaseMenuDO::getRedirect, BaseMenuDO::getRouter, BaseMenuDO::getName, BaseMenuDO::getShowFlag,
-                    BaseMenuDO::getIcon).orderByDesc(TempEntityTree::getOrderNo).list();
+        if (UserUtil.getCurrentUserAdminFlag(userId)) {
 
-        } else {
-
-            return Collections.emptyList();
+            userId = null;
 
         }
+
+        return baseMapper.getMenuListByUserId(userId);
 
     }
 

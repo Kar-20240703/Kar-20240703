@@ -8,12 +8,12 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.kar20240703.be.base.web.exception.BaseBizCodeEnum;
-import com.kar20240703.be.base.web.mapper.BaseRoleUserMapper;
-import com.kar20240703.be.base.web.mapper.BaseUserAuthMapper;
+import com.kar20240703.be.base.web.mapper.BaseAuthRefUserMapper;
+import com.kar20240703.be.base.web.mapper.BaseRoleRefUserMapper;
 import com.kar20240703.be.base.web.mapper.BaseUserInfoMapper;
 import com.kar20240703.be.base.web.mapper.BaseUserMapper;
-import com.kar20240703.be.base.web.model.domain.BaseRoleUserDO;
-import com.kar20240703.be.base.web.model.domain.BaseUserAuthDO;
+import com.kar20240703.be.base.web.model.domain.BaseAuthRefUserDO;
+import com.kar20240703.be.base.web.model.domain.BaseRoleRefUserDO;
 import com.kar20240703.be.base.web.model.enums.BaseRedisKeyEnum;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.constant.TempConstant;
@@ -77,18 +77,18 @@ public class SignUtil {
         SignUtil.mySecurityProperties = mySecurityProperties;
     }
 
-    private static BaseRoleUserMapper baseRoleUserMapper;
+    private static BaseRoleRefUserMapper baseRoleRefUserMapper;
 
     @Resource
-    public void setBaseRoleUserMapper(BaseRoleUserMapper baseRoleUserMapper) {
-        SignUtil.baseRoleUserMapper = baseRoleUserMapper;
+    public void setBaseRoleUserMapper(BaseRoleRefUserMapper baseRoleRefUserMapper) {
+        SignUtil.baseRoleRefUserMapper = baseRoleRefUserMapper;
     }
 
-    private static BaseUserAuthMapper baseUserAuthMapper;
+    private static BaseAuthRefUserMapper baseAuthRefUserMapper;
 
     @Resource
-    public void setBaseUserAuthMapper(BaseUserAuthMapper baseUserAuthMapper) {
-        SignUtil.baseUserAuthMapper = baseUserAuthMapper;
+    public void setBaseUserAuthMapper(BaseAuthRefUserMapper baseAuthRefUserMapper) {
+        SignUtil.baseAuthRefUserMapper = baseAuthRefUserMapper;
     }
 
     /**
@@ -1073,10 +1073,10 @@ public class SignUtil {
             }
 
             // 直接：删除用户绑定的角色
-            ChainWrappers.lambdaUpdateChain(baseRoleUserMapper).in(BaseRoleUserDO::getUserId, idSet).remove();
+            ChainWrappers.lambdaUpdateChain(baseRoleRefUserMapper).in(BaseRoleRefUserDO::getUserId, idSet).remove();
 
             // 直接：删除用户绑定的权限
-            ChainWrappers.lambdaUpdateChain(baseUserAuthMapper).in(BaseUserAuthDO::getUserId, idSet).remove();
+            ChainWrappers.lambdaUpdateChain(baseAuthRefUserMapper).in(BaseAuthRefUserDO::getUserId, idSet).remove();
 
         });
 
