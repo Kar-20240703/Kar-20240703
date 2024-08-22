@@ -4,6 +4,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.thread.ThreadUtil;
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -126,7 +127,7 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
         baseMenuDO.setShowFlag(BooleanUtil.isTrue(dto.getShowFlag()));
         baseMenuDO.setLinkFlag(BooleanUtil.isTrue(dto.getLinkFlag()));
 
-        baseMenuDO.setUuid(MyEntityUtil.getNotNullStr(dto.getUuid()));
+        baseMenuDO.setUuid(MyEntityUtil.getNotNullStr(dto.getUuid(), IdUtil.simpleUUID()));
 
         return baseMenuDO;
 
