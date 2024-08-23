@@ -198,9 +198,9 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
             .eq(dto.getLinkFlag() != null, BaseMenuDO::getLinkFlag, dto.getLinkFlag())
             .eq(dto.getShowFlag() != null, BaseMenuDO::getShowFlag, dto.getShowFlag())
             .select(TempEntity::getId, TempEntityTree::getPid, BaseMenuDO::getName, BaseMenuDO::getPath,
-                BaseMenuDO::getShowFlag, TempEntityNoId::getEnableFlag, BaseMenuDO::getRedirect,
-                TempEntityTree::getOrderNo).orderByDesc(TempEntityTree::getOrderNo).orderByAsc(TempEntity::getId)
-            .page(dto.pageOrder());
+                BaseMenuDO::getRouter, BaseMenuDO::getShowFlag, TempEntityNoId::getEnableFlag, BaseMenuDO::getRedirect,
+                BaseMenuDO::getUuid, TempEntityTree::getOrderNo, BaseMenuDO::getIcon)
+            .orderByDesc(TempEntityTree::getOrderNo).orderByAsc(TempEntity::getId).page(dto.pageOrder());
 
     }
 

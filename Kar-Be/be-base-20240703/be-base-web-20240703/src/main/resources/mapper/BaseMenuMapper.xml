@@ -13,7 +13,8 @@
     a.redirect AS redirect,
     a.router AS router,
     a.show_flag AS showFlag,
-    a.icon AS icon
+    a.icon AS icon,
+    a.order_no as orderNO
     FROM base_menu a
     WHERE a.enable_flag = true
     <if test="userId != null">
