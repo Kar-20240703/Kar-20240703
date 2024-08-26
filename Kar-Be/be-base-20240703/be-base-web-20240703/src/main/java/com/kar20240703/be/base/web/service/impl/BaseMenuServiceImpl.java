@@ -86,7 +86,9 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
         }
 
         if (dto.getId() != null) {
+
             deleteByIdSetSub(CollUtil.newHashSet(dto.getId())); // 先删除：子表数据
+
         }
 
         BaseMenuDO baseMenuDO = getDoByDto(dto);

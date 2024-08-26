@@ -36,6 +36,8 @@ public enum BaseBizCodeEnum implements IBizCode {
 
     THE_SAME_ROLE_NAME_EXIST(300161, "操作失败：存在相同的角色名"), //
 
+    THE_SAME_AUTH_NAME_EXIST(300171, "操作失败：存在相同的权限名"), //
+
     ;
 
     private final int code;
