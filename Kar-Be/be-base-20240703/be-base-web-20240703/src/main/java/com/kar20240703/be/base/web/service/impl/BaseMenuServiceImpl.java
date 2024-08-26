@@ -340,4 +340,20 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
 
     }
 
+    /**
+     * 通过主键 idSet，修改排序号
+     */
+    @Override
+    public String updateOrderNo(ChangeNumberDTO dto) {
+
+        if (dto.getNumber() == 0) {
+            return TempBizCodeEnum.OK;
+        }
+
+        lambdaUpdate().in(TempEntity::getId, dto.getIdSet()).set(TempEntityTree::getOrderNo, dto.getNumber()).update();
+
+        return TempBizCodeEnum.OK;
+
+    }
+
 }

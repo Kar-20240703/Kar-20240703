@@ -27,4 +27,6 @@ public interface BaseMenuService extends IService<BaseMenuDO> {
 
     String addOrderNo(ChangeNumberDTO dto);
 
+    String updateOrderNo(ChangeNumberDTO dto);
+
 }

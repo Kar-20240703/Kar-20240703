@@ -77,4 +77,11 @@ public class BaseMenuController {
         return R.okMsg(baseService.addOrderNo(dto));
     }
 
+    @Operation(summary = "通过主键 idSet，修改排序号")
+    @PostMapping("/updateOrderNo")
+    @PreAuthorize("hasAuthority('baseMenu:insertOrUpdate')")
+    public R<String> updateOrderNo(@RequestBody @Valid ChangeNumberDTO dto) {
+        return R.okMsg(baseService.updateOrderNo(dto));
+    }
+
 }
