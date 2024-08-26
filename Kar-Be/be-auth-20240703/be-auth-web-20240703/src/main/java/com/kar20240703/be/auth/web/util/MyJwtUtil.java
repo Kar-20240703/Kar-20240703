@@ -164,10 +164,10 @@ public class MyJwtUtil {
         }
 
         Set<String> defaultAuthSet =
-            new HashSet<>(redissonClient.<String>getList(AuthRedisKeyEnum.DEFAULT_USER_AUTH_CACHE.name()).readAll());
+            redissonClient.<String>getSet(AuthRedisKeyEnum.DEFAULT_USER_AUTH_CACHE.name()).readAll();
 
-        Set<String> authSet = new HashSet<>(
-            redissonClient.<String>getList(AuthRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId).readAll());
+        Set<String> authSet =
+            redissonClient.<String>getSet(AuthRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId).readAll();
 
         authSet.addAll(defaultAuthSet);
 

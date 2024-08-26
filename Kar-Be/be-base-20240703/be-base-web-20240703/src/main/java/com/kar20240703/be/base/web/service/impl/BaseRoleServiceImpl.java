@@ -6,8 +6,11 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.kar20240703.be.base.web.exception.BaseBizCodeEnum;
+import com.kar20240703.be.base.web.mapper.BaseAuthMapper;
 import com.kar20240703.be.base.web.mapper.BaseRoleMapper;
+import com.kar20240703.be.base.web.model.domain.BaseAuthDO;
 import com.kar20240703.be.base.web.model.domain.BaseRoleDO;
 import com.kar20240703.be.base.web.model.domain.BaseRoleRefAuthDO;
 import com.kar20240703.be.base.web.model.domain.BaseRoleRefMenuDO;
@@ -24,14 +27,22 @@ import com.kar20240703.be.temp.web.model.annotation.MyTransactional;
 import com.kar20240703.be.temp.web.model.domain.TempEntity;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
+import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.util.MyEntityUtil;
 import com.kar20240703.be.temp.web.util.MyMapUtil;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
+import org.redisson.api.RBatch;
+import org.redisson.api.RSet;
+import org.redisson.api.RSetAsync;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -45,6 +56,12 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
 
     @Resource
     BaseRoleRefAuthService baseRoleRefAuthService;
+
+    @Resource
+    RedissonClient redissonClient;
+
+    @Resource
+    BaseAuthMapper baseAuthMapper;
 
     /**
      * 新增/修改
@@ -78,7 +95,13 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
         baseRoleDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
         baseRoleDO.setId(dto.getId());
 
+        Set<Long> oldUserIdSet = new HashSet<>();
+
         if (dto.getId() != null) {
+
+            oldUserIdSet = baseRoleRefUserService.lambdaQuery().eq(BaseRoleRefUserDO::getRoleId, dto.getId())
+                .select(BaseRoleRefUserDO::getUserId).list().stream().map(BaseRoleRefUserDO::getUserId)
+                .collect(Collectors.toSet());
 
             deleteByIdSetSub(CollUtil.newHashSet(dto.getId())); // 先删除子表数据
 
@@ -88,7 +111,145 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
 
         insertOrUpdateSub(dto, baseRoleDO); // 新增 子表数据
 
+        updateCache(dto, baseRoleDO, oldUserIdSet); // 更新缓存
+
         return TempBizCodeEnum.OK;
+
+    }
+
+    /**
+     * 更新缓存
+     */
+    private void updateCache(BaseRoleInsertOrUpdateDTO dto, BaseRoleDO baseRoleDO, Set<Long> userIdSet) {
+
+        if (BooleanUtil.isTrue(dto.getDefaultFlag())) {
+
+            // 更新：默认缓存
+            updateCacheForDefault(baseRoleDO);
+
+        }
+
+        userIdSet.addAll(dto.getUserIdSet());
+
+        if (CollUtil.isEmpty(userIdSet)) {
+            return;
+        }
+
+        List<BaseRoleRefUserDO> baseRoleRefUserDoList =
+            baseRoleRefUserService.lambdaQuery().in(BaseRoleRefUserDO::getUserId, userIdSet)
+                .select(BaseRoleRefUserDO::getRoleId, BaseRoleRefUserDO::getUserId).list();
+
+        Set<Long> roleIdSet = new HashSet<>();
+
+        Map<Long, Set<Long>> userIdRefRoleIdSetMap = new HashMap<>();
+
+        for (BaseRoleRefUserDO item : baseRoleRefUserDoList) {
+
+            Long userId = item.getUserId();
+
+            Long roleId = item.getRoleId();
+
+            roleIdSet.add(roleId);
+
+            Set<Long> userIdRefRoleIdSet = userIdRefRoleIdSetMap.computeIfAbsent(userId, k -> new HashSet<>());
+
+            userIdRefRoleIdSet.add(roleId);
+
+        }
+
+        Set<Long> authIdSet = new HashSet<>();
+
+        if (CollUtil.isNotEmpty(roleIdSet)) {
+
+            List<BaseRoleRefAuthDO> baseRoleRefAuthDoList =
+                baseRoleRefAuthService.lambdaQuery().in(BaseRoleRefAuthDO::getRoleId, roleIdSet)
+                    .select(BaseRoleRefAuthDO::getRoleId, BaseRoleRefAuthDO::getAuthId).list();
+
+            Map<Long, Set<Long>> roleIdRefAuthIdSetMap = new HashMap<>();
+
+            for (BaseRoleRefAuthDO item : baseRoleRefAuthDoList) {
+
+                Long authId = item.getAuthId();
+
+                Long roleId = item.getRoleId();
+
+                authIdSet.add(authId);
+
+                Set<Long> roleIdRefAuthIdSet = roleIdRefAuthIdSetMap.computeIfAbsent(roleId, k -> new HashSet<>());
+
+                roleIdRefAuthIdSet.add(authId);
+
+            }
+
+        }
+
+        Map<Long, String> authMap = new HashMap<>();
+
+        if (CollUtil.isNotEmpty(authIdSet)) {
+
+            authMap = ChainWrappers.lambdaQueryChain(baseAuthMapper).in(TempEntity::getId, authIdSet)
+                .select(TempEntity::getId, BaseAuthDO::getAuth).list().stream()
+                .collect(Collectors.toMap(TempEntity::getId, BaseAuthDO::getAuth));
+
+        }
+
+        RBatch rBatch = redissonClient.createBatch();
+
+        for (Long userId : userIdSet) {
+
+            Set<Long> userIdRefRoleIdSet = userIdRefRoleIdSetMap.get(userId);
+
+            RSetAsync<String> rBatchSet = rBatch.getSet(TempRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId);
+
+            rBatchSet.deleteAsync();
+
+            if (CollUtil.isEmpty(userIdRefRoleIdSet)) {
+                continue;
+            }
+
+            Set<String> authSet = new HashSet<>();
+
+            for (Long roleId : userIdRefRoleIdSet) {
+
+                String auth = authMap.get(roleId);
+
+                if (StrUtil.isNotBlank(auth)) {
+                    authSet.add(auth);
+                }
+
+            }
+
+            rBatchSet.addAllCountedAsync(authSet);
+
+        }
+
+        rBatch.execute();
+
+    }
+
+    /**
+     * 更新：默认缓存
+     */
+    private void updateCacheForDefault(BaseRoleDO baseRoleDO) {
+
+        Set<Long> authIdSet = baseRoleRefAuthService.lambdaQuery().eq(BaseRoleRefAuthDO::getRoleId, baseRoleDO.getId())
+            .select(BaseRoleRefAuthDO::getAuthId).list().stream().map(BaseRoleRefAuthDO::getAuthId)
+            .collect(Collectors.toSet());
+
+        RSet<String> rSet = redissonClient.getSet(TempRedisKeyEnum.DEFAULT_USER_AUTH_CACHE.name());
+
+        if (CollUtil.isEmpty(authIdSet)) {
+
+            rSet.delete();
+            return;
+
+        }
+
+        Set<String> authSet =
+            ChainWrappers.lambdaQueryChain(baseAuthMapper).in(TempEntity::getId, authIdSet).select(BaseAuthDO::getAuth)
+                .list().stream().map(BaseAuthDO::getAuth).collect(Collectors.toSet());
+
+        rSet.addAll(authSet);
 
     }
 

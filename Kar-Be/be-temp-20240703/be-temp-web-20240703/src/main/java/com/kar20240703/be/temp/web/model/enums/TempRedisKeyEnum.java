@@ -16,6 +16,7 @@ public enum TempRedisKeyEnum implements IRedisKey {
     PRE_JWT, // jwt 前缀，后面跟：userId:requestCategoryEnum:jwt
 
     // 【_CACHE】结尾 ↓
+    DEFAULT_USER_AUTH_CACHE, // 默认用户权限
 
     // 其他 ↓
     ATOMIC_LONG_ID_GENERATOR, // 获取主键 id，自增值
