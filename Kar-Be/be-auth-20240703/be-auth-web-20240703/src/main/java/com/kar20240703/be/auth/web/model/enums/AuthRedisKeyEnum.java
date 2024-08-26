@@ -13,6 +13,7 @@ public enum AuthRedisKeyEnum {
     PRE_JWT, // jwt 前缀，后面跟：userId:requestCategoryEnum:jwt
 
     // 【_CACHE】结尾 ↓
+    DEFAULT_USER_AUTH_CACHE, // 默认用户权限
 
     // 其他 ↓
 

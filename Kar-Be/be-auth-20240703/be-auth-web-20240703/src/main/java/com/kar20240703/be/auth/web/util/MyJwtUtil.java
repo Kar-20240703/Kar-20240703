@@ -10,8 +10,8 @@ import com.kar20240703.be.auth.web.model.enums.AuthRedisKeyEnum;
 import com.kar20240703.be.auth.web.model.enums.AuthRequestCategoryEnum;
 import com.kar20240703.be.auth.web.model.vo.R;
 import com.kar20240703.be.auth.web.properties.SecurityProperties;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -152,7 +152,7 @@ public class MyJwtUtil {
      * 通过 userId获取到权限的集合
      */
     @NotNull
-    public static List<String> getAuthListByUserId(Long userId) {
+    public static Set<String> getAuthSetByUserId(Long userId) {
 
         if (userId == null) {
             R.error(AuthBizCodeEnum.ILLEGAL_REQUEST); // 直接抛出异常
@@ -160,10 +160,18 @@ public class MyJwtUtil {
 
         // admin账号，自带所有权限
         if (UserUtil.getCurrentUserAdminFlag(userId)) {
-            return new ArrayList<>();
+            return new HashSet<>();
         }
 
-        return redissonClient.<String>getList(AuthRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId).readAll();
+        Set<String> defaultAuthSet =
+            new HashSet<>(redissonClient.<String>getList(AuthRedisKeyEnum.DEFAULT_USER_AUTH_CACHE.name()).readAll());
+
+        Set<String> authSet = new HashSet<>(
+            redissonClient.<String>getList(AuthRedisKeyEnum.PRE_USER_AUTH.name() + ":" + userId).readAll());
+
+        authSet.addAll(defaultAuthSet);
+
+        return authSet;
 
     }
 

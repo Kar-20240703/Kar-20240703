@@ -19,6 +19,6 @@ public class BaseRoleDO extends TempEntity {
     private String value;
 
     @Schema(description = "是否是默认角色，备注：只会有一个默认角色")
-    private Integer defaultFlag;
+    private Boolean defaultFlag;
 
 }

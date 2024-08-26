@@ -14,15 +14,21 @@
     a.router AS router,
     a.show_flag AS showFlag,
     a.icon AS icon,
-    a.order_no as orderNO
-    FROM base_menu a
-    WHERE a.enable_flag = true
+    a.order_no AS orderNO
+    FROM
+    base_menu a
+    WHERE
+    a.enable_flag = TRUE
     <if test="userId != null">
-      AND a.id IN (SELECT subA.menu_id
-      FROM `base_menu_ref_user` subA
-      WHERE subA.user_id = #{userId})
+      AND a.id IN (SELECT subA.menu_id FROM base_role_ref_menu subA WHERE subA.role_id IN (
+
+      ( SELECT subSubA.role_id as roleId FROM base_role_ref_user subSubA WHERE subSubA.user_id =
+      #{userId} ) UNION ALL (SELECT subSubA.id as roleId FROM
+      base_role subSubA WHERE subSubA.enable_flag = true AND subSubA.default_flag = true)
+
+      ))
     </if>
-    ORDER BY a.order_no DESC, a.id
+    ORDER BY a.order_no DESC , a.id
   </select>
 
 </mapper>

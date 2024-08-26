@@ -28,7 +28,7 @@ public class MySecurityProperties {
     private String adminPassword = "19b5818d7fe851f4510715cbf2193204df3f5b82808a84faaa02634752886ff2";
 
     @Schema(description = "通过jwt获取权限集合的url")
-    private String jwtGetAuthListUrl = "http://localhost:8001/auth/getAuthList";
+    private String jwtGetAuthListUrl = "http://localhost:8001/auth/getAuthColl";
 
     @Schema(description = "通过jwt获取用户id的url")
     private String jwtGetUserIdUrl = "http://localhost:8001/auth/getUserId";

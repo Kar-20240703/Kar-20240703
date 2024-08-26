@@ -11,13 +11,10 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.kar20240703.be.base.web.exception.BaseBizCodeEnum;
 import com.kar20240703.be.base.web.mapper.BaseMenuMapper;
 import com.kar20240703.be.base.web.model.domain.BaseMenuDO;
-import com.kar20240703.be.base.web.model.domain.BaseMenuRefUserDO;
 import com.kar20240703.be.base.web.model.domain.BaseRoleRefMenuDO;
-import com.kar20240703.be.base.web.model.domain.BaseRoleRefUserDO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseMenuPageDTO;
 import com.kar20240703.be.base.web.model.vo.BaseMenuInfoByIdVO;
-import com.kar20240703.be.base.web.service.BaseMenuRefUserService;
 import com.kar20240703.be.base.web.service.BaseMenuService;
 import com.kar20240703.be.base.web.service.BaseRoleRefMenuService;
 import com.kar20240703.be.base.web.service.BaseRoleRefUserService;
@@ -52,9 +49,6 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
 
     @Resource
     BaseRoleRefUserService baseRoleRefUserService;
-
-    @Resource
-    BaseMenuRefUserService baseMenuRefUserService;
 
     /**
      * 新增/修改
@@ -152,20 +146,6 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
 
             baseRoleRefMenuService.saveBatch(insertList);
 
-            List<BaseRoleRefUserDO> baseRoleRefUserDoList =
-                baseRoleRefUserService.lambdaQuery().in(BaseRoleRefUserDO::getRoleId, dto.getRoleIdSet())
-                    .select(BaseRoleRefUserDO::getUserId).list();
-
-            if (CollUtil.isNotEmpty(baseRoleRefUserDoList)) {
-
-                List<BaseMenuRefUserDO> baseMenuRefUserDoList =
-                    baseRoleRefUserDoList.stream().map(it -> new BaseMenuRefUserDO(dto.getId(), it.getUserId()))
-                        .collect(Collectors.toList());
-
-                baseMenuRefUserService.saveBatch(baseMenuRefUserDoList);
-
-            }
-
         }
 
     }
@@ -176,9 +156,6 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
     private void deleteByIdSetSub(Set<Long> idSet) {
 
         // 删除：角色菜单关联表
-        baseRoleRefMenuService.lambdaUpdate().in(BaseRoleRefMenuDO::getMenuId, idSet).remove();
-
-        // 删除：菜单用户关联表
         baseRoleRefMenuService.lambdaUpdate().in(BaseRoleRefMenuDO::getMenuId, idSet).remove();
 
     }

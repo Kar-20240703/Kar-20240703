@@ -2,7 +2,7 @@ package com.kar20240703.be.auth.web.controller;
 
 import com.kar20240703.be.auth.web.model.vo.R;
 import com.kar20240703.be.auth.web.service.AuthService;
-import java.util.List;
+import java.util.Set;
 import javax.annotation.Resource;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,9 +29,9 @@ public class AuthController {
     /**
      * 获取权限集合
      */
-    @PostMapping(value = "/getAuthList")
-    public R<List<String>> getAuthList() {
-        return R.okData(baseService.getAuthList());
+    @PostMapping(value = "/getAuthColl")
+    public R<Set<String>> getAuthColl() {
+        return R.okData(baseService.getAuthSet());
     }
 
 }

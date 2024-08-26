@@ -8,11 +8,9 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.kar20240703.be.base.web.exception.BaseBizCodeEnum;
-import com.kar20240703.be.base.web.mapper.BaseAuthRefUserMapper;
 import com.kar20240703.be.base.web.mapper.BaseRoleRefUserMapper;
 import com.kar20240703.be.base.web.mapper.BaseUserInfoMapper;
 import com.kar20240703.be.base.web.mapper.BaseUserMapper;
-import com.kar20240703.be.base.web.model.domain.BaseAuthRefUserDO;
 import com.kar20240703.be.base.web.model.domain.BaseRoleRefUserDO;
 import com.kar20240703.be.base.web.model.enums.BaseRedisKeyEnum;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
@@ -82,13 +80,6 @@ public class SignUtil {
     @Resource
     public void setBaseRoleUserMapper(BaseRoleRefUserMapper baseRoleRefUserMapper) {
         SignUtil.baseRoleRefUserMapper = baseRoleRefUserMapper;
-    }
-
-    private static BaseAuthRefUserMapper baseAuthRefUserMapper;
-
-    @Resource
-    public void setBaseUserAuthMapper(BaseAuthRefUserMapper baseAuthRefUserMapper) {
-        SignUtil.baseAuthRefUserMapper = baseAuthRefUserMapper;
     }
 
     /**
@@ -1061,22 +1052,19 @@ public class SignUtil {
      *
      * @param deleteFlag true 账号注销，需要删除用户相关的数据 false 修改用户的基础绑定信息
      */
-    public static void doSignDeleteSub(Set<Long> idSet, boolean deleteFlag) {
+    public static void doSignDeleteSub(Set<Long> userIdSet, boolean deleteFlag) {
 
         TransactionUtil.exec(() -> {
 
             if (deleteFlag) {
 
                 // 直接：删除用户基本信息
-                ChainWrappers.lambdaUpdateChain(baseUserInfoMapper).in(TempUserInfoDO::getId, idSet).remove();
+                ChainWrappers.lambdaUpdateChain(baseUserInfoMapper).in(TempUserInfoDO::getId, userIdSet).remove();
 
             }
 
             // 直接：删除用户绑定的角色
-            ChainWrappers.lambdaUpdateChain(baseRoleRefUserMapper).in(BaseRoleRefUserDO::getUserId, idSet).remove();
-
-            // 直接：删除用户绑定的权限
-            ChainWrappers.lambdaUpdateChain(baseAuthRefUserMapper).in(BaseAuthRefUserDO::getUserId, idSet).remove();
+            ChainWrappers.lambdaUpdateChain(baseRoleRefUserMapper).in(BaseRoleRefUserDO::getUserId, userIdSet).remove();
 
         });
 
