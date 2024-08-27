@@ -6,10 +6,13 @@ import cn.hutool.core.util.BooleanUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.baomidou.mybatisplus.extension.toolkit.ChainWrappers;
 import com.kar20240703.be.base.web.exception.BaseBizCodeEnum;
 import com.kar20240703.be.base.web.mapper.BaseAuthMapper;
+import com.kar20240703.be.base.web.mapper.BaseRoleRefUserMapper;
 import com.kar20240703.be.base.web.model.domain.BaseAuthDO;
 import com.kar20240703.be.base.web.model.domain.BaseRoleRefAuthDO;
+import com.kar20240703.be.base.web.model.domain.BaseRoleRefUserDO;
 import com.kar20240703.be.base.web.model.dto.BaseAuthInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseAuthPageDTO;
 import com.kar20240703.be.base.web.model.vo.BaseAuthInfoByIdVO;
@@ -24,6 +27,7 @@ import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.util.MyEntityUtil;
 import com.kar20240703.be.temp.web.util.MyMapUtil;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,6 +39,9 @@ public class BaseAuthServiceImpl extends ServiceImpl<BaseAuthMapper, BaseAuthDO>
 
     @Resource
     BaseRoleRefAuthService baseRoleRefAuthService;
+
+    @Resource
+    BaseRoleRefUserMapper baseRoleRefUserMapper;
 
     /**
      * 新增/修改
@@ -60,7 +67,13 @@ public class BaseAuthServiceImpl extends ServiceImpl<BaseAuthMapper, BaseAuthDO>
         baseAuthDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
         baseAuthDO.setId(dto.getId());
 
+        Set<Long> oldRoleIdSet = new HashSet<>();
+
         if (dto.getId() != null) {
+
+            oldRoleIdSet = baseRoleRefAuthService.lambdaQuery().eq(BaseRoleRefAuthDO::getAuthId, dto.getId())
+                .select(BaseRoleRefAuthDO::getRoleId).list().stream().map(BaseRoleRefAuthDO::getRoleId)
+                .collect(Collectors.toSet());
 
             deleteByIdSetSub(CollUtil.newHashSet(dto.getId())); // 先删除子表数据
 
@@ -70,7 +83,30 @@ public class BaseAuthServiceImpl extends ServiceImpl<BaseAuthMapper, BaseAuthDO>
 
         insertOrUpdateSub(dto, baseAuthDO); // 新增 子表数据
 
+        updateCache(dto, oldRoleIdSet); // 更新缓存
+
         return TempBizCodeEnum.OK;
+
+    }
+
+    /**
+     * 更新缓存
+     */
+    private void updateCache(BaseAuthInsertOrUpdateDTO dto, Set<Long> roleIdSet) {
+
+        roleIdSet.addAll(dto.getRoleIdSet());
+
+        if (CollUtil.isEmpty(roleIdSet)) {
+            return;
+        }
+
+        Set<Long> userIdSet =
+            ChainWrappers.lambdaQueryChain(baseRoleRefUserMapper).in(BaseRoleRefUserDO::getRoleId, roleIdSet)
+                .select(BaseRoleRefUserDO::getUserId).list().stream().map(BaseRoleRefUserDO::getUserId)
+                .collect(Collectors.toSet());
+
+        // 更新缓存
+        BaseRoleServiceImpl.updateCache(null, userIdSet, roleIdSet);
 
     }
 
@@ -169,9 +205,22 @@ public class BaseAuthServiceImpl extends ServiceImpl<BaseAuthMapper, BaseAuthDO>
             return TempBizCodeEnum.OK;
         }
 
+        Set<Long> roleIdSet =
+            baseRoleRefAuthService.lambdaQuery().eq(BaseRoleRefAuthDO::getAuthId, notEmptyIdSet.getIdSet())
+                .select(BaseRoleRefAuthDO::getRoleId).list().stream().map(BaseRoleRefAuthDO::getRoleId)
+                .collect(Collectors.toSet());
+
         deleteByIdSetSub(notEmptyIdSet.getIdSet()); // 删除子表数据
 
         removeByIds(notEmptyIdSet.getIdSet());
+
+        Set<Long> userIdSet =
+            ChainWrappers.lambdaQueryChain(baseRoleRefUserMapper).in(BaseRoleRefUserDO::getRoleId, roleIdSet)
+                .select(BaseRoleRefUserDO::getUserId).list().stream().map(BaseRoleRefUserDO::getUserId)
+                .collect(Collectors.toSet());
+
+        // 更新缓存
+        BaseRoleServiceImpl.updateCache(null, userIdSet, roleIdSet);
 
         return TempBizCodeEnum.OK;
 

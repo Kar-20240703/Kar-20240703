@@ -22,6 +22,7 @@ import com.kar20240703.be.base.web.service.BaseRoleRefAuthService;
 import com.kar20240703.be.base.web.service.BaseRoleRefMenuService;
 import com.kar20240703.be.base.web.service.BaseRoleRefUserService;
 import com.kar20240703.be.base.web.service.BaseRoleService;
+import com.kar20240703.be.base.web.util.TransactionUtil;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.annotation.MyTransactional;
 import com.kar20240703.be.temp.web.model.domain.TempEntity;
@@ -38,6 +39,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import javax.annotation.Resource;
 import org.redisson.api.RBatch;
 import org.redisson.api.RSet;
@@ -48,20 +50,43 @@ import org.springframework.stereotype.Service;
 @Service
 public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO> implements BaseRoleService {
 
+    private static BaseRoleRefUserService baseRoleRefUserService;
+
     @Resource
-    BaseRoleRefUserService baseRoleRefUserService;
+    public void setBaseRoleRefUserService(BaseRoleRefUserService baseRoleRefUserService) {
+        BaseRoleServiceImpl.baseRoleRefUserService = baseRoleRefUserService;
+    }
 
     @Resource
     BaseRoleRefMenuService baseRoleRefMenuService;
 
-    @Resource
-    BaseRoleRefAuthService baseRoleRefAuthService;
+    private static BaseRoleRefAuthService baseRoleRefAuthService;
 
     @Resource
-    RedissonClient redissonClient;
+    public void setBaseRoleRefAuthService(BaseRoleRefAuthService baseRoleRefAuthService) {
+        BaseRoleServiceImpl.baseRoleRefAuthService = baseRoleRefAuthService;
+    }
+
+    private static RedissonClient redissonClient;
 
     @Resource
-    BaseAuthMapper baseAuthMapper;
+    public void setRedissonClient(RedissonClient redissonClient) {
+        BaseRoleServiceImpl.redissonClient = redissonClient;
+    }
+
+    private static BaseAuthMapper baseAuthMapper;
+
+    @Resource
+    public void setBaseAuthMapper(BaseAuthMapper baseAuthMapper) {
+        BaseRoleServiceImpl.baseAuthMapper = baseAuthMapper;
+    }
+
+    private static BaseRoleMapper baseRoleMapper;
+
+    @Resource
+    public void setBaseRoleMapper(BaseRoleMapper baseRoleMapper) {
+        BaseRoleServiceImpl.baseRoleMapper = baseRoleMapper;
+    }
 
     /**
      * 新增/修改
@@ -111,7 +136,7 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
 
         insertOrUpdateSub(dto, baseRoleDO); // 新增 子表数据
 
-        updateCache(dto, baseRoleDO, oldUserIdSet); // 更新缓存
+        updateCache(dto, oldUserIdSet, null); // 更新缓存
 
         return TempBizCodeEnum.OK;
 
@@ -120,20 +145,61 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
     /**
      * 更新缓存
      */
-    private void updateCache(BaseRoleInsertOrUpdateDTO dto, BaseRoleDO baseRoleDO, Set<Long> userIdSet) {
+    public static void updateCache(@Nullable BaseRoleInsertOrUpdateDTO dto, Set<Long> userIdSet,
+        @Nullable Set<Long> roleIdSet) {
 
-        if (BooleanUtil.isTrue(dto.getDefaultFlag())) {
+        TransactionUtil.exec(() -> {
 
-            // 更新：默认缓存
-            updateCacheForDefault(baseRoleDO);
+            if (dto == null) {
 
-        }
+                if (CollUtil.isNotEmpty(roleIdSet)) {
 
-        userIdSet.addAll(dto.getUserIdSet());
+                    BaseRoleDO baseRoleDO =
+                        ChainWrappers.lambdaQueryChain(baseRoleMapper).in(TempEntity::getId, roleIdSet)
+                            .eq(BaseRoleDO::getDefaultFlag, true).select(TempEntity::getId).one();
 
-        if (CollUtil.isEmpty(userIdSet)) {
-            return;
-        }
+                    if (baseRoleDO != null) {
+
+                        Set<Long> authIdSet =
+                            baseRoleRefAuthService.lambdaQuery().eq(BaseRoleRefAuthDO::getRoleId, baseRoleDO.getId())
+                                .select(BaseRoleRefAuthDO::getAuthId).list().stream().map(BaseRoleRefAuthDO::getAuthId)
+                                .collect(Collectors.toSet());
+
+                        // 更新：默认缓存
+                        updateCacheForDefault(authIdSet);
+
+                    }
+
+                }
+
+            } else {
+
+                if (BooleanUtil.isTrue(dto.getDefaultFlag())) {
+
+                    // 更新：默认缓存
+                    updateCacheForDefault(dto.getAuthIdSet());
+
+                }
+
+                userIdSet.addAll(dto.getUserIdSet());
+
+            }
+
+            if (CollUtil.isEmpty(userIdSet)) {
+                return;
+            }
+
+            // 通过：userIdSet，更新缓存
+            updateCacheByUserIdSet(userIdSet);
+
+        });
+
+    }
+
+    /**
+     * 通过：userIdSet，更新缓存
+     */
+    private static void updateCacheByUserIdSet(Set<Long> userIdSet) {
 
         List<BaseRoleRefUserDO> baseRoleRefUserDoList =
             baseRoleRefUserService.lambdaQuery().in(BaseRoleRefUserDO::getUserId, userIdSet)
@@ -219,7 +285,7 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
 
             }
 
-            rBatchSet.addAllCountedAsync(authSet);
+            rBatchSet.addAllAsync(authSet);
 
         }
 
@@ -230,19 +296,14 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
     /**
      * 更新：默认缓存
      */
-    private void updateCacheForDefault(BaseRoleDO baseRoleDO) {
-
-        Set<Long> authIdSet = baseRoleRefAuthService.lambdaQuery().eq(BaseRoleRefAuthDO::getRoleId, baseRoleDO.getId())
-            .select(BaseRoleRefAuthDO::getAuthId).list().stream().map(BaseRoleRefAuthDO::getAuthId)
-            .collect(Collectors.toSet());
+    private static void updateCacheForDefault(Set<Long> authIdSet) {
 
         RSet<String> rSet = redissonClient.getSet(TempRedisKeyEnum.DEFAULT_USER_AUTH_CACHE.name());
 
+        rSet.delete();
+
         if (CollUtil.isEmpty(authIdSet)) {
-
-            rSet.delete();
             return;
-
         }
 
         Set<String> authSet =
@@ -406,9 +467,16 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
             return TempBizCodeEnum.OK;
         }
 
+        Set<Long> userIdSet =
+            baseRoleRefUserService.lambdaQuery().in(BaseRoleRefUserDO::getRoleId, notEmptyIdSet.getIdSet())
+                .select(BaseRoleRefUserDO::getUserId).list().stream().map(BaseRoleRefUserDO::getUserId)
+                .collect(Collectors.toSet());
+
         deleteByIdSetSub(notEmptyIdSet.getIdSet()); // 删除子表数据
 
         removeByIds(notEmptyIdSet.getIdSet());
+
+        updateCache(null, userIdSet, notEmptyIdSet.getIdSet()); // 更新缓存
 
         return TempBizCodeEnum.OK;
 
