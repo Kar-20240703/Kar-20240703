@@ -2,7 +2,7 @@ package com.kar20240703.be.auth.web.service.impl;
 
 import com.kar20240703.be.auth.web.service.AuthService;
 import com.kar20240703.be.auth.web.util.MyJwtUtil;
-import com.kar20240703.be.auth.web.util.UserUtil;
+import com.kar20240703.be.auth.web.util.MyUserUtil;
 import java.util.Set;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class AuthServiceImpl implements AuthService {
      */
     @Override
     public Long getUserId() {
-        return UserUtil.getCurrentUserId();
+        return MyUserUtil.getCurrentUserId();
     }
 
     /**
@@ -29,7 +29,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public Set<String> getAuthSet() {
 
-        Long userId = UserUtil.getCurrentUserId();
+        Long userId = MyUserUtil.getCurrentUserId();
 
         // 获取：获取用户权限集合
         return MyJwtUtil.getAuthSetByUserId(userId);

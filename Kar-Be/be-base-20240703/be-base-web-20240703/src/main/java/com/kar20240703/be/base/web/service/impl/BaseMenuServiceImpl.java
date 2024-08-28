@@ -31,7 +31,7 @@ import com.kar20240703.be.temp.web.util.CallBack;
 import com.kar20240703.be.temp.web.util.MyEntityUtil;
 import com.kar20240703.be.temp.web.util.MyThreadUtil;
 import com.kar20240703.be.temp.web.util.MyTreeUtil;
-import com.kar20240703.be.temp.web.util.UserUtil;
+import com.kar20240703.be.temp.web.util.MyUserUtil;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -282,9 +282,9 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
     @Override
     public List<BaseMenuDO> userSelfMenuList() {
 
-        Long userId = UserUtil.getCurrentUserId();
+        Long userId = MyUserUtil.getCurrentUserId();
 
-        if (UserUtil.getCurrentUserAdminFlag(userId)) {
+        if (MyUserUtil.getCurrentUserAdminFlag(userId)) {
 
             userId = null;
 

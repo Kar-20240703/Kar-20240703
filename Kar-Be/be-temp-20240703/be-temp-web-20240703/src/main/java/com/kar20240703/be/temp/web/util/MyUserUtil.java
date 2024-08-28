@@ -27,20 +27,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserUtil {
+public class MyUserUtil {
 
     private static RedissonClient redissonClient;
 
     @Resource
     public void setRedissonClient(RedissonClient redissonClient) {
-        UserUtil.redissonClient = redissonClient;
+        MyUserUtil.redissonClient = redissonClient;
     }
 
     private static MySecurityProperties mySecurityProperties;
 
     @Resource
     public void setSecurityProperties(MySecurityProperties mySecurityProperties) {
-        UserUtil.mySecurityProperties = mySecurityProperties;
+        MyUserUtil.mySecurityProperties = mySecurityProperties;
     }
 
     /**
@@ -67,7 +67,7 @@ public class UserUtil {
 
         Long currentUserId = getCurrentUserId();
 
-        if (UserUtil.getCurrentUserAdminFlag(currentUserId)) {
+        if (MyUserUtil.getCurrentUserAdminFlag(currentUserId)) {
             R.error(TempBizCodeEnum.THE_ADMIN_ACCOUNT_DOES_NOT_SUPPORT_THIS_OPERATION);
         }
 

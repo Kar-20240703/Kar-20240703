@@ -31,7 +31,7 @@ import com.kar20240703.be.temp.web.util.MyJwtUtil;
 import com.kar20240703.be.temp.web.util.NicknameUtil;
 import com.kar20240703.be.temp.web.util.RedissonUtil;
 import com.kar20240703.be.temp.web.util.RequestUtil;
-import com.kar20240703.be.temp.web.util.UserUtil;
+import com.kar20240703.be.temp.web.util.MyUserUtil;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
@@ -347,7 +347,7 @@ public class SignUtil {
      */
     private static boolean signInPasswordForAdmin(String password) {
 
-        if (UserUtil.getDisable(TempConstant.ADMIN_ID)) { // admin是否被冻结
+        if (MyUserUtil.getDisable(TempConstant.ADMIN_ID)) { // admin是否被冻结
 
             R.error(TempBizCodeEnum.ACCOUNT_IS_DISABLED);
 
@@ -493,7 +493,7 @@ public class SignUtil {
         boolean accountBlankFlag = StrUtil.isBlank(account);
 
         if (accountBlankFlag) {
-            userId = UserUtil.getCurrentUserIdNotAdmin();
+            userId = MyUserUtil.getCurrentUserIdNotAdmin();
         }
 
         // 敏感操作：
@@ -616,7 +616,7 @@ public class SignUtil {
     public static String updatePassword(String newPasswordTemp, String originNewPasswordTemp,
         Enum<? extends IRedisKey> redisKeyEnum, String code, String oldPassword) {
 
-        Long currentUserIdNotAdmin = UserUtil.getCurrentUserIdNotAdmin();
+        Long currentUserIdNotAdmin = MyUserUtil.getCurrentUserIdNotAdmin();
 
         if (BaseRedisKeyEnum.PRE_USER_NAME.equals(redisKeyEnum)) {
 
@@ -819,7 +819,7 @@ public class SignUtil {
     public static String updateAccount(String oldCode, String newCode, Enum<? extends IRedisKey> oldRedisKeyEnum,
         Enum<? extends IRedisKey> newRedisKeyEnum, String newAccount, String currentPassword, String appId) {
 
-        Long currentUserIdNotAdmin = UserUtil.getCurrentUserIdNotAdmin();
+        Long currentUserIdNotAdmin = MyUserUtil.getCurrentUserIdNotAdmin();
 
         if (BaseRedisKeyEnum.PRE_USER_NAME.equals(newRedisKeyEnum)) {
             checkCurrentPasswordWillError(currentPassword, currentUserIdNotAdmin, null);
@@ -966,7 +966,7 @@ public class SignUtil {
         String currentPassword, @Nullable Long userId) {
 
         if (userId == null) {
-            userId = UserUtil.getCurrentUserIdNotAdmin();
+            userId = MyUserUtil.getCurrentUserIdNotAdmin();
         }
 
         if (StrUtil.isNotBlank(currentPassword)) {

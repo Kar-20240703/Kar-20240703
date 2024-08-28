@@ -159,7 +159,7 @@ public class MyJwtUtil {
         }
 
         // admin账号，自带所有权限
-        if (UserUtil.getCurrentUserAdminFlag(userId)) {
+        if (MyUserUtil.getCurrentUserAdminFlag(userId)) {
             return new HashSet<>();
         }
 

@@ -8,6 +8,8 @@ import com.kar20240703.be.temp.web.model.interfaces.IRedisKey;
 public enum BaseRedisKeyEnum implements IRedisKey {
 
     // 【PRE_】开头 ↓
+    PRE_USER_MANAGE_SIGN_IN_FLAG, // 用户是否允许登录后台，后面跟：用户主键 id
+
     PRE_WX_APP_ID, // 微信 appId（应用）：锁：【微信 appId】
     PRE_WX_OPEN_ID, // 微信 openId（用户）：锁：【微信 openId】，备注：一般锁：微信 openId，不锁：微信 appId
     PRE_WX_UNION_ID, // 微信 unionId（平台）：锁：【微信 unionId】

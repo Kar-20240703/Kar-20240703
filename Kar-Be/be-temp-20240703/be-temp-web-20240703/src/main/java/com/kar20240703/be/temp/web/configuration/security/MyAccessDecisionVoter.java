@@ -1,6 +1,6 @@
 package com.kar20240703.be.temp.web.configuration.security;
 
-import com.kar20240703.be.temp.web.util.UserUtil;
+import com.kar20240703.be.temp.web.util.MyUserUtil;
 import java.util.Collection;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -25,7 +25,7 @@ public class MyAccessDecisionVoter implements AccessDecisionVoter<Object> {
     public int vote(Authentication authentication, Object object, Collection<ConfigAttribute> attributes) {
 
         // 如果是 admin，则可以访问所有接口
-        if (UserUtil.getCurrentUserAdminFlag()) {
+        if (MyUserUtil.getCurrentUserAdminFlag()) {
             return ACCESS_GRANTED; // 同意票
         }
 

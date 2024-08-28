@@ -2,7 +2,7 @@ package com.kar20240703.be.temp.web.configuration.mybatisplus;
 
 import cn.hutool.core.util.IdUtil;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.kar20240703.be.temp.web.util.UserUtil;
+import com.kar20240703.be.temp.web.util.MyUserUtil;
 import java.util.Date;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.stereotype.Component;
@@ -18,7 +18,7 @@ public class MetaObjectHandlerConfiguration implements MetaObjectHandler {
 
         Date date = new Date();
 
-        Long currentUserIdDefault = UserUtil.getCurrentUserIdDefault();
+        Long currentUserIdDefault = MyUserUtil.getCurrentUserIdDefault();
 
         // 实体类有值时，这里不会生效
         strictInsertFill(metaObject, "createId", Long.class, currentUserIdDefault);
@@ -39,7 +39,7 @@ public class MetaObjectHandlerConfiguration implements MetaObjectHandler {
 
         Date date = new Date();
 
-        Long currentUserIdDefault = UserUtil.getCurrentUserIdDefault();
+        Long currentUserIdDefault = MyUserUtil.getCurrentUserIdDefault();
 
         // 实体类有值时，这里不会生效
         strictUpdateFill(metaObject, "updateTime", Date.class, date);

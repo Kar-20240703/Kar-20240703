@@ -10,7 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserUtil {
+public class MyUserUtil {
 
     /**
      * 获取当前 userId 这里只会返回实际的 userId，如果为 null，则会抛出异常

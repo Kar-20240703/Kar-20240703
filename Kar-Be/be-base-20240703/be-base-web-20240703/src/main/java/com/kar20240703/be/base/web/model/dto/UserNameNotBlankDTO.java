@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class UserNameNotBlankDTO {
 
-    @Size(max = 20)
+    @Size(max = 100)
     @NotBlank
     @Pattern(regexp = TempRegexConstant.USER_NAME_REGEXP)
     @Schema(description = "用户名")
