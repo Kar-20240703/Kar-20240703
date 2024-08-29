@@ -29,11 +29,11 @@ public class RedissonUtil {
     @SneakyThrows
     public static void batch(@NotNull VoidFunc1<RBatch> voidFunc1) {
 
-        RBatch batch = redissonClient.createBatch();
+        RBatch rBatch = redissonClient.createBatch();
 
-        voidFunc1.call(batch);
+        voidFunc1.call(rBatch);
 
-        batch.execute(); // 执行批量操作
+        rBatch.execute(); // 执行批量操作
 
     }
 

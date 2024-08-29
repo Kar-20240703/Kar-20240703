@@ -1045,9 +1045,9 @@ public class SignUtil {
      */
     public static void removeJwt(Set<Long> userIdSet) {
 
-        RBatch batch = redissonClient.createBatch();
+        RBatch rBatch = redissonClient.createBatch();
 
-        RKeysAsync rKeysAsync = batch.getKeys();
+        RKeysAsync rKeysAsync = rBatch.getKeys();
 
         for (Long item : userIdSet) {
 
@@ -1061,7 +1061,7 @@ public class SignUtil {
 
         }
 
-        batch.execute();
+        rBatch.execute();
 
     }
 

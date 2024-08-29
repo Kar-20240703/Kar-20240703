@@ -222,15 +222,15 @@ public class MyUserUtil {
 
         String now = DateUtil.now();
 
-        RBatch batch = redissonClient.createBatch();
+        RBatch rBatch = redissonClient.createBatch();
 
         for (Long item : userIdSet) {
 
-            batch.<String>getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + item).setAsync(now);
+            rBatch.<String>getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + item).setAsync(now);
 
         }
 
-        batch.execute();
+        rBatch.execute();
 
     }
 

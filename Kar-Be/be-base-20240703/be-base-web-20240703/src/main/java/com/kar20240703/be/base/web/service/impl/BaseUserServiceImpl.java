@@ -379,6 +379,9 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
 
             baseRoleRefUserService.saveBatch(insertList);
 
+            // 更新缓存
+            BaseRoleServiceImpl.updateCache(null, CollUtil.newHashSet(tempUserDO.getId()), dto.getRoleIdSet());
+
         }
 
     }
