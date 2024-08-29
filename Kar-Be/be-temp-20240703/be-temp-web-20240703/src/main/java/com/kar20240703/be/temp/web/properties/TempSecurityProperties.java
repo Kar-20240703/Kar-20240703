@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Data
 @ConfigurationProperties(prefix = PropertiesPrefixConstant.SECURITY)
-public class MySecurityProperties {
+public class TempSecurityProperties {
 
     @Schema(description = "jwt 密钥前缀")
     private String jwtSecretPre =

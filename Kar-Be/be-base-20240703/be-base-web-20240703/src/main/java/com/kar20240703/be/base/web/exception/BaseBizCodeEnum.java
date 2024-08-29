@@ -14,7 +14,7 @@ import lombok.Getter;
 public enum BaseBizCodeEnum implements IBizCode {
 
     EMAIL_HAS_BEEN_REGISTERED(300011, "操作失败：该邮箱已被占用，请重新输入"), //
-    PHONE_HAS_BEEN_REGISTERED(300021, "操作失败：该手机号码已被占用，请重新输入"), //
+    PHONE_HAS_BEEN_REGISTERED(300021, "操作失败：该手机号已被占用，请重新输入"), //
     TOO_MANY_PASSWORD_ERROR(300031, "密码错误次数过多，已被冻结，请点击【忘记密码了】，进行密码修改"), //
     NO_PASSWORD_SET(300041, "未设置密码，请点击【忘记密码了】，进行密码设置"), //
     ACCOUNT_OR_PASSWORD_NOT_VALID(300051, "账号或密码错误"), //
@@ -37,6 +37,8 @@ public enum BaseBizCodeEnum implements IBizCode {
     THE_SAME_ROLE_NAME_EXIST(300161, "操作失败：存在相同的角色名"), //
 
     THE_SAME_AUTH_NAME_EXIST(300171, "操作失败：存在相同的权限名"), //
+
+    ACCOUNT_CANNOT_BE_EMPTY(300181, "操作失败：邮箱/用户名/手机号/微信 不能都为空"), //
 
     ;
 

@@ -7,7 +7,7 @@ import cn.hutool.json.JSONObject;
 import com.kar20240703.be.temp.web.model.constant.SecurityConstant;
 import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.enums.TempRequestCategoryEnum;
-import com.kar20240703.be.temp.web.properties.MySecurityProperties;
+import com.kar20240703.be.temp.web.properties.TempSecurityProperties;
 import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -32,11 +32,11 @@ public class MyJwtUtil {
 
     public static final String PAYLOAD_MAP_WX_OPEN_ID_KEY = "wxOpenId";
 
-    private static MySecurityProperties mySecurityProperties;
+    private static TempSecurityProperties tempSecurityProperties;
 
-    public MyJwtUtil(MySecurityProperties mySecurityProperties) {
+    public MyJwtUtil(TempSecurityProperties tempSecurityProperties) {
 
-        MyJwtUtil.mySecurityProperties = mySecurityProperties;
+        MyJwtUtil.tempSecurityProperties = tempSecurityProperties;
 
     }
 
@@ -124,7 +124,7 @@ public class MyJwtUtil {
     @NotNull
     public static String getJwtSecret() {
 
-        return MyJwtUtil.mySecurityProperties.getJwtSecretPre() + MyJwtUtil.JWT_SECRET_SYS;
+        return MyJwtUtil.tempSecurityProperties.getJwtSecretPre() + MyJwtUtil.JWT_SECRET_SYS;
 
     }
 
@@ -134,7 +134,7 @@ public class MyJwtUtil {
     @NotNull
     public static String getJwtRefreshTokenSecret() {
 
-        return MyJwtUtil.mySecurityProperties.getJwtRefreshTokenSecretPre() + MyJwtUtil.JWT_REFRESH_TOKEN_SECRET_SYS;
+        return MyJwtUtil.tempSecurityProperties.getJwtRefreshTokenSecretPre() + MyJwtUtil.JWT_REFRESH_TOKEN_SECRET_SYS;
 
     }
 

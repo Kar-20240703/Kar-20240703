@@ -24,14 +24,14 @@ import com.kar20240703.be.temp.web.model.enums.TempRequestCategoryEnum;
 import com.kar20240703.be.temp.web.model.interfaces.IRedisKey;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.model.vo.SignInVO;
-import com.kar20240703.be.temp.web.properties.MySecurityProperties;
+import com.kar20240703.be.temp.web.properties.TempSecurityProperties;
 import com.kar20240703.be.temp.web.util.CodeUtil;
 import com.kar20240703.be.temp.web.util.MyEntityUtil;
 import com.kar20240703.be.temp.web.util.MyJwtUtil;
+import com.kar20240703.be.temp.web.util.MyUserUtil;
 import com.kar20240703.be.temp.web.util.NicknameUtil;
 import com.kar20240703.be.temp.web.util.RedissonUtil;
 import com.kar20240703.be.temp.web.util.RequestUtil;
-import com.kar20240703.be.temp.web.util.MyUserUtil;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
@@ -39,8 +39,9 @@ import javax.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.redisson.api.RAtomicLong;
+import org.redisson.api.RBatch;
 import org.redisson.api.RBucket;
-import org.redisson.api.RKeys;
+import org.redisson.api.RKeysAsync;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
@@ -68,11 +69,11 @@ public class SignUtil {
         SignUtil.baseUserInfoMapper = baseUserInfoMapper;
     }
 
-    private static MySecurityProperties mySecurityProperties;
+    private static TempSecurityProperties tempSecurityProperties;
 
     @Resource
-    public void setSecurityProperties(MySecurityProperties mySecurityProperties) {
-        SignUtil.mySecurityProperties = mySecurityProperties;
+    public void setSecurityProperties(TempSecurityProperties tempSecurityProperties) {
+        SignUtil.tempSecurityProperties = tempSecurityProperties;
     }
 
     private static BaseRoleRefUserMapper baseRoleRefUserMapper;
@@ -150,6 +151,15 @@ public class SignUtil {
             return "注册成功";
 
         });
+
+    }
+
+    /**
+     * 抛出：该账号已被注册，异常
+     */
+    public static void accountIsExistError() {
+
+        R.error(BaseBizCodeEnum.THE_ACCOUNT_HAS_ALREADY_BEEN_REGISTERED);
 
     }
 
@@ -358,7 +368,7 @@ public class SignUtil {
             // 判断：密码错误次数过多
             checkTooManyPasswordWillError(TempConstant.ADMIN_ID);
 
-            if (BooleanUtil.isFalse(mySecurityProperties.getAdminPassword().equals(password))) {
+            if (BooleanUtil.isFalse(tempSecurityProperties.getAdminPassword().equals(password))) {
 
                 // 密码输入错误处理
                 passwordErrorHandlerWillError(TempConstant.ADMIN_ID);
@@ -1013,18 +1023,18 @@ public class SignUtil {
      */
     public static void doSignDelete(Set<Long> userIdSet) {
 
+        if (CollUtil.isEmpty(userIdSet)) {
+            return;
+        }
+
         TransactionUtil.exec(() -> {
 
             doSignDeleteSub(userIdSet, true); // 删除子表数据
 
             baseUserMapper.deleteByIds(userIdSet); // 直接：删除用户
 
-            for (Long item : userIdSet) {
-
-                // 删除：jwt相关
-                removeJwt(item);
-
-            }
+            // 删除：jwt相关
+            removeJwt(userIdSet);
 
         });
 
@@ -1033,17 +1043,25 @@ public class SignUtil {
     /**
      * 删除：jwt相关
      */
-    private static void removeJwt(Long userId) {
+    public static void removeJwt(Set<Long> userIdSet) {
 
-        String jwtRefreshTokenRedisPreKey = TempRedisKeyEnum.PRE_JWT_REFRESH_TOKEN + ":" + userId + ":*";
+        RBatch batch = redissonClient.createBatch();
 
-        String jwtRedisPreKey = TempRedisKeyEnum.PRE_JWT + ":" + userId + ":*";
+        RKeysAsync rKeysAsync = batch.getKeys();
 
-        RKeys rKeys = redissonClient.getKeys();
+        for (Long item : userIdSet) {
 
-        rKeys.deleteByPattern(jwtRefreshTokenRedisPreKey);
+            String jwtRefreshTokenRedisPreKey = TempRedisKeyEnum.PRE_JWT_REFRESH_TOKEN + ":" + item + ":*";
 
-        rKeys.deleteByPattern(jwtRedisPreKey);
+            String jwtRedisPreKey = TempRedisKeyEnum.PRE_JWT + ":" + item + ":*";
+
+            rKeysAsync.deleteByPatternAsync(jwtRefreshTokenRedisPreKey);
+
+            rKeysAsync.deleteByPatternAsync(jwtRedisPreKey);
+
+        }
+
+        batch.execute();
 
     }
 

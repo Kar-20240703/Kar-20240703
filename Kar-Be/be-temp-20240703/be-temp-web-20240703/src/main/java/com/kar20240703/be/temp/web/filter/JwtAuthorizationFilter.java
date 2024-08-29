@@ -14,7 +14,7 @@ import com.kar20240703.be.temp.web.model.configuration.IJwtGetAuthListConfigurat
 import com.kar20240703.be.temp.web.model.constant.SecurityConstant;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.model.vo.SignInVO;
-import com.kar20240703.be.temp.web.properties.MySecurityProperties;
+import com.kar20240703.be.temp.web.properties.TempSecurityProperties;
 import com.kar20240703.be.temp.web.util.MyExceptionUtil;
 import com.kar20240703.be.temp.web.util.MyJwtUtil;
 import com.kar20240703.be.temp.web.util.RequestUtil;
@@ -46,18 +46,18 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Nullable
     IJwtGenerateConfiguration iJwtGenerateConfiguration;
 
-    MySecurityProperties mySecurityProperties;
+    TempSecurityProperties tempSecurityProperties;
 
     @Nullable
     IJwtGetAuthListConfiguration iJwtGetAuthListConfiguration;
 
     public JwtAuthorizationFilter(
         @Autowired(required = false) @Nullable IJwtGenerateConfiguration iJwtGenerateConfiguration,
-        MySecurityProperties mySecurityProperties,
+        TempSecurityProperties tempSecurityProperties,
         @Autowired(required = false) @Nullable IJwtGetAuthListConfiguration iJwtGetAuthListConfiguration) {
 
         this.iJwtGenerateConfiguration = iJwtGenerateConfiguration;
-        this.mySecurityProperties = mySecurityProperties;
+        this.tempSecurityProperties = tempSecurityProperties;
         this.iJwtGetAuthListConfiguration = iJwtGetAuthListConfiguration;
 
     }
@@ -110,7 +110,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         }
 
-        String jwtGetAuthListUrl = mySecurityProperties.getJwtGetAuthListUrl();
+        String jwtGetAuthListUrl = tempSecurityProperties.getJwtGetAuthListUrl();
 
         if (StrUtil.isBlank(jwtGetAuthListUrl)) {
 

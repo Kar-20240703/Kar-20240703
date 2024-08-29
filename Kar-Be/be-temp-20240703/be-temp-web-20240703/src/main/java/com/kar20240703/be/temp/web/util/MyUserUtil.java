@@ -13,7 +13,7 @@ import com.kar20240703.be.temp.web.model.constant.TempConstant;
 import com.kar20240703.be.temp.web.model.domain.TempUserDO;
 import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.vo.R;
-import com.kar20240703.be.temp.web.properties.MySecurityProperties;
+import com.kar20240703.be.temp.web.properties.TempSecurityProperties;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -36,11 +36,11 @@ public class MyUserUtil {
         MyUserUtil.redissonClient = redissonClient;
     }
 
-    private static MySecurityProperties mySecurityProperties;
+    private static TempSecurityProperties tempSecurityProperties;
 
     @Resource
-    public void setSecurityProperties(MySecurityProperties mySecurityProperties) {
-        MyUserUtil.mySecurityProperties = mySecurityProperties;
+    public void setSecurityProperties(TempSecurityProperties tempSecurityProperties) {
+        MyUserUtil.tempSecurityProperties = tempSecurityProperties;
     }
 
     /**
@@ -274,7 +274,7 @@ public class MyUserUtil {
 
         if (setAuthoritySetFlag) {
 
-            String jwtGetAuthListUrl = mySecurityProperties.getJwtGetAuthListUrl();
+            String jwtGetAuthListUrl = tempSecurityProperties.getJwtGetAuthListUrl();
 
             if (StrUtil.isNotBlank(jwtGetAuthListUrl)) {
 
