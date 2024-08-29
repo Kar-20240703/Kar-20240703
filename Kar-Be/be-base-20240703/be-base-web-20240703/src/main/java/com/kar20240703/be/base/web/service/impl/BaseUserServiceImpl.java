@@ -589,6 +589,8 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
         lambdaUpdate().in(TempEntity::getId, notEmptyIdSet.getIdSet()).eq(TempUserDO::getEnableFlag, false)
             .set(TempUserDO::getEnableFlag, true).update();
 
+        MyUserUtil.removeDisable(notEmptyIdSet.getIdSet()); // 设置：账号被冻结
+
         return TempBizCodeEnum.OK;
 
     }
@@ -607,8 +609,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
         lambdaUpdate().in(TempEntity::getId, notEmptyIdSet.getIdSet()).eq(TempUserDO::getEnableFlag, true)
             .set(TempUserDO::getEnableFlag, false).update();
 
-        // 移除：jwt相关
-        SignUtil.removeJwt(notEmptyIdSet.getIdSet());
+        MyUserUtil.setDisable(notEmptyIdSet.getIdSet()); // 设置：账号被冻结
 
         return TempBizCodeEnum.OK;
 

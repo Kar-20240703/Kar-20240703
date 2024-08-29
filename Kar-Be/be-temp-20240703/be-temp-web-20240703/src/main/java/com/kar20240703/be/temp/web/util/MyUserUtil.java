@@ -15,10 +15,13 @@ import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.properties.TempSecurityProperties;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.redisson.api.RBatch;
+import org.redisson.api.RKeys;
 import org.redisson.api.RedissonClient;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -213,6 +216,25 @@ public class MyUserUtil {
     }
 
     /**
+     * 统一的：设置：用户冻结
+     */
+    public static void setDisable(Set<Long> userIdSet) {
+
+        String now = DateUtil.now();
+
+        RBatch batch = redissonClient.createBatch();
+
+        for (Long item : userIdSet) {
+
+            batch.<String>getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + item).setAsync(now);
+
+        }
+
+        batch.execute();
+
+    }
+
+    /**
      * 统一的：获取：用户冻结
      */
     public static boolean getDisable(Long userId) {
@@ -227,6 +249,20 @@ public class MyUserUtil {
     public static void removeDisable(Long userId) {
 
         redissonClient.getBucket(TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + userId).delete();
+
+    }
+
+    /**
+     * 统一的：删除：用户冻结
+     */
+    public static void removeDisable(Set<Long> userIdSet) {
+
+        RKeys keys = redissonClient.getKeys();
+
+        String[] redisKeyArr =
+            userIdSet.stream().map(it -> TempRedisKeyEnum.PRE_USER_DISABLE.name() + ":" + it).toArray(String[]::new);
+
+        keys.delete(redisKeyArr);
 
     }
 
