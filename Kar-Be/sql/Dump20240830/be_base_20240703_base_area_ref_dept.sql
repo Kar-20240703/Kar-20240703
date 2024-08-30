@@ -16,30 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_user_auth`
+-- Table structure for table `base_area_ref_dept`
 --
 
-DROP TABLE IF EXISTS `base_user_auth`;
+DROP TABLE IF EXISTS `base_area_ref_dept`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_user_auth`
+CREATE TABLE `base_area_ref_dept`
 (
-    `user_id` bigint NOT NULL COMMENT '用户主键id',
-    `auth`    bigint NOT NULL COMMENT '权限，例子：base:menu:edit',
-    PRIMARY KEY (`user_id`, `auth`)
+    `area_id` bigint NOT NULL COMMENT '区域主键id',
+    `dept_id` bigint NOT NULL COMMENT '部门主键id',
+    PRIMARY KEY (`area_id`, `dept_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：关联表：用户表，权限表';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：关联表：区域表，部门表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_user_auth`
+-- Dumping data for table `base_area_ref_dept`
 --
 
-LOCK TABLES `base_user_auth` WRITE;
-/*!40000 ALTER TABLE `base_user_auth`
+LOCK TABLES `base_area_ref_dept` WRITE;
+/*!40000 ALTER TABLE `base_area_ref_dept`
     DISABLE KEYS */;
-/*!40000 ALTER TABLE `base_user_auth`
+/*!40000 ALTER TABLE `base_area_ref_dept`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-15 10:57:56
+-- Dump completed on 2024-08-30 16:13:23

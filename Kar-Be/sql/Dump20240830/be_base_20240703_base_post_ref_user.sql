@@ -16,30 +16,30 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_role_auth`
+-- Table structure for table `base_post_ref_user`
 --
 
-DROP TABLE IF EXISTS `base_role_auth`;
+DROP TABLE IF EXISTS `base_post_ref_user`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_role_auth`
+CREATE TABLE `base_post_ref_user`
 (
-    `role_id` bigint NOT NULL COMMENT '角色主键id',
-    `auth_id` bigint NOT NULL COMMENT '权限主键id',
-    PRIMARY KEY (`auth_id`, `role_id`)
+    `post_id` bigint NOT NULL COMMENT '岗位主键id',
+    `user_id` bigint NOT NULL COMMENT '用户主键id',
+    PRIMARY KEY (`post_id`, `user_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：关联表：角色表，权限表';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20230301：关联表：岗位表，用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_role_auth`
+-- Dumping data for table `base_post_ref_user`
 --
 
-LOCK TABLES `base_role_auth` WRITE;
-/*!40000 ALTER TABLE `base_role_auth`
+LOCK TABLES `base_post_ref_user` WRITE;
+/*!40000 ALTER TABLE `base_post_ref_user`
     DISABLE KEYS */;
-/*!40000 ALTER TABLE `base_role_auth`
+/*!40000 ALTER TABLE `base_post_ref_user`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -52,4 +52,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-15 10:58:04
+-- Dump completed on 2024-08-30 16:13:20

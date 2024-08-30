@@ -32,7 +32,7 @@ CREATE TABLE `base_role`
     `enable_flag`  tinyint(1)                                                    NOT NULL COMMENT '是否启用',
     `remark`       varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL COMMENT '备注',
     `name`         varchar(100)                                                  NOT NULL COMMENT '角色名（不能重复）',
-    `value`        varchar(100)                                                  NOT NULL COMMENT '角色值（不能重复）',
+    `uuid`         varchar(32)                                                   NOT NULL COMMENT '唯一标识（不能重复）',
     `default_flag` tinyint(1)                                                    NOT NULL COMMENT '是否是默认角色，备注：只会有一个默认角色',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
@@ -48,6 +48,11 @@ CREATE TABLE `base_role`
 LOCK TABLES `base_role` WRITE;
 /*!40000 ALTER TABLE `base_role`
     DISABLE KEYS */;
+INSERT INTO `base_role`
+VALUES (240830160154004401, 0, '2024-08-30 16:01:55', 0, '2024-08-30 16:02:55', 1, '', '管理员',
+        'admin', 0),
+       (240830160647004402, 0, '2024-08-30 16:06:48', 0, '2024-08-30 16:06:48', 1, '', '默认角色',
+        'default', 1);
 /*!40000 ALTER TABLE `base_role`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -61,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-15 10:58:13
+-- Dump completed on 2024-08-30 16:13:21
