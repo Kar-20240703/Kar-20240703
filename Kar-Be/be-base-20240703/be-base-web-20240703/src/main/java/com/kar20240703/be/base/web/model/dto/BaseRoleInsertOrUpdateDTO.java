@@ -15,6 +15,9 @@ public class BaseRoleInsertOrUpdateDTO extends TempInsertOrUpdateDTO {
     @Schema(description = "角色名，不能重复")
     private String name;
 
+    @Schema(description = "唯一标识（不能重复）")
+    private String uuid;
+
     @Schema(description = "菜单idSet")
     private Set<Long> menuIdSet;
 

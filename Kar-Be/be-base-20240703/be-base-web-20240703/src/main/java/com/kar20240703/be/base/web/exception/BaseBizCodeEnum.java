@@ -32,7 +32,7 @@ public enum BaseBizCodeEnum implements IBizCode {
 
     MENU_PATH_IS_EXIST(300141, "操作失败：路径重复"), //
 
-    MENU_UUID_IS_EXIST(300151, "操作失败：唯一标识重复"), //
+    UUID_IS_EXIST(300151, "操作失败：唯一标识重复"), //
 
     THE_SAME_ROLE_NAME_EXIST(300161, "操作失败：存在相同的角色名"), //
 

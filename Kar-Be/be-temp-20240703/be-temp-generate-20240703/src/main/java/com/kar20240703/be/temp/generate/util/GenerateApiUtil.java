@@ -62,6 +62,10 @@ public class GenerateApiUtil {
 
     private String undefined = "undefined";
 
+    private String pageImportName = "Page";
+
+    private String pageImport = "import type { Page } from \"@/model/vo/Page\";\n";
+
     public String getSystemUserDir() {
 
         if (!systemUserDir.contains("Kar-20240703")) {
@@ -211,7 +215,21 @@ public class GenerateApiUtil {
         httpStr = "request";
 
         if (BooleanUtil.isTrue(beApi.getReturnTypeArrFlag())) {
+
             returnTypeStr = returnTypeStr + "[]";
+
+        } else if (myProPagePostCallBack.getValue()) {
+
+            if (!classNameSet.contains(getPageImportName())) {
+
+                strBuilder.insert(0, getPageImport()); // 在顶部添加导入
+
+                classNameSet.add(getPageImportName());
+
+            }
+
+            returnTypeStr = "Page<" + returnTypeStr + ">";
+
         }
 
         //        }

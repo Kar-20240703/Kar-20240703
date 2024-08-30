@@ -80,7 +80,7 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
                 .ne(dto.getId() != null, TempEntity::getId, dto.getId()).exists();
 
             if (exists) {
-                R.error(BaseBizCodeEnum.MENU_UUID_IS_EXIST);
+                R.error(BaseBizCodeEnum.UUID_IS_EXIST);
             }
 
         }

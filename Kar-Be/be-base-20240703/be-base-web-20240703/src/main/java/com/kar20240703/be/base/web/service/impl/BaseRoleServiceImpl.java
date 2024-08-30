@@ -3,6 +3,7 @@ package com.kar20240703.be.base.web.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.BooleanUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -104,6 +105,18 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
             R.error(BaseBizCodeEnum.THE_SAME_ROLE_NAME_EXIST);
         }
 
+        // uuid不能重复
+        if (StrUtil.isNotBlank(dto.getUuid())) {
+
+            exists = lambdaQuery().eq(BaseRoleDO::getUuid, dto.getUuid())
+                .ne(dto.getId() != null, TempEntity::getId, dto.getId()).exists();
+
+            if (exists) {
+                R.error(BaseBizCodeEnum.UUID_IS_EXIST);
+            }
+
+        }
+
         // 如果是默认角色，则取消之前的默认角色
         if (BooleanUtil.isTrue(dto.getDefaultFlag())) {
 
@@ -115,6 +128,8 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
         BaseRoleDO baseRoleDO = new BaseRoleDO();
 
         baseRoleDO.setName(dto.getName());
+        baseRoleDO.setUuid(MyEntityUtil.getNotNullStr(dto.getUuid(), IdUtil.simpleUUID()));
+
         baseRoleDO.setDefaultFlag(BooleanUtil.isTrue(dto.getDefaultFlag()));
         baseRoleDO.setEnableFlag(BooleanUtil.isTrue(dto.getEnableFlag()));
         baseRoleDO.setRemark(MyEntityUtil.getNotNullStr(dto.getRemark()));
