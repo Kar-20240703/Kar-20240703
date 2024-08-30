@@ -50,6 +50,13 @@ public class BaseMenuController {
         return R.okData(baseService.tree(dto));
     }
 
+    @Operation(summary = "下拉树形列表")
+    @PostMapping("/dictTreeList")
+    @PreAuthorize("hasAuthority('baseMenu:dictTreeList')")
+    public R<List<BaseMenuDO>> dictTreeList() {
+        return R.okData(baseService.dictTreeList());
+    }
+
     @Operation(summary = "通过主键id，查看详情")
     @PostMapping("/infoById")
     @PreAuthorize("hasAuthority('baseMenu:infoById')")

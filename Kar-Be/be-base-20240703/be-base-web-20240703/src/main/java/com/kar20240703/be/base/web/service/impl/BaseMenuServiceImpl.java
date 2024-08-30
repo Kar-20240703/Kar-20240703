@@ -219,6 +219,20 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
     }
 
     /**
+     * 下拉树形列表
+     */
+    @Override
+    public List<BaseMenuDO> dictTreeList() {
+
+        List<BaseMenuDO> baseMenuDoList = lambdaQuery().eq(TempEntityNoId::getEnableFlag, true)
+            .select(TempEntity::getId, TempEntityTree::getPid, BaseMenuDO::getName)
+            .orderByDesc(TempEntityTree::getOrderNo).orderByAsc(TempEntity::getId).list();
+
+        return MyTreeUtil.listToTree(baseMenuDoList);
+
+    }
+
+    /**
      * 通过主键id，查看详情
      */
     @Override

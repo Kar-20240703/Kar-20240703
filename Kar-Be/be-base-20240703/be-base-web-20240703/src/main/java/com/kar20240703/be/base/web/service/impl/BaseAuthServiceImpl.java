@@ -21,8 +21,10 @@ import com.kar20240703.be.base.web.service.BaseRoleRefAuthService;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.annotation.MyTransactional;
 import com.kar20240703.be.temp.web.model.domain.TempEntity;
+import com.kar20240703.be.temp.web.model.domain.TempEntityNoId;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
+import com.kar20240703.be.temp.web.model.vo.DictVO;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.util.MyEntityUtil;
 import com.kar20240703.be.temp.web.util.MyMapUtil;
@@ -165,6 +167,20 @@ public class BaseAuthServiceImpl extends ServiceImpl<BaseAuthMapper, BaseAuthDO>
             .like(StrUtil.isNotBlank(dto.getRemark()), TempEntity::getRemark, dto.getRemark())
             .eq(dto.getEnableFlag() != null, TempEntity::getEnableFlag, dto.getEnableFlag())
             .orderByDesc(TempEntity::getUpdateTime).page(dto.pageOrder());
+
+    }
+
+    /**
+     * 下拉列表
+     */
+    @Override
+    public Page<DictVO> dictList() {
+
+        List<DictVO> dictVOList =
+            lambdaQuery().eq(TempEntityNoId::getEnableFlag, true).select(TempEntity::getId, BaseAuthDO::getName).list()
+                .stream().map(it -> new DictVO(it.getId(), it.getName())).collect(Collectors.toList());
+
+        return new Page<DictVO>().setTotal(dictVOList.size()).setRecords(dictVOList);
 
     }
 

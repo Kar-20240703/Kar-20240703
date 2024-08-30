@@ -8,6 +8,7 @@ import com.kar20240703.be.base.web.model.vo.BaseRoleInfoByIdVO;
 import com.kar20240703.be.base.web.service.BaseRoleService;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
+import com.kar20240703.be.temp.web.model.vo.DictVO;
 import com.kar20240703.be.temp.web.model.vo.R;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,6 +40,13 @@ public class BaseRoleController {
     @PreAuthorize("hasAuthority('baseRole:page')")
     public R<Page<BaseRoleDO>> myPage(@RequestBody @Valid BaseRolePageDTO dto) {
         return R.okData(baseService.myPage(dto));
+    }
+
+    @Operation(summary = "下拉列表")
+    @PostMapping("/dictList")
+    @PreAuthorize("hasAuthority('baseRole:dictList')")
+    public R<Page<DictVO>> dictList() {
+        return R.okData(baseService.dictList());
     }
 
     @Operation(summary = "通过主键id，查看详情")

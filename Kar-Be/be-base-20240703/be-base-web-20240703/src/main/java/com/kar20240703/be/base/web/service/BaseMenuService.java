@@ -19,6 +19,8 @@ public interface BaseMenuService extends IService<BaseMenuDO> {
 
     List<BaseMenuDO> tree(BaseMenuPageDTO dto);
 
+    List<BaseMenuDO> dictTreeList();
+
     BaseMenuInfoByIdVO infoById(NotNullId notNullId);
 
     String deleteByIdSet(NotEmptyIdSet notEmptyIdSet);

@@ -8,12 +8,15 @@ import com.kar20240703.be.base.web.model.dto.BaseRolePageDTO;
 import com.kar20240703.be.base.web.model.vo.BaseRoleInfoByIdVO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
+import com.kar20240703.be.temp.web.model.vo.DictVO;
 
 public interface BaseRoleService extends IService<BaseRoleDO> {
 
     String insertOrUpdate(BaseRoleInsertOrUpdateDTO dto);
 
     Page<BaseRoleDO> myPage(BaseRolePageDTO dto);
+
+    Page<DictVO> dictList();
 
     BaseRoleInfoByIdVO infoById(NotNullId notNullId);
 

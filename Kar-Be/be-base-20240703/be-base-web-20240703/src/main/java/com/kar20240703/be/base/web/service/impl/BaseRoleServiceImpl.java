@@ -27,9 +27,11 @@ import com.kar20240703.be.base.web.util.TransactionUtil;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.annotation.MyTransactional;
 import com.kar20240703.be.temp.web.model.domain.TempEntity;
+import com.kar20240703.be.temp.web.model.domain.TempEntityNoId;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
 import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
+import com.kar20240703.be.temp.web.model.vo.DictVO;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.util.MyEntityUtil;
 import com.kar20240703.be.temp.web.util.MyMapUtil;
@@ -196,7 +198,11 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
 
                 }
 
-                userIdSet.addAll(dto.getUserIdSet());
+                if (CollUtil.isNotEmpty(dto.getUserIdSet())) {
+
+                    userIdSet.addAll(dto.getUserIdSet());
+
+                }
 
             }
 
@@ -430,6 +436,20 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
             .eq(dto.getEnableFlag() != null, TempEntity::getEnableFlag, dto.getEnableFlag())
             .eq(dto.getDefaultFlag() != null, BaseRoleDO::getDefaultFlag, dto.getDefaultFlag())
             .orderByDesc(TempEntity::getUpdateTime).page(dto.pageOrder());
+
+    }
+
+    /**
+     * 下拉列表
+     */
+    @Override
+    public Page<DictVO> dictList() {
+
+        List<DictVO> dictVOList =
+            lambdaQuery().eq(TempEntityNoId::getEnableFlag, true).select(TempEntity::getId, BaseRoleDO::getName).list()
+                .stream().map(it -> new DictVO(it.getId(), it.getName())).collect(Collectors.toList());
+
+        return new Page<DictVO>().setTotal(dictVOList.size()).setRecords(dictVOList);
 
     }
 
