@@ -96,7 +96,9 @@ public class BaseAuthServiceImpl extends ServiceImpl<BaseAuthMapper, BaseAuthDO>
      */
     private void updateCache(BaseAuthInsertOrUpdateDTO dto, Set<Long> roleIdSet) {
 
-        roleIdSet.addAll(dto.getRoleIdSet());
+        if (CollUtil.isNotEmpty(dto.getRoleIdSet())) {
+            roleIdSet.addAll(dto.getRoleIdSet());
+        }
 
         if (CollUtil.isEmpty(roleIdSet)) {
             return;
@@ -230,13 +232,17 @@ public class BaseAuthServiceImpl extends ServiceImpl<BaseAuthMapper, BaseAuthDO>
 
         removeByIds(notEmptyIdSet.getIdSet());
 
-        Set<Long> userIdSet =
-            ChainWrappers.lambdaQueryChain(baseRoleRefUserMapper).in(BaseRoleRefUserDO::getRoleId, roleIdSet)
-                .select(BaseRoleRefUserDO::getUserId).list().stream().map(BaseRoleRefUserDO::getUserId)
-                .collect(Collectors.toSet());
+        if (CollUtil.isNotEmpty(roleIdSet)) {
 
-        // 更新缓存
-        BaseRoleServiceImpl.updateCache(null, userIdSet, roleIdSet);
+            Set<Long> userIdSet =
+                ChainWrappers.lambdaQueryChain(baseRoleRefUserMapper).in(BaseRoleRefUserDO::getRoleId, roleIdSet)
+                    .select(BaseRoleRefUserDO::getUserId).list().stream().map(BaseRoleRefUserDO::getUserId)
+                    .collect(Collectors.toSet());
+
+            // 更新缓存
+            BaseRoleServiceImpl.updateCache(null, userIdSet, roleIdSet);
+
+        }
 
         return TempBizCodeEnum.OK;
 

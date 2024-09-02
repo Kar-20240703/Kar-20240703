@@ -52,7 +52,7 @@ public class BaseMenuController {
 
     @Operation(summary = "下拉树形列表")
     @PostMapping("/dictTreeList")
-    @PreAuthorize("hasAuthority('baseMenu:dictTreeList')")
+    @PreAuthorize("hasAuthority('baseMenu:dictList')")
     public R<List<BaseMenuDO>> dictTreeList() {
         return R.okData(baseService.dictTreeList());
     }
