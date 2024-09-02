@@ -58,7 +58,7 @@ public class BaseAuthServiceImpl extends ServiceImpl<BaseAuthMapper, BaseAuthDO>
                 .exists();
 
         if (exists) {
-            R.error(BaseBizCodeEnum.THE_SAME_ROLE_NAME_EXIST);
+            R.error(BaseBizCodeEnum.THE_SAME_AUTH_NAME_EXIST);
         }
 
         BaseAuthDO baseAuthDO = new BaseAuthDO();
