@@ -38,6 +38,7 @@ import com.kar20240703.be.temp.web.model.domain.TempUserDO;
 import com.kar20240703.be.temp.web.model.domain.TempUserInfoDO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
+import com.kar20240703.be.temp.web.model.enums.TempRedisKeyEnum;
 import com.kar20240703.be.temp.web.model.interfaces.IRedisKey;
 import com.kar20240703.be.temp.web.model.vo.DictVO;
 import com.kar20240703.be.temp.web.model.vo.R;
@@ -349,6 +350,9 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
      */
     private void insertOrUpdateSub(TempUserDO tempUserDO, BaseUserInsertOrUpdateDTO dto) {
 
+        // 删除：权限
+        redissonClient.getSet(TempRedisKeyEnum.PRE_USER_AUTH.name() + ":" + tempUserDO.getId()).delete();
+
         // 如果禁用了，则子表不进行新增操作
         if (BooleanUtil.isFalse(tempUserDO.getEnableFlag())) {
 
@@ -382,7 +386,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
             baseRoleRefUserService.saveBatch(insertList);
 
             // 更新缓存
-            BaseRoleServiceImpl.updateCache(null, CollUtil.newHashSet(tempUserDO.getId()), dto.getRoleIdSet());
+            BaseRoleServiceImpl.updateCache(null, CollUtil.newHashSet(tempUserDO.getId()), null);
 
         }
 
