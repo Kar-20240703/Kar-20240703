@@ -35,6 +35,9 @@ public class BaseUserInsertOrUpdateDTO extends TempInsertOrUpdateDTO {
     @Schema(description = "微信 openId")
     private String wxOpenId;
 
+    @Schema(description = "微信 unionId")
+    private String wxUnionId;
+
     @Schema(description = "前端加密之后的密码")
     private String password;
 

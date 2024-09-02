@@ -305,9 +305,11 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
                 tempUserDO.setId(dto.getId());
                 tempUserDO.setEnableFlag(BooleanUtil.isTrue(dto.getEnableFlag()));
                 tempUserDO.setEmail(MyEntityUtil.getNotNullStr(dto.getEmail()));
+                tempUserDO.setPhone(MyEntityUtil.getNotNullStr(dto.getPhone()));
                 tempUserDO.setUsername(MyEntityUtil.getNotNullStr(dto.getUsername()));
                 tempUserDO.setWxAppId(MyEntityUtil.getNotNullStr(dto.getWxAppId()));
                 tempUserDO.setWxOpenId(MyEntityUtil.getNotNullStr(dto.getWxOpenId()));
+                tempUserDO.setWxUnionId(MyEntityUtil.getNotNullStr(dto.getWxUnionId()));
 
                 baseMapper.updateById(tempUserDO);
 
