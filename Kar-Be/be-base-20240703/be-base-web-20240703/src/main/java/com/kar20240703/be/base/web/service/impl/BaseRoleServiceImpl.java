@@ -246,13 +246,13 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
 
         Set<Long> authIdSet = new HashSet<>();
 
+        Map<Long, Set<Long>> roleIdRefAuthIdSetMap = new HashMap<>();
+
         if (CollUtil.isNotEmpty(roleIdSet)) {
 
             List<BaseRoleRefAuthDO> baseRoleRefAuthDoList =
                 baseRoleRefAuthService.lambdaQuery().in(BaseRoleRefAuthDO::getRoleId, roleIdSet)
                     .select(BaseRoleRefAuthDO::getRoleId, BaseRoleRefAuthDO::getAuthId).list();
-
-            Map<Long, Set<Long>> roleIdRefAuthIdSetMap = new HashMap<>();
 
             for (BaseRoleRefAuthDO item : baseRoleRefAuthDoList) {
 
@@ -298,10 +298,20 @@ public class BaseRoleServiceImpl extends ServiceImpl<BaseRoleMapper, BaseRoleDO>
 
             for (Long roleId : userIdRefRoleIdSet) {
 
-                String auth = authMap.get(roleId);
+                Set<Long> roleIdRefAuthIdSet = roleIdRefAuthIdSetMap.get(roleId);
 
-                if (StrUtil.isNotBlank(auth)) {
-                    authSet.add(auth);
+                if (CollUtil.isEmpty(roleIdRefAuthIdSet)) {
+                    continue;
+                }
+
+                for (Long authId : roleIdRefAuthIdSet) {
+
+                    String auth = authMap.get(authId);
+
+                    if (StrUtil.isNotBlank(auth)) {
+                        authSet.add(auth);
+                    }
+
                 }
 
             }
