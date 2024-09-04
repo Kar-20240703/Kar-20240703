@@ -19,7 +19,7 @@ public class TempParamDO extends TempEntity {
     @Schema(description = "值")
     private String value;
 
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     @Schema(description = "该参数的 uuid，备注：系统内置参数的 uuid等于 id")
     private String uuid;
 

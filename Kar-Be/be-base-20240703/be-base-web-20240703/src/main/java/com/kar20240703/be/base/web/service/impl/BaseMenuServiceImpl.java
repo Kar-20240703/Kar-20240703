@@ -17,7 +17,6 @@ import com.kar20240703.be.base.web.model.dto.BaseMenuPageDTO;
 import com.kar20240703.be.base.web.model.vo.BaseMenuInfoByIdVO;
 import com.kar20240703.be.base.web.service.BaseMenuService;
 import com.kar20240703.be.base.web.service.BaseRoleRefMenuService;
-import com.kar20240703.be.base.web.service.BaseRoleRefUserService;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.annotation.MyTransactional;
 import com.kar20240703.be.temp.web.model.domain.TempEntity;
@@ -46,9 +45,6 @@ public class BaseMenuServiceImpl extends ServiceImpl<BaseMenuMapper, BaseMenuDO>
 
     @Resource
     BaseRoleRefMenuService baseRoleRefMenuService;
-
-    @Resource
-    BaseRoleRefUserService baseRoleRefUserService;
 
     /**
      * 新增/修改

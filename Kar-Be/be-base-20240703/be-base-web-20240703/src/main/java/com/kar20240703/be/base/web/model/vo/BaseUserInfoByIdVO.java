@@ -28,6 +28,9 @@ public class BaseUserInfoByIdVO extends TempUserDO {
     @Schema(description = "岗位 idSet")
     private Set<Long> postIdSet;
 
+    @Schema(description = "区域 idSet")
+    private Set<Long> areaIdSet;
+
     @Schema(description = "权限 idSet")
     private Set<Long> authIdSet;
 

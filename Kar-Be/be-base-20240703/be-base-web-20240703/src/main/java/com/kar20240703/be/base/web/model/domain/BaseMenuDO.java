@@ -35,7 +35,7 @@ public class BaseMenuDO extends TempEntityTree<BaseMenuDO> {
     @Schema(description = "重定向，优先级最高")
     private String redirect;
 
-    @TableField(fill = FieldFill.INSERT)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     @Schema(description = "该菜单的 uuid，备注：不能重复")
     private String uuid;
 
