@@ -1,11 +1,11 @@
 package com.kar20240703.be.base.web.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.kar20240703.be.base.web.model.domain.BaseDeptDO;
-import com.kar20240703.be.base.web.model.dto.BaseDeptInsertOrUpdateDTO;
-import com.kar20240703.be.base.web.model.dto.BaseDeptPageDTO;
-import com.kar20240703.be.base.web.model.vo.BaseDeptInfoByIdVO;
-import com.kar20240703.be.base.web.service.BaseDeptService;
+import com.kar20240703.be.base.web.model.domain.BaseAreaDO;
+import com.kar20240703.be.base.web.model.dto.BaseAreaInsertOrUpdateDTO;
+import com.kar20240703.be.base.web.model.dto.BaseAreaPageDTO;
+import com.kar20240703.be.base.web.model.vo.BaseAreaInfoByIdVO;
+import com.kar20240703.be.base.web.service.BaseAreaService;
 import com.kar20240703.be.temp.web.model.dto.ChangeNumberDTO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
@@ -22,65 +22,65 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "/base/dept")
-@Tag(name = "基础-部门-管理")
-public class BaseDeptController {
+@RequestMapping(value = "/base/area")
+@Tag(name = "基础-区域-管理")
+public class BaseAreaController {
 
     @Resource
-    BaseDeptService baseService;
+    BaseAreaService baseService;
 
     @Operation(summary = "新增/修改")
     @PostMapping("/insertOrUpdate")
-    @PreAuthorize("hasAuthority('baseDept:insertOrUpdate')")
-    public R<String> insertOrUpdate(@RequestBody @Valid BaseDeptInsertOrUpdateDTO dto) {
+    @PreAuthorize("hasAuthority('baseArea:insertOrUpdate')")
+    public R<String> insertOrUpdate(@RequestBody @Valid BaseAreaInsertOrUpdateDTO dto) {
         return R.okMsg(baseService.insertOrUpdate(dto));
     }
 
     @Operation(summary = "分页排序查询")
     @PostMapping("/page")
-    @PreAuthorize("hasAuthority('baseDept:page')")
-    public R<Page<BaseDeptDO>> myPage(@RequestBody @Valid BaseDeptPageDTO dto) {
+    @PreAuthorize("hasAuthority('baseArea:page')")
+    public R<Page<BaseAreaDO>> myPage(@RequestBody @Valid BaseAreaPageDTO dto) {
         return R.okData(baseService.myPage(dto));
     }
 
     @Operation(summary = "查询：树结构")
     @PostMapping("/tree")
-    @PreAuthorize("hasAuthority('baseDept:page')")
-    public R<List<BaseDeptDO>> tree(@RequestBody @Valid BaseDeptPageDTO dto) {
+    @PreAuthorize("hasAuthority('baseArea:page')")
+    public R<List<BaseAreaDO>> tree(@RequestBody @Valid BaseAreaPageDTO dto) {
         return R.okData(baseService.tree(dto));
     }
 
     @Operation(summary = "下拉树形列表")
     @PostMapping("/dictTreeList")
-    @PreAuthorize("hasAuthority('baseDept:dictList')")
-    public R<List<BaseDeptDO>> dictTreeList() {
+    @PreAuthorize("hasAuthority('baseArea:dictList')")
+    public R<List<BaseAreaDO>> dictTreeList() {
         return R.okData(baseService.dictTreeList());
     }
 
     @Operation(summary = "通过主键id，查看详情")
     @PostMapping("/infoById")
-    @PreAuthorize("hasAuthority('baseDept:infoById')")
-    public R<BaseDeptInfoByIdVO> infoById(@RequestBody @Valid NotNullId notNullId) {
+    @PreAuthorize("hasAuthority('baseArea:infoById')")
+    public R<BaseAreaInfoByIdVO> infoById(@RequestBody @Valid NotNullId notNullId) {
         return R.okData(baseService.infoById(notNullId));
     }
 
     @Operation(summary = "批量删除")
     @PostMapping("/deleteByIdSet")
-    @PreAuthorize("hasAuthority('baseDept:deleteByIdSet')")
+    @PreAuthorize("hasAuthority('baseArea:deleteByIdSet')")
     public R<String> deleteByIdSet(@RequestBody @Valid NotEmptyIdSet notEmptyIdSet) {
         return R.okMsg(baseService.deleteByIdSet(notEmptyIdSet));
     }
 
     @Operation(summary = "通过主键 idSet，加减排序号")
     @PostMapping("/addOrderNo")
-    @PreAuthorize("hasAuthority('baseDept:insertOrUpdate')")
+    @PreAuthorize("hasAuthority('baseArea:insertOrUpdate')")
     public R<String> addOrderNo(@RequestBody @Valid ChangeNumberDTO dto) {
         return R.okMsg(baseService.addOrderNo(dto));
     }
 
     @Operation(summary = "通过主键 idSet，修改排序号")
     @PostMapping("/updateOrderNo")
-    @PreAuthorize("hasAuthority('baseDept:insertOrUpdate')")
+    @PreAuthorize("hasAuthority('baseArea:insertOrUpdate')")
     public R<String> updateOrderNo(@RequestBody @Valid ChangeNumberDTO dto) {
         return R.okMsg(baseService.updateOrderNo(dto));
     }

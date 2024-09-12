@@ -22,6 +22,7 @@ import com.kar20240703.be.temp.web.model.annotation.MyTransactional;
 import com.kar20240703.be.temp.web.model.domain.TempEntity;
 import com.kar20240703.be.temp.web.model.domain.TempEntityNoId;
 import com.kar20240703.be.temp.web.model.domain.TempEntityTree;
+import com.kar20240703.be.temp.web.model.dto.ChangeNumberDTO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
 import com.kar20240703.be.temp.web.model.vo.R;
@@ -258,6 +259,47 @@ public class BaseDeptServiceImpl extends ServiceImpl<BaseDeptMapper, BaseDeptDO>
         deleteByIdSetSub(idSet);
 
         removeByIds(idSet);
+
+        return TempBizCodeEnum.OK;
+
+    }
+
+    /**
+     * 通过主键 idSet，加减排序号
+     */
+    @Override
+    @MyTransactional
+    public String addOrderNo(ChangeNumberDTO dto) {
+
+        if (dto.getNumber() == 0) {
+            return TempBizCodeEnum.OK;
+        }
+
+        List<BaseDeptDO> baseDeptDoList =
+            lambdaQuery().in(TempEntity::getId, dto.getIdSet()).select(TempEntity::getId, TempEntityTree::getOrderNo)
+                .list();
+
+        for (BaseDeptDO item : baseDeptDoList) {
+            item.setOrderNo((int)(item.getOrderNo() + dto.getNumber()));
+        }
+
+        updateBatchById(baseDeptDoList);
+
+        return TempBizCodeEnum.OK;
+
+    }
+
+    /**
+     * 通过主键 idSet，修改排序号
+     */
+    @Override
+    public String updateOrderNo(ChangeNumberDTO dto) {
+
+        if (dto.getNumber() == 0) {
+            return TempBizCodeEnum.OK;
+        }
+
+        lambdaUpdate().in(TempEntity::getId, dto.getIdSet()).set(TempEntityTree::getOrderNo, dto.getNumber()).update();
 
         return TempBizCodeEnum.OK;
 

@@ -6,6 +6,7 @@ import com.kar20240703.be.base.web.model.domain.BaseAreaDO;
 import com.kar20240703.be.base.web.model.dto.BaseAreaInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseAreaPageDTO;
 import com.kar20240703.be.base.web.model.vo.BaseAreaInfoByIdVO;
+import com.kar20240703.be.temp.web.model.dto.ChangeNumberDTO;
 import com.kar20240703.be.temp.web.model.dto.NotEmptyIdSet;
 import com.kar20240703.be.temp.web.model.dto.NotNullId;
 import java.util.List;
@@ -23,5 +24,9 @@ public interface BaseAreaService extends IService<BaseAreaDO> {
     BaseAreaInfoByIdVO infoById(NotNullId notNullId);
 
     String deleteByIdSet(NotEmptyIdSet notEmptyIdSet);
+
+    String addOrderNo(ChangeNumberDTO dto);
+
+    String updateOrderNo(ChangeNumberDTO dto);
 
 }
