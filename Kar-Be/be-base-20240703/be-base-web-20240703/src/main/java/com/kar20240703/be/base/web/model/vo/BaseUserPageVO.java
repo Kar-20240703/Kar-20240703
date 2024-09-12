@@ -45,6 +45,9 @@ public class BaseUserPageVO {
     @Schema(description = "最近活跃时间")
     private Date lastActiveTime;
 
+    @Schema(description = "ip")
+    private String ip;
+
     @Schema(description = "Ip2RegionUtil.getRegion() 获取到的 ip所处区域")
     private String region;
 
