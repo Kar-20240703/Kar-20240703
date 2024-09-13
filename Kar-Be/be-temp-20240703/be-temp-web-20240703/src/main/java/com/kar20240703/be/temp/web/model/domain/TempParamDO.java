@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @TableName(value = "base_param")
 @Data
-@Schema(description = "主表：系统参数")
+@Schema(description = "主表：参数表")
 public class TempParamDO extends TempEntity {
 
     @Schema(description = "配置名，以 uuid为不变值进行使用，不要用此属性")
