@@ -31,7 +31,7 @@ CREATE TABLE `base_dict`
     `update_time` datetime                                                      NOT NULL,
     `enable_flag` tinyint(1)                                                    NOT NULL COMMENT '是否启用',
     `remark`      varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '备注',
-    `dict_key`    varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '字典 key（不能重复），字典项要冗余这个 key，目的：方便操作',
+    `dict_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '字典 key（不能重复），备注：字典项要冗余这个 key，目的：方便操作',
     `name`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '字典/字典项 名',
     `type`        int                                                           NOT NULL COMMENT '字典类型：1 字典 2 字典项',
     `value`       int                                                           NOT NULL COMMENT '字典项 value（数字 123...）备注：字典为 -1',

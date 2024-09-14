@@ -13,7 +13,7 @@ import lombok.EqualsAndHashCode;
 @Schema(description = "主表：参数表")
 public class TempParamDO extends TempEntity {
 
-    @Schema(description = "配置名，以 uuid为不变值进行使用，不要用此属性")
+    @Schema(description = "配置名，备注：以 uuid为不变值进行使用，不要用此属性")
     private String name;
 
     @Schema(description = "值")

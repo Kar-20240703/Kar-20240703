@@ -40,6 +40,10 @@ public enum BaseBizCodeEnum implements IBizCode {
 
     ACCOUNT_CANNOT_BE_EMPTY(300181, "操作失败：邮箱/用户名/手机号/微信 不能都为空"), //
 
+    SAME_KEY_OR_NAME_EXIST(300191, "操作失败：存在相同字典【key/名称】"), //
+    SAME_VALUE_OR_NAME_EXIST(300201, "操作失败：存在相同字典项【value/名称】"), //
+    VALUE_CANNOT_BE_EMPTY(300211, "操作失败：字典项【value】不能为空"), //
+
     ;
 
     private final int code;

@@ -31,7 +31,7 @@ CREATE TABLE `base_param`
     `update_time` datetime                                                      NOT NULL,
     `enable_flag` tinyint(1)                                                    NOT NULL COMMENT '是否启用',
     `remark`      varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '备注',
-    `name`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '配置名，以 uuid为不变值进行使用，不要用此属性',
+    `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '配置名，备注：以 uuid为不变值进行使用，不要用此属性',
     `value`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         NOT NULL COMMENT '值',
     `uuid`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '该参数的 uuid，备注：系统内置参数的 uuid等于 id',
     PRIMARY KEY (`id`) USING BTREE
