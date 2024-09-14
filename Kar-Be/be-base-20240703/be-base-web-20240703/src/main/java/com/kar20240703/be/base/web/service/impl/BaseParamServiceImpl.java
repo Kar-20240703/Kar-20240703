@@ -13,6 +13,7 @@ import com.kar20240703.be.base.web.model.dto.BaseParamPageDTO;
 import com.kar20240703.be.base.web.service.BaseParamService;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.mapper.TempParamMapper;
+import com.kar20240703.be.temp.web.model.annotation.MyTransactional;
 import com.kar20240703.be.temp.web.model.domain.TempEntity;
 import com.kar20240703.be.temp.web.model.domain.TempEntityNoId;
 import com.kar20240703.be.temp.web.model.domain.TempEntityNoIdSuper;
@@ -32,6 +33,7 @@ public class BaseParamServiceImpl extends ServiceImpl<TempParamMapper, TempParam
      * 新增/修改
      */
     @Override
+    @MyTransactional
     public String insertOrUpdate(BaseParamInsertOrUpdateDTO dto) {
 
         // uuid不能重复
@@ -88,6 +90,7 @@ public class BaseParamServiceImpl extends ServiceImpl<TempParamMapper, TempParam
      * 批量删除
      */
     @Override
+    @MyTransactional
     public String deleteByIdSet(NotEmptyIdSet notEmptyIdSet) {
 
         Set<Long> idSet = notEmptyIdSet.getIdSet();
