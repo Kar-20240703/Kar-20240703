@@ -25,7 +25,6 @@ DROP TABLE IF EXISTS `base_user_info`;
 CREATE TABLE `base_user_info`
 (
     `id`               bigint                                                        NOT NULL COMMENT '用户主键 id',
-    `create_time`      datetime                                                      NOT NULL COMMENT '冗余字段：创建时间',
     `uuid`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '该用户的 uuid，本系统使用 id，不使用此字段（uuid），备注：不能重复',
     `nickname`         varchar(50)                                                   NOT NULL COMMENT '昵称',
     `bio`              varchar(100)                                                  NOT NULL COMMENT '个人简介',
@@ -61,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-30 16:13:24
+-- Dump completed on 2024-09-24 10:52:28

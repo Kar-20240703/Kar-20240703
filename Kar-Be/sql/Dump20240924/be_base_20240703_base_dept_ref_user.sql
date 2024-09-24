@@ -16,38 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_post`
+-- Table structure for table `base_dept_ref_user`
 --
 
-DROP TABLE IF EXISTS `base_post`;
+DROP TABLE IF EXISTS `base_dept_ref_user`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_post`
+CREATE TABLE `base_dept_ref_user`
 (
-    `id`          bigint                                                        NOT NULL,
-    `create_id`   bigint                                                        NOT NULL,
-    `create_time` datetime                                                      NOT NULL,
-    `update_id`   bigint                                                        NOT NULL,
-    `update_time` datetime                                                      NOT NULL,
-    `enable_flag` tinyint(1)                                                    NOT NULL COMMENT '是否启用',
-    `remark`      varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '备注',
-    `name`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '岗位名',
-    `pid`         bigint                                                        NOT NULL COMMENT '父节点id（顶级则为0）',
-    `order_no`    int                                                           NOT NULL COMMENT '排序号（值越大越前面，默认为 0）',
-    PRIMARY KEY (`id`)
+    `dept_id` bigint NOT NULL COMMENT '部门主键id',
+    `user_id` bigint NOT NULL COMMENT '用户主键id',
+    PRIMARY KEY (`dept_id`, `user_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：主表：岗位表';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：关联表：部门表，用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_post`
+-- Dumping data for table `base_dept_ref_user`
 --
 
-LOCK TABLES `base_post` WRITE;
-/*!40000 ALTER TABLE `base_post`
+LOCK TABLES `base_dept_ref_user` WRITE;
+/*!40000 ALTER TABLE `base_dept_ref_user`
     DISABLE KEYS */;
-/*!40000 ALTER TABLE `base_post`
+INSERT INTO `base_dept_ref_user`
+VALUES (240912141649006163, 240902154357005281),
+       (240912141649006163, 240902163618005502),
+       (240912141649006163, 240912095958005834);
+/*!40000 ALTER TABLE `base_dept_ref_user`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -60,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-30 16:13:24
+-- Dump completed on 2024-09-24 10:52:29

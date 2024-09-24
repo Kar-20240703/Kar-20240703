@@ -25,7 +25,6 @@ DROP TABLE IF EXISTS `base_user_info_1`;
 CREATE TABLE `base_user_info_1`
 (
     `id`               bigint                                                        NOT NULL COMMENT '用户主键 id',
-    `create_time`      datetime                                                      NOT NULL COMMENT '冗余字段：创建时间',
     `uuid`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '该用户的 uuid，本系统使用 id，不使用此字段（uuid），备注：不能重复',
     `nickname`         varchar(50)                                                   NOT NULL COMMENT '昵称',
     `bio`              varchar(100)                                                  NOT NULL COMMENT '个人简介',
@@ -48,6 +47,9 @@ CREATE TABLE `base_user_info_1`
 LOCK TABLES `base_user_info_1` WRITE;
 /*!40000 ALTER TABLE `base_user_info_1`
     DISABLE KEYS */;
+INSERT INTO `base_user_info_1`
+VALUES (240902154357005281, '36870faf0934422399872a0260c1596a', 'nickname_kar1', 'kar1_bio', -1,
+        101, '2024-09-02 15:43:57', '0:0:0:0:0:0:0:1', 'ipv6#0:0:0:0:0:0:0:1');
 /*!40000 ALTER TABLE `base_user_info_1`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -61,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-30 16:13:23
+-- Dump completed on 2024-09-24 10:52:26

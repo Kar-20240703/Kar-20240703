@@ -49,9 +49,9 @@ LOCK TABLES `base_role` WRITE;
 /*!40000 ALTER TABLE `base_role`
     DISABLE KEYS */;
 INSERT INTO `base_role`
-VALUES (240830160154004401, 0, '2024-08-30 16:01:55', 0, '2024-08-30 16:02:55', 1, '', '管理员',
+VALUES (240830160154004401, 0, '2024-08-30 16:01:55', 0, '2024-09-02 17:05:07', 1, '', '管理员',
         'admin', 0),
-       (240830160647004402, 0, '2024-08-30 16:06:48', 0, '2024-08-30 16:06:48', 1, '', '默认角色',
+       (240830160647004402, 0, '2024-08-30 16:06:48', 0, '2024-09-02 15:57:03', 1, '', '默认角色',
         'default', 1);
 /*!40000 ALTER TABLE `base_role`
     ENABLE KEYS */;
@@ -66,4 +66,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-30 16:13:21
+-- Dump completed on 2024-09-24 10:52:28

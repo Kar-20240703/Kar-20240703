@@ -16,38 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_param`
+-- Table structure for table `base_role_ref_user`
 --
 
-DROP TABLE IF EXISTS `base_param`;
+DROP TABLE IF EXISTS `base_role_ref_user`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_param`
+CREATE TABLE `base_role_ref_user`
 (
-    `id`          bigint                                                        NOT NULL,
-    `create_id`   bigint                                                        NOT NULL,
-    `create_time` datetime                                                      NOT NULL,
-    `update_id`   bigint                                                        NOT NULL,
-    `update_time` datetime                                                      NOT NULL,
-    `enable_flag` tinyint(1)                                                    NOT NULL COMMENT '是否启用',
-    `remark`      varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '备注',
-    `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '配置名，备注：以 uuid为不变值进行使用，不要用此属性',
-    `value`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         NOT NULL COMMENT '值',
-    `uuid`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '该参数的 uuid，备注：系统内置参数的 uuid等于 id',
-    PRIMARY KEY (`id`) USING BTREE
+    `role_id` bigint NOT NULL COMMENT '角色主键id',
+    `user_id` bigint NOT NULL COMMENT '用户主键id',
+    PRIMARY KEY (`user_id`, `role_id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：主表：参数表';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：关联表：角色表，用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_param`
+-- Dumping data for table `base_role_ref_user`
 --
 
-LOCK TABLES `base_param` WRITE;
-/*!40000 ALTER TABLE `base_param`
+LOCK TABLES `base_role_ref_user` WRITE;
+/*!40000 ALTER TABLE `base_role_ref_user`
     DISABLE KEYS */;
-/*!40000 ALTER TABLE `base_param`
+INSERT INTO `base_role_ref_user`
+VALUES (240830160154004401, 240902154357005281);
+/*!40000 ALTER TABLE `base_role_ref_user`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -60,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-30 16:13:24
+-- Dump completed on 2024-09-24 10:52:26

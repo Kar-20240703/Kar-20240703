@@ -25,7 +25,6 @@ DROP TABLE IF EXISTS `base_user_info_0`;
 CREATE TABLE `base_user_info_0`
 (
     `id`               bigint                                                        NOT NULL COMMENT '用户主键 id',
-    `create_time`      datetime                                                      NOT NULL COMMENT '冗余字段：创建时间',
     `uuid`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '该用户的 uuid，本系统使用 id，不使用此字段（uuid），备注：不能重复',
     `nickname`         varchar(50)                                                   NOT NULL COMMENT '昵称',
     `bio`              varchar(100)                                                  NOT NULL COMMENT '个人简介',
@@ -48,6 +47,11 @@ CREATE TABLE `base_user_info_0`
 LOCK TABLES `base_user_info_0` WRITE;
 /*!40000 ALTER TABLE `base_user_info_0`
     DISABLE KEYS */;
+INSERT INTO `base_user_info_0`
+VALUES (240902163618005502, '91a518a5234249a8a312bbc8fb6571c2', 'nickname_kar2', '', -1, 101,
+        '2024-09-02 16:36:18', '0:0:0:0:0:0:0:1', 'ipv6#0:0:0:0:0:0:0:1'),
+       (240912095958005834, 'b6c7ebff8b044b60a889ed81edc8c8e9', 't1', '', -1, 101,
+        '2024-09-12 09:59:59', '0:0:0:0:0:0:0:1', 'ipv6#0:0:0:0:0:0:0:1');
 /*!40000 ALTER TABLE `base_user_info_0`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -61,4 +65,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-30 16:13:22
+-- Dump completed on 2024-09-24 10:52:28

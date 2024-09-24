@@ -60,6 +60,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         this.tempSecurityProperties = tempSecurityProperties;
         this.iJwtGetAuthListConfiguration = iJwtGetAuthListConfiguration;
 
+        log.info("获取权限的url：{}，获取用户id的url：{}", tempSecurityProperties.getJwtGetAuthListUrl(),
+            tempSecurityProperties.getJwtGetUserIdUrl());
+
     }
 
     @SneakyThrows

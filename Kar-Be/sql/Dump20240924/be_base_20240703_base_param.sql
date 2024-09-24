@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_dict`
+-- Table structure for table `base_param`
 --
 
-DROP TABLE IF EXISTS `base_dict`;
+DROP TABLE IF EXISTS `base_param`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_dict`
+CREATE TABLE `base_param`
 (
     `id`          bigint                                                        NOT NULL,
     `create_id`   bigint                                                        NOT NULL,
@@ -31,26 +31,23 @@ CREATE TABLE `base_dict`
     `update_time` datetime                                                      NOT NULL,
     `enable_flag` tinyint(1)                                                    NOT NULL COMMENT '是否启用',
     `remark`      varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '备注',
-    `dict_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '字典 key（不能重复），备注：字典项要冗余这个 key，目的：方便操作',
-    `name`        varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '字典/字典项 名',
-    `type`        int                                                           NOT NULL COMMENT '字典类型：1 字典 2 字典项',
-    `value`       int                                                           NOT NULL COMMENT '字典项 value（数字 123...）备注：字典为 -1',
-    `order_no`    int                                                           NOT NULL COMMENT '排序号（值越大越前面，默认为 0）',
-    `uuid`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '该参数的 uuid',
+    `name`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '配置名，以 uuid为不变值进行使用，不要用此属性',
+    `value`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         NOT NULL COMMENT '值',
+    `uuid`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '该参数的 uuid，备注：系统内置参数的 uuid等于 id',
     PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：主表：字典表';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：主表：参数表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_dict`
+-- Dumping data for table `base_param`
 --
 
-LOCK TABLES `base_dict` WRITE;
-/*!40000 ALTER TABLE `base_dict`
+LOCK TABLES `base_param` WRITE;
+/*!40000 ALTER TABLE `base_param`
     DISABLE KEYS */;
-/*!40000 ALTER TABLE `base_dict`
+/*!40000 ALTER TABLE `base_param`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -63,4 +60,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-08-30 16:13:23
+-- Dump completed on 2024-09-24 10:52:26
