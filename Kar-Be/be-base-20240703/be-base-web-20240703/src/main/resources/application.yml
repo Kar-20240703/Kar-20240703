@@ -8,6 +8,8 @@ be:
   security:
     admin-nickname: 系统管理员 #admin
     admin-password: 19b5818d7fe851f4510715cbf2193204df3f5b82808a84faaa02634752886ff2 #明文：karadmin
+    jwt-get-auth-list-url: localhost:8001/auth/getAuthColl #按环境进行修改
+    jwt-get-user-id-url: localhost:8001/auth/getUserId #按环境进行修改
 
 #mybatis-plus:
 #  configuration:
