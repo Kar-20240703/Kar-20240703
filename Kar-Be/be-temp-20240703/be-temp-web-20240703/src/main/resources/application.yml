@@ -8,6 +8,8 @@ be:
   security:
     admin-nickname: 系统管理员 #admin
     admin-password: 19b5818d7fe851f4510715cbf2193204df3f5b82808a84faaa02634752886ff2 #明文：karadmin
+    jwt-get-auth-list-url: localhost:8001/auth/getAuthColl #按环境进行修改
+    jwt-get-user-id-url: localhost:8001/auth/getUserId #按环境进行修改
 
 #mybatis-plus:
 #  configuration:
@@ -61,3 +63,29 @@ spring:
         jdbc-url: jdbc:mysql://${be.common.host}:3001/be_temp_20240703?${be.mysql.connect-param}
         username: ${be.common.username}
         password: ${be.common.password}
+    rules:
+      sharding:
+        binding-tables:
+          - base_user,base_user_info
+        sharding-algorithms:
+          base-user-inline:
+            props:
+              algorithm-expression: base_user_$->{id % 2}
+            type: INLINE
+          base-user-info-inline:
+            props:
+              algorithm-expression: base_user_info_$->{id % 2}
+            type: INLINE
+        tables:
+          base_user:
+            actual-data-nodes: be-base-20240703.base_user_$->{0..1}
+            table-strategy:
+              standard:
+                sharding-algorithm-name: base-user-inline
+                sharding-column: id
+          base_user_info:
+            actual-data-nodes: be-base-20240703.base_user_info_$->{0..1}
+            table-strategy:
+              standard:
+                sharding-algorithm-name: base-user-info-inline
+                sharding-column: id
