@@ -43,6 +43,18 @@ public class BaseDictServiceImpl extends ServiceImpl<TempDictMapper, TempDictDO>
     @MyTransactional
     public String insertOrUpdate(BaseDictInsertOrUpdateDTO dto) {
 
+        // uuid不能重复
+        if (StrUtil.isNotBlank(dto.getUuid())) {
+
+            boolean exists = lambdaQuery().eq(TempDictDO::getUuid, dto.getUuid())
+                .ne(dto.getId() != null, TempEntity::getId, dto.getId()).exists();
+
+            if (exists) {
+                R.error(BaseBizCodeEnum.UUID_IS_EXIST);
+            }
+
+        }
+
         if (TempDictTypeEnum.DICT.equals(dto.getType())) {
 
             // 字典 key和 name不能重复
