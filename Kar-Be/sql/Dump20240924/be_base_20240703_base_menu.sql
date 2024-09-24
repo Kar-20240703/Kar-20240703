@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
--- Host: 192.168.33.12    Database: be_base_20240703
+-- Host: karopendev.top    Database: be_base_20240703
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.4.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
@@ -71,7 +71,11 @@ VALUES (1, 0, '2024-08-16 16:18:15', 240902154357005281, '2024-09-02 16:07:57', 
        (240912093214005832, 0, '2024-09-12 09:32:14', 0, '2024-09-12 09:43:35', 1, '', '部门管理',
         '/base/dept', 'ri:cup-fill', 1, 1, 0, '', '', 9500, 'BaseDept'),
        (240912094324005833, 0, '2024-09-12 09:43:25', 0, '2024-09-12 09:43:38', 1, '', '岗位管理',
-        '/base/post', 'ep:briefcase', 1, 1, 0, '', '', 9400, 'BasePost');
+        '/base/post', 'ep:briefcase', 1, 1, 0, '', '', 9400, 'BasePost'),
+       (240924112136000441, 0, '2024-09-24 11:21:37', 0, '2024-09-24 11:25:31', 1, '', '参数管理',
+        '/base/param', 'ri:album-fill', 1, 1, 0, '', '', 9300, 'BaseParam'),
+       (240924112334000442, 0, '2024-09-24 11:23:34', 0, '2024-09-24 11:26:08', 1, '', '字典管理',
+        '/base/dict', 'ri:book-2-fill', 1, 1, 0, '', '', 9200, 'BaseDict');
 /*!40000 ALTER TABLE `base_menu`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -85,4 +89,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-24 10:52:27
+-- Dump completed on 2024-09-24 15:28:44

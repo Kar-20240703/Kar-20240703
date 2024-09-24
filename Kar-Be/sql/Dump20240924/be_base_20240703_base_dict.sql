@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 8.0.38, for Win64 (x86_64)
 --
--- Host: 192.168.33.12    Database: be_base_20240703
+-- Host: karopendev.top    Database: be_base_20240703
 -- ------------------------------------------------------
--- Server version	8.0.27
+-- Server version	8.4.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT = @@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS = @@CHARACTER_SET_RESULTS */;
@@ -50,6 +50,15 @@ CREATE TABLE `base_dict`
 LOCK TABLES `base_dict` WRITE;
 /*!40000 ALTER TABLE `base_dict`
     DISABLE KEYS */;
+INSERT INTO `base_dict`
+VALUES (240924152139000555, 0, '2024-09-24 15:21:39', 0, '2024-09-24 15:26:51', 1, '', 'dictKey',
+        'dictName', 1, -1, 10000, '569fb80fe8724348badf393947dfbd18'),
+       (240924152155000556, 0, '2024-09-24 15:21:56', 0, '2024-09-24 15:26:51', 1, '', 'dictKey',
+        'dictItem1', 2, 1, 10000, 'a27e31bf77f249a5af6adf93b77b48e7'),
+       (240924152320000557, 0, '2024-09-24 15:23:20', 0, '2024-09-24 15:26:51', 1, '', 'dictKey',
+        'dictItem2', 2, 2, 9900, '316d838f1145454ebc4518ce0b3c503a'),
+       (240924152400000558, 0, '2024-09-24 15:24:01', 0, '2024-09-24 15:26:51', 1, '', 'dictKey',
+        'dictItem3', 2, 3, 9800, '9686ef6b5e344c0596147468e816a819');
 /*!40000 ALTER TABLE `base_dict`
     ENABLE KEYS */;
 UNLOCK TABLES;
@@ -63,4 +72,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-24 10:52:26
+-- Dump completed on 2024-09-24 15:28:39
