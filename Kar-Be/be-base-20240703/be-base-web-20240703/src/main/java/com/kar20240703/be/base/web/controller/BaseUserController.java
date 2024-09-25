@@ -1,7 +1,6 @@
 package com.kar20240703.be.base.web.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.kar20240703.be.base.web.model.dto.BaseUserDictListDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserPageDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserUpdatePasswordDTO;
@@ -40,8 +39,8 @@ public class BaseUserController {
     @Operation(summary = "下拉列表")
     @PostMapping("/dictList")
     @PreAuthorize("hasAuthority('baseUser:dictList')")
-    public R<Page<DictVO>> dictList(@RequestBody @Valid BaseUserDictListDTO dto) {
-        return R.okData(baseService.dictList(dto));
+    public R<Page<DictVO>> dictList() {
+        return R.okData(baseService.dictList());
     }
 
     @Operation(summary = "新增/修改")

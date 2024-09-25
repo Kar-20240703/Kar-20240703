@@ -6,9 +6,9 @@ be:
   mysql:
     connect-param: characterEncoding=utf-8&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
 
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #按环境进行修改：直接注释掉，备注：需要全部注释掉
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #按环境进行修改：直接注释掉，备注：需要全部注释掉
 
 springdoc:
   swagger-ui:

@@ -2,7 +2,6 @@ package com.kar20240703.be.base.web.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.kar20240703.be.base.web.model.dto.BaseUserDictListDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserPageDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserUpdatePasswordDTO;
@@ -17,7 +16,7 @@ public interface BaseUserService extends IService<TempUserDO> {
 
     Page<BaseUserPageVO> myPage(BaseUserPageDTO dto);
 
-    Page<DictVO> dictList(BaseUserDictListDTO dto);
+    Page<DictVO> dictList();
 
     String insertOrUpdate(BaseUserInsertOrUpdateDTO dto);
 

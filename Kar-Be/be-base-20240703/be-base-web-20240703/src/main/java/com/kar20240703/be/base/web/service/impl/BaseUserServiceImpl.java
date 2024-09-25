@@ -16,7 +16,6 @@ import com.kar20240703.be.base.web.exception.BaseBizCodeEnum;
 import com.kar20240703.be.base.web.mapper.BaseUserInfoMapper;
 import com.kar20240703.be.base.web.mapper.BaseUserMapper;
 import com.kar20240703.be.base.web.model.domain.BaseRoleRefUserDO;
-import com.kar20240703.be.base.web.model.dto.BaseUserDictListDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserInsertOrUpdateDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserPageDTO;
 import com.kar20240703.be.base.web.model.dto.BaseUserUpdatePasswordDTO;
@@ -192,7 +191,7 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
      * 下拉列表
      */
     @Override
-    public Page<DictVO> dictList(BaseUserDictListDTO dto) {
+    public Page<DictVO> dictList() {
 
         // 获取所有：用户信息
         List<TempUserInfoDO> tempUserInfoDOList = ChainWrappers.lambdaQueryChain(baseUserInfoMapper)

@@ -26,6 +26,7 @@
   </properties>
 
   <modules>
+    <module>be-base-kafka-20240703</module>
     <module>be-base-api-20240703</module>
     <module>be-base-model-20240703</module>
     <module>be-base-web-20240703</module>
