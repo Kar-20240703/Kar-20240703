@@ -97,6 +97,13 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
 
         for (BaseUserPageVO item : page.getRecords()) {
 
+            if (TempConstant.ADMIN_ID.equals(item.getId())) {
+
+                item.setUsername(TempConstant.ADMIN_ACCOUNT);
+                item.setNickname(tempSecurityProperties.getAdminNickname());
+
+            }
+
             // 备注：要和 userSelfInfo接口保持一致
             item.setEmail(DesensitizedUtil.email(item.getEmail())); // 脱敏
             item.setUsername(DesensitizedUtil.chineseName(item.getUsername())); // 脱敏
@@ -191,15 +198,15 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
         List<TempUserInfoDO> tempUserInfoDOList = ChainWrappers.lambdaQueryChain(baseUserInfoMapper)
             .select(TempUserInfoDO::getId, TempUserInfoDO::getNickname).orderByDesc(TempUserInfoDO::getId).list();
 
-        List<DictVO> dictVOList = tempUserInfoDOList.stream().map(it -> new DictVO(it.getId(), it.getNickname()))
-            .collect(Collectors.toList());
+        List<DictVO> dictVOList = tempUserInfoDOList.stream().map(it -> {
 
-        // 增加 admin账号
-        if (!BooleanUtil.isFalse(dto.getAddAdminFlag())) {
+            if (it.getId().equals(TempConstant.ADMIN_ID)) {
+                return new DictVO(it.getId(), tempSecurityProperties.getAdminNickname());
+            }
 
-            dictVOList.add(new DictVO(TempConstant.ADMIN_ID, tempSecurityProperties.getAdminNickname()));
+            return new DictVO(it.getId(), it.getNickname());
 
-        }
+        }).collect(Collectors.toList());
 
         return new Page<DictVO>().setTotal(dictVOList.size()).setRecords(dictVOList);
 
@@ -518,6 +525,8 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
     @MyTransactional
     public String deleteByIdSet(NotEmptyIdSet notEmptyIdSet) {
 
+        notEmptyIdSet.getIdSet().remove(TempConstant.ADMIN_ID);
+
         if (CollUtil.isEmpty(notEmptyIdSet.getIdSet())) {
             return TempBizCodeEnum.OK;
         }
@@ -536,6 +545,8 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
     @MyTransactional
     public String resetAvatar(NotEmptyIdSet notEmptyIdSet) {
 
+        notEmptyIdSet.getIdSet().remove(TempConstant.ADMIN_ID);
+
         if (CollUtil.isEmpty(notEmptyIdSet.getIdSet())) {
             return TempBizCodeEnum.OK;
         }
@@ -553,6 +564,12 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
     @Override
     @MyTransactional
     public String updatePassword(BaseUserUpdatePasswordDTO dto) {
+
+        dto.getIdSet().remove(TempConstant.ADMIN_ID);
+
+        if (CollUtil.isEmpty(dto.getIdSet())) {
+            return TempBizCodeEnum.OK;
+        }
 
         boolean passwordFlag =
             StrUtil.isNotBlank(dto.getNewPassword()) && StrUtil.isNotBlank(dto.getNewOriginPassword());
@@ -591,6 +608,8 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
     @MyTransactional
     public String thaw(NotEmptyIdSet notEmptyIdSet) {
 
+        notEmptyIdSet.getIdSet().remove(TempConstant.ADMIN_ID);
+
         if (CollUtil.isEmpty(notEmptyIdSet.getIdSet())) {
             return TempBizCodeEnum.OK;
         }
@@ -610,6 +629,8 @@ public class BaseUserServiceImpl extends ServiceImpl<BaseUserMapper, TempUserDO>
     @Override
     @MyTransactional
     public String freeze(NotEmptyIdSet notEmptyIdSet) {
+
+        notEmptyIdSet.getIdSet().remove(TempConstant.ADMIN_ID);
 
         if (CollUtil.isEmpty(notEmptyIdSet.getIdSet())) {
             return TempBizCodeEnum.OK;

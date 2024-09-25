@@ -307,6 +307,10 @@ public class SignUtil {
 
         } else if (BaseRedisKeyEnum.PRE_USER_NAME.equals(redisKeyEnum)) {
 
+            if (TempConstant.ADMIN_ACCOUNT.equals(newAccount)) {
+                return true;
+            }
+
             lambdaQueryChainWrapper.eq(TempUserDO::getUsername, newAccount);
 
         } else if (BaseRedisKeyEnum.PRE_PHONE.equals(redisKeyEnum)) {

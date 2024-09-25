@@ -16,46 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_role_ref_menu`
+-- Table structure for table `base_dept_ref_user`
 --
 
-DROP TABLE IF EXISTS `base_role_ref_menu`;
+DROP TABLE IF EXISTS `base_dept_ref_user`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_role_ref_menu`
+CREATE TABLE `base_dept_ref_user`
 (
-    `role_id` bigint NOT NULL COMMENT '角色主键 id',
-    `menu_id` bigint NOT NULL COMMENT '菜单主键 id',
-    PRIMARY KEY (`role_id`, `menu_id`)
+    `dept_id` bigint NOT NULL COMMENT '部门主键id',
+    `user_id` bigint NOT NULL COMMENT '用户主键id',
+    PRIMARY KEY (`dept_id`, `user_id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：关联表：角色表，菜单表';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：关联表：部门表，用户表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_role_ref_menu`
+-- Dumping data for table `base_dept_ref_user`
 --
 
-LOCK TABLES `base_role_ref_menu` WRITE;
-/*!40000 ALTER TABLE `base_role_ref_menu`
+LOCK TABLES `base_dept_ref_user` WRITE;
+/*!40000 ALTER TABLE `base_dept_ref_user`
     DISABLE KEYS */;
-INSERT INTO `base_role_ref_menu`
-VALUES (240830160154004401, 2),
-       (240830160154004401, 240823111516002532),
-       (240830160154004401, 240823140711002641),
-       (240830160154004401, 240823162121002971),
-       (240830160154004401, 240912092930005831),
-       (240830160154004401, 240912093214005832),
-       (240830160154004401, 240912094324005833),
-       (240830160647004402, 1),
-       (240830160647004402, 2),
-       (240830160647004402, 240823111516002532),
-       (240830160647004402, 240823140711002641),
-       (240830160647004402, 240823162121002971),
-       (240830160647004402, 240912092930005831),
-       (240830160647004402, 240912093214005832),
-       (240830160647004402, 240912094324005833);
-/*!40000 ALTER TABLE `base_role_ref_menu`
+INSERT INTO `base_dept_ref_user`
+VALUES (240912141649006163, 240902154357005281),
+       (240912141649006163, 240902163618005502),
+       (240912141649006163, 240912095958005834);
+/*!40000 ALTER TABLE `base_dept_ref_user`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -68,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-24 15:28:52
+-- Dump completed on 2024-09-25 16:38:59

@@ -16,34 +16,41 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_email_configuration`
+-- Table structure for table `base_param`
 --
 
-DROP TABLE IF EXISTS `base_email_configuration`;
+DROP TABLE IF EXISTS `base_param`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_email_configuration`
+CREATE TABLE `base_param`
 (
     `id`          bigint                                                        NOT NULL,
-    `content_pre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '正文前缀',
-    `port`        int                                                           NOT NULL COMMENT '端口',
-    `from_email`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送人邮箱',
-    `pass`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送人密码',
-    `ssl_flag`    tinyint(1)                                                    NOT NULL COMMENT '是否使用：SSL',
-    PRIMARY KEY (`id`)
+    `create_id`   bigint                                                        NOT NULL,
+    `create_time` datetime                                                      NOT NULL,
+    `update_id`   bigint                                                        NOT NULL,
+    `update_time` datetime                                                      NOT NULL,
+    `enable_flag` tinyint(1)                                                    NOT NULL COMMENT '是否启用',
+    `remark`      varchar(300) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '备注',
+    `name`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '配置名，以 uuid为不变值进行使用，不要用此属性',
+    `value`       text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci         NOT NULL COMMENT '值',
+    `uuid`        varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci  NOT NULL COMMENT '该参数的 uuid，备注：系统内置参数的 uuid等于 id',
+    PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：主表：邮箱配置表';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：主表：参数表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_email_configuration`
+-- Dumping data for table `base_param`
 --
 
-LOCK TABLES `base_email_configuration` WRITE;
-/*!40000 ALTER TABLE `base_email_configuration`
+LOCK TABLES `base_param` WRITE;
+/*!40000 ALTER TABLE `base_param`
     DISABLE KEYS */;
-/*!40000 ALTER TABLE `base_email_configuration`
+INSERT INTO `base_param`
+VALUES (240924144747000551, 0, '2024-09-24 14:47:47', 0, '2024-09-24 14:47:47', 1, '',
+        '默认允许后台登录', 'true', '3');
+/*!40000 ALTER TABLE `base_param`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -56,4 +63,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-24 15:28:43
+-- Dump completed on 2024-09-25 16:38:58

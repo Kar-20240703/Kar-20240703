@@ -16,34 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_post_ref_user`
+-- Table structure for table `base_email_configuration`
 --
 
-DROP TABLE IF EXISTS `base_post_ref_user`;
+DROP TABLE IF EXISTS `base_email_configuration`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_post_ref_user`
+CREATE TABLE `base_email_configuration`
 (
-    `post_id` bigint NOT NULL COMMENT '岗位主键id',
-    `user_id` bigint NOT NULL COMMENT '用户主键id',
-    PRIMARY KEY (`post_id`, `user_id`) USING BTREE
+    `id`          bigint                                                        NOT NULL,
+    `content_pre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '正文前缀',
+    `port`        int                                                           NOT NULL COMMENT '端口',
+    `from_email`  varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送人邮箱',
+    `pass`        varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '发送人密码',
+    `ssl_flag`    tinyint(1)                                                    NOT NULL COMMENT '是否使用：SSL',
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20230301：关联表：岗位表，用户表';
+  COLLATE = utf8mb4_0900_ai_ci COMMENT ='v20240703：主表：邮箱配置表';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_post_ref_user`
+-- Dumping data for table `base_email_configuration`
 --
 
-LOCK TABLES `base_post_ref_user` WRITE;
-/*!40000 ALTER TABLE `base_post_ref_user`
+LOCK TABLES `base_email_configuration` WRITE;
+/*!40000 ALTER TABLE `base_email_configuration`
     DISABLE KEYS */;
-INSERT INTO `base_post_ref_user`
-VALUES (240912142923006178, 240902154357005281),
-       (240912142923006178, 240902163618005502),
-       (240912142923006178, 240912095958005834);
-/*!40000 ALTER TABLE `base_post_ref_user`
+/*!40000 ALTER TABLE `base_email_configuration`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -56,4 +56,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-24 15:28:42
+-- Dump completed on 2024-09-25 16:39:13

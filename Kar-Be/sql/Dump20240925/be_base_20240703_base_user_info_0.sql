@@ -16,13 +16,13 @@
 /*!40111 SET @OLD_SQL_NOTES = @@SQL_NOTES, SQL_NOTES = 0 */;
 
 --
--- Table structure for table `base_user_info_1`
+-- Table structure for table `base_user_info_0`
 --
 
-DROP TABLE IF EXISTS `base_user_info_1`;
+DROP TABLE IF EXISTS `base_user_info_0`;
 /*!40101 SET @saved_cs_client = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `base_user_info_1`
+CREATE TABLE `base_user_info_0`
 (
     `id`               bigint                                                        NOT NULL COMMENT '用户主键 id',
     `uuid`             varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci  NOT NULL COMMENT '该用户的 uuid，本系统使用 id，不使用此字段（uuid），备注：不能重复',
@@ -41,16 +41,20 @@ CREATE TABLE `base_user_info_1`
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `base_user_info_1`
+-- Dumping data for table `base_user_info_0`
 --
 
-LOCK TABLES `base_user_info_1` WRITE;
-/*!40000 ALTER TABLE `base_user_info_1`
+LOCK TABLES `base_user_info_0` WRITE;
+/*!40000 ALTER TABLE `base_user_info_0`
     DISABLE KEYS */;
-INSERT INTO `base_user_info_1`
-VALUES (240902154357005281, '36870faf0934422399872a0260c1596a', 'nickname_kar1', 'kar1_bio', -1,
-        101, '2024-09-02 15:43:57', '0:0:0:0:0:0:0:1', 'ipv6#0:0:0:0:0:0:0:1');
-/*!40000 ALTER TABLE `base_user_info_1`
+INSERT INTO `base_user_info_0`
+VALUES (0, 'admin', '', '', -1, 101, '2024-09-25 16:38:32', '0:0:0:0:0:0:0:1',
+        'ipv6#0:0:0:0:0:0:0:1'),
+       (240902163618005502, '91a518a5234249a8a312bbc8fb6571c2', 'nickname_kar2', '', -1, 101,
+        '2024-09-02 16:36:18', '0:0:0:0:0:0:0:1', 'ipv6#0:0:0:0:0:0:0:1'),
+       (240912095958005834, 'b6c7ebff8b044b60a889ed81edc8c8e9', 't1', '', -1, 101,
+        '2024-09-12 09:59:59', '0:0:0:0:0:0:0:1', 'ipv6#0:0:0:0:0:0:0:1');
+/*!40000 ALTER TABLE `base_user_info_0`
     ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE = @OLD_TIME_ZONE */;
@@ -63,4 +67,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES = @OLD_SQL_NOTES */;
 
--- Dump completed on 2024-09-24 15:28:37
+-- Dump completed on 2024-09-25 16:39:14
