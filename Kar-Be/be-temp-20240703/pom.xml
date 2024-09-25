@@ -26,10 +26,73 @@
   </properties>
 
   <modules>
+    <module>be-temp-kafka-20240703</module>
     <module>be-temp-generate-20240703</module>
     <module>be-temp-api-20240703</module>
     <module>be-temp-model-20240703</module>
     <module>be-temp-web-20240703</module>
   </modules>
+
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- sharding-jdbc -->
+      <dependency>
+        <groupId>org.apache.shardingsphere</groupId>
+        <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+        <version>5.2.1</version>
+      </dependency>
+
+      <!-- 解决：sharding-jdbc 启动报错，备注：这个只指定版本号即可，不用引入 -->
+      <dependency>
+        <groupId>org.yaml</groupId>
+        <artifactId>snakeyaml</artifactId>
+        <version>1.33</version>
+      </dependency>
+
+      <!-- hutool -->
+      <dependency>
+        <groupId>cn.hutool</groupId>
+        <artifactId>hutool-all</artifactId>
+        <version>5.8.26</version>
+      </dependency>
+
+      <!-- jetbrains-annotations -->
+      <dependency>
+        <groupId>org.jetbrains</groupId>
+        <artifactId>annotations</artifactId>
+        <version>24.1.0</version>
+      </dependency>
+
+      <!-- springdoc -->
+      <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-ui</artifactId>
+        <version>1.8.0</version>
+      </dependency>
+
+      <!-- knife4j -->
+      <dependency>
+        <groupId>com.github.xiaoymin</groupId>
+        <artifactId>knife4j-springdoc-ui</artifactId>
+        <version>3.0.3</version>
+      </dependency>
+
+      <!-- redisson-spring-boot-starter -->
+      <dependency>
+        <groupId>org.redisson</groupId>
+        <artifactId>redisson-spring-boot-starter</artifactId>
+        <version>3.33.0</version>
+      </dependency>
+
+      <!-- mybatis-plus -->
+      <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-boot-starter</artifactId>
+        <version>3.5.7</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
 
 </project>

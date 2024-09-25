@@ -10,30 +10,22 @@
     <version>2024.7.3</version>
   </parent>
 
-  <artifactId>be-base-web-20240703</artifactId>
+  <artifactId>be-base-kafka-20240703</artifactId>
   <version>2024.7.3</version>
 
   <dependencies>
 
-    <!-- be-temp-kafka-20240703 -->
+    <!-- be-temp-web-20240703 -->
     <dependency>
       <groupId>${kar.groupId}</groupId>
       <artifactId>be-temp-kafka-20240703</artifactId>
       <version>${kar.version}</version>
     </dependency>
 
-    <!-- be-temp-web-20240703 -->
+    <!-- 离线IP地址定位库 -->
     <dependency>
-      <groupId>${kar.groupId}</groupId>
-      <artifactId>be-temp-web-20240703</artifactId>
-      <version>${kar.version}</version>
-    </dependency>
-
-    <!-- be-base-model-20240703 -->
-    <dependency>
-      <groupId>${kar.groupId}</groupId>
-      <artifactId>be-base-model-20240703</artifactId>
-      <version>${kar.version}</version>
+      <groupId>org.lionsoul</groupId>
+      <artifactId>ip2region</artifactId>
     </dependency>
 
   </dependencies>

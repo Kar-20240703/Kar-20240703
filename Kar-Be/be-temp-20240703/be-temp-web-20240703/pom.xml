@@ -40,6 +40,12 @@
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
 
+    <!-- sharding-jdbc -->
+    <dependency>
+      <groupId>org.apache.shardingsphere</groupId>
+      <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+    </dependency>
+
     <!-- mysql -->
     <dependency>
       <groupId>com.mysql</groupId>
@@ -51,42 +57,36 @@
     <dependency>
       <groupId>com.baomidou</groupId>
       <artifactId>mybatis-plus-boot-starter</artifactId>
-      <version>3.5.7</version>
     </dependency>
 
     <!-- redisson-spring-boot-starter -->
     <dependency>
       <groupId>org.redisson</groupId>
       <artifactId>redisson-spring-boot-starter</artifactId>
-      <version>3.33.0</version>
     </dependency>
 
     <!-- knife4j -->
     <dependency>
       <groupId>com.github.xiaoymin</groupId>
       <artifactId>knife4j-springdoc-ui</artifactId>
-      <version>3.0.3</version>
     </dependency>
 
     <!-- springdoc -->
     <dependency>
       <groupId>org.springdoc</groupId>
       <artifactId>springdoc-openapi-ui</artifactId>
-      <version>1.8.0</version>
     </dependency>
 
     <!-- hutool -->
     <dependency>
       <groupId>cn.hutool</groupId>
       <artifactId>hutool-all</artifactId>
-      <version>5.8.26</version>
     </dependency>
 
     <!-- jetbrains-annotations -->
     <dependency>
       <groupId>org.jetbrains</groupId>
       <artifactId>annotations</artifactId>
-      <version>24.1.0</version>
     </dependency>
 
     <!-- configuration-processor -->
@@ -102,37 +102,5 @@
     </dependency>
 
   </dependencies>
-
-  <dependencyManagement>
-
-    <dependencies>
-
-      <!-- 解决：sharding-jdbc 启动报错，备注：这个只指定版本号即可，不用引入 -->
-      <dependency>
-        <groupId>org.yaml</groupId>
-        <artifactId>snakeyaml</artifactId>
-        <version>1.33</version>
-      </dependency>
-
-    </dependencies>
-
-  </dependencyManagement>
-
-  <!--  <build>-->
-  <!--    <plugins>-->
-  <!--      <plugin>-->
-  <!--        <groupId>org.springframework.boot</groupId>-->
-  <!--        <artifactId>spring-boot-maven-plugin</artifactId>-->
-  <!--        <configuration>-->
-  <!--          <excludes>-->
-  <!--            <exclude>-->
-  <!--              <groupId>org.projectlombok</groupId>-->
-  <!--              <artifactId>lombok</artifactId>-->
-  <!--            </exclude>-->
-  <!--          </excludes>-->
-  <!--        </configuration>-->
-  <!--      </plugin>-->
-  <!--    </plugins>-->
-  <!--  </build>-->
 
 </project>

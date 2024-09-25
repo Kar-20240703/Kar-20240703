@@ -5,24 +5,13 @@ be:
     password: password
   mysql:
     connect-param: characterEncoding=utf-8&useUnicode=true&useSSL=false&serverTimezone=Asia/Shanghai&allowMultiQueries=true&rewriteBatchedStatements=true&allowPublicKeyRetrieval=true
-  security:
-    admin-nickname: 系统管理员 #admin
-    admin-password: 19b5818d7fe851f4510715cbf2193204df3f5b82808a84faaa02634752886ff2 #明文：karadmin
-    jwt-get-auth-list-url: localhost:8001/auth/getAuthColl #按环境进行修改
-    jwt-get-user-id-url: localhost:8001/auth/getUserId #按环境进行修改
 
-#mybatis-plus:
-#  configuration:
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #按环境进行修改：直接注释掉，备注：需要全部注释掉
-
-springdoc:
-  swagger-ui:
-    enabled: false #按环境进行修改：false
-  api-docs:
-    enabled: false #按环境进行修改：false
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #按环境进行修改：直接注释掉，备注：需要全部注释掉
 
 server:
-  port: 8002
+  port: 8003
 
 management:
   server:
@@ -33,7 +22,7 @@ management:
 spring:
 
   application:
-    name: be-temp-web-20240703
+    name: be-base-kafka-20240703
 
   profiles:
     active: dev #按环境进行修改：prod
@@ -48,6 +37,15 @@ spring:
     password: ${be.common.password}
     port: 6001
 
+  kafka:
+    bootstrap-servers: ${be.common.host}:9091
+    consumer:
+      enable-auto-commit: false #为了：ack-mode: manual_immediate，设置为 true，则 ack-mode不会生效
+      auto-offset-reset: latest #当各分区下有已提交的offset时，从提交的offset开始消费；无提交的offset时，消费新产生的该分区下的数据
+      fetch-max-wait: 500 #消费者拉取消息的延迟（ms），默认 500
+    listener:
+      ack-mode: manual_immediate #手动调用 Acknowledgment.acknowledge() 后立即提交
+
   shardingsphere:
     #props:
     #  sql-show: true #按环境进行修改：直接注释掉
@@ -56,11 +54,11 @@ spring:
       repository:
         type: JDBC
     datasource:
-      names: be-temp-20240703
-      be-temp-20240703:
+      names: be-base-20240703
+      be-base-20240703:
         type: com.zaxxer.hikari.HikariDataSource
         driver-class-name: com.mysql.cj.jdbc.Driver
-        jdbc-url: jdbc:mysql://${be.common.host}:3001/be_temp_20240703?${be.mysql.connect-param}
+        jdbc-url: jdbc:mysql://${be.common.host}:3001/be_base_20240703?${be.mysql.connect-param}
         username: ${be.common.username}
         password: ${be.common.password}
     rules:

@@ -1,4 +1,4 @@
-package com.kar20240703.be.temp.web.configuration.base;
+package com.kar20240703.be.temp.kafka.configuration.base;
 
 import cn.hutool.http.HttpGlobalConfig;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -25,18 +25,18 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 @EnableScheduling
 @AutoConfigureOrder(value = Integer.MIN_VALUE) // 如果配置在；spring.factories 文件里，则可以通过该注解指定加载顺序
 @Slf4j
-public class TempConfiguration {
+public class TempKafkaConfiguration {
 
     public static String applicationName; // 服务名
     public static Integer port; // 启动的端口
     public static String profilesActive; // 启动的环境
 
-    public TempConfiguration(@Value("${spring.application.name:applicationName}") String applicationName,
+    public TempKafkaConfiguration(@Value("${spring.application.name:applicationName}") String applicationName,
         @Value("${server.port:8080}") int port, @Value("${spring.profiles.active:prod}") String profilesActive) {
 
-        TempConfiguration.applicationName = applicationName;
-        TempConfiguration.port = port;
-        TempConfiguration.profilesActive = profilesActive;
+        TempKafkaConfiguration.applicationName = applicationName;
+        TempKafkaConfiguration.port = port;
+        TempKafkaConfiguration.profilesActive = profilesActive;
 
         // 设置：http超时时间，默认：30分钟
         HttpGlobalConfig.setTimeout(30 * 60 * 1000);
@@ -48,7 +48,7 @@ public class TempConfiguration {
      */
     public static boolean prodFlag() {
 
-        return "prod".equals(TempConfiguration.profilesActive);
+        return "prod".equals(TempKafkaConfiguration.profilesActive);
 
     }
 
@@ -57,7 +57,7 @@ public class TempConfiguration {
      */
     public static boolean devFlag() {
 
-        return "dev".equals(TempConfiguration.profilesActive);
+        return "dev".equals(TempKafkaConfiguration.profilesActive);
 
     }
 

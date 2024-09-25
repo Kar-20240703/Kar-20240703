@@ -13,6 +13,8 @@ import com.kar20240703.be.base.web.mapper.BaseUserInfoMapper;
 import com.kar20240703.be.base.web.mapper.BaseUserMapper;
 import com.kar20240703.be.base.web.model.domain.BaseRoleRefUserDO;
 import com.kar20240703.be.base.web.model.enums.BaseRedisKeyEnum;
+import com.kar20240703.be.temp.kafka.model.domain.TempKafkaUserInfoDO;
+import com.kar20240703.be.temp.kafka.util.TempKafkaUtil;
 import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.constant.TempConstant;
 import com.kar20240703.be.temp.web.model.constant.TempRegexConstant;
@@ -32,6 +34,7 @@ import com.kar20240703.be.temp.web.util.MyUserUtil;
 import com.kar20240703.be.temp.web.util.NicknameUtil;
 import com.kar20240703.be.temp.web.util.RedissonUtil;
 import com.kar20240703.be.temp.web.util.RequestUtil;
+import com.kar20240703.be.temp.web.util.TransactionUtil;
 import java.time.Duration;
 import java.util.Map;
 import java.util.Set;
@@ -212,9 +215,17 @@ public class SignUtil {
 
             }
 
-            tempUserInfoDO.setLastRegion(Ip2RegionUtil.getRegion(tempUserInfoDO.getLastIp()));
+            tempUserInfoDO.setLastRegion("");
 
             baseUserInfoMapper.insert(tempUserInfoDO); // 保存：用户基本信息
+
+            TempKafkaUserInfoDO tempKafkaUserInfoDO = new TempKafkaUserInfoDO();
+
+            tempKafkaUserInfoDO.setId(tempUserDO.getId());
+            tempKafkaUserInfoDO.setLastActiveTime(tempUserInfoDO.getLastActiveTime());
+            tempKafkaUserInfoDO.setLastIp(tempUserInfoDO.getLastIp());
+
+            TempKafkaUtil.sendUpdateUserInfoTopic(tempKafkaUserInfoDO); // 更新：用户信息
 
             return tempUserDO;
 

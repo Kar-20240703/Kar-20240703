@@ -1,4 +1,4 @@
-package com.kar20240703.be.base.web.util;
+package com.kar20240703.be.base.kafka.util;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.io.resource.ClassPathResource;

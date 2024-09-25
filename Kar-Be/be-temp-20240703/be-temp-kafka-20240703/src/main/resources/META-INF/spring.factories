@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.kar20240703.be.temp.kafka.configuration.base.TempKafkaConfiguration

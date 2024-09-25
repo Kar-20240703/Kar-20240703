@@ -1,4 +1,4 @@
-package com.kar20240703.be.base.web.util;
+package com.kar20240703.be.temp.web.util;
 
 import cn.hutool.core.lang.func.VoidFunc0;
 import java.util.function.Supplier;

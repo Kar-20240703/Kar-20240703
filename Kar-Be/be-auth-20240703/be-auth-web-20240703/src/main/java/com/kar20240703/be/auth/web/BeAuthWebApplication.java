@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BeAuthApplication {
+public class BeAuthWebApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(BeAuthApplication.class, args);
+        SpringApplication.run(BeAuthWebApplication.class, args);
     }
 
 }

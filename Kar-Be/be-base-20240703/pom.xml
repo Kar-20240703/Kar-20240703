@@ -31,4 +31,17 @@
     <module>be-base-web-20240703</module>
   </modules>
 
+  <dependencyManagement>
+    <dependencies>
+
+      <!-- 离线IP地址定位库 -->
+      <dependency>
+        <groupId>org.lionsoul</groupId>
+        <artifactId>ip2region</artifactId>
+        <version>2.7.0</version>
+      </dependency>
+
+    </dependencies>
+  </dependencyManagement>
+
 </project>
