@@ -68,7 +68,15 @@ public class RequestUtil {
     @NotNull
     public static String getIp() {
 
-        HttpServletRequest httpServletRequest = getRequest();
+        return getIp(getRequest());
+
+    }
+
+    /**
+     * 获取：ip
+     */
+    @NotNull
+    public static String getIp(HttpServletRequest httpServletRequest) {
 
         if (httpServletRequest == null) {
             return "";

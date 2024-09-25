@@ -1,5 +1,6 @@
 package com.kar20240703.be.temp.web.filter;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.NumberUtil;
 import cn.hutool.core.util.StrUtil;
@@ -12,11 +13,13 @@ import com.kar20240703.be.temp.web.exception.TempBizCodeEnum;
 import com.kar20240703.be.temp.web.model.configuration.IJwtGenerateConfiguration;
 import com.kar20240703.be.temp.web.model.configuration.IJwtGetAuthListConfiguration;
 import com.kar20240703.be.temp.web.model.constant.SecurityConstant;
+import com.kar20240703.be.temp.web.model.interfaces.IJwtFilterHandler;
 import com.kar20240703.be.temp.web.model.vo.R;
 import com.kar20240703.be.temp.web.model.vo.SignInVO;
 import com.kar20240703.be.temp.web.properties.TempSecurityProperties;
 import com.kar20240703.be.temp.web.util.MyExceptionUtil;
 import com.kar20240703.be.temp.web.util.MyJwtUtil;
+import com.kar20240703.be.temp.web.util.MyThreadUtil;
 import com.kar20240703.be.temp.web.util.RequestUtil;
 import com.kar20240703.be.temp.web.util.ResponseUtil;
 import java.util.List;
@@ -51,14 +54,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
     @Nullable
     IJwtGetAuthListConfiguration iJwtGetAuthListConfiguration;
 
+    @Nullable
+    List<IJwtFilterHandler> iJwtFilterHandlerList;
+
     public JwtAuthorizationFilter(
         @Autowired(required = false) @Nullable IJwtGenerateConfiguration iJwtGenerateConfiguration,
         TempSecurityProperties tempSecurityProperties,
-        @Autowired(required = false) @Nullable IJwtGetAuthListConfiguration iJwtGetAuthListConfiguration) {
+        @Autowired(required = false) @Nullable IJwtGetAuthListConfiguration iJwtGetAuthListConfiguration,
+        @Autowired(required = false) @Nullable List<IJwtFilterHandler> iJwtFilterHandlerList) {
 
         this.iJwtGenerateConfiguration = iJwtGenerateConfiguration;
         this.tempSecurityProperties = tempSecurityProperties;
         this.iJwtGetAuthListConfiguration = iJwtGetAuthListConfiguration;
+        this.iJwtFilterHandlerList = iJwtFilterHandlerList;
 
         log.info("获取权限的url：{}，获取用户id的url：{}", tempSecurityProperties.getJwtGetAuthListUrl(),
             tempSecurityProperties.getJwtGetUserIdUrl());
@@ -113,6 +121,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         }
 
+        handleIjwtFilterList(userId, jwt, request); // 扩展处理 jwt
+
         String jwtGetAuthListUrl = tempSecurityProperties.getJwtGetAuthListUrl();
 
         if (StrUtil.isBlank(jwtGetAuthListUrl)) {
@@ -163,6 +173,29 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             new UsernamePasswordAuthenticationToken(jwt.getPayload().getClaimsJson(), null, authoritieList));
 
         filterChain.doFilter(request, response);
+
+    }
+
+    /**
+     * 扩展处理 jwt
+     */
+    private void handleIjwtFilterList(Long userId, JWT jwt, HttpServletRequest request) {
+
+        if (CollUtil.isEmpty(iJwtFilterHandlerList)) {
+            return;
+        }
+
+        String ip = RequestUtil.getIp(request);
+
+        MyThreadUtil.execute(() -> {
+
+            for (IJwtFilterHandler iJwtFilterHandler : iJwtFilterHandlerList) {
+
+                iJwtFilterHandler.handleJwt(userId, ip, jwt);
+
+            }
+
+        });
 
     }
 

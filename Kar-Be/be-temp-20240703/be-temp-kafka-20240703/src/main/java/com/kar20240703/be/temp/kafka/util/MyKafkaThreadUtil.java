@@ -13,15 +13,15 @@ import org.springframework.scheduling.Trigger;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MyThreadUtil {
+public class MyKafkaThreadUtil {
 
     private static TaskExecutor taskExecutor;
     private static TaskScheduler taskScheduler;
 
-    public MyThreadUtil(TaskExecutor myTaskExecutor, TaskScheduler myTaskScheduler) {
+    public MyKafkaThreadUtil(TaskExecutor myTaskExecutor, TaskScheduler myTaskScheduler) {
 
-        MyThreadUtil.taskExecutor = myTaskExecutor;
-        MyThreadUtil.taskScheduler = myTaskScheduler;
+        MyKafkaThreadUtil.taskExecutor = myTaskExecutor;
+        MyKafkaThreadUtil.taskScheduler = myTaskScheduler;
 
     }
 

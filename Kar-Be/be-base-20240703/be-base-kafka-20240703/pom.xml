@@ -15,7 +15,13 @@
 
   <dependencies>
 
-    <!-- be-temp-web-20240703 -->
+    <!-- sharding-jdbc -->
+    <dependency>
+      <groupId>org.apache.shardingsphere</groupId>
+      <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+    </dependency>
+
+    <!-- be-temp-kafka-20240703 -->
     <dependency>
       <groupId>${kar.groupId}</groupId>
       <artifactId>be-temp-kafka-20240703</artifactId>
