@@ -10,6 +10,12 @@ mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #按环境进行修改：直接注释掉，备注：需要全部注释掉
 
+springdoc:
+  swagger-ui:
+    enabled: false #按环境进行修改：false
+  api-docs:
+    enabled: false #按环境进行修改：false
+
 server:
   port: 8003
 
